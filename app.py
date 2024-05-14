@@ -6,7 +6,6 @@ import jwt
 import hashlib
 from datetime import datetime,timedelta
 from pymongo import MongoClient
-import midtransclient
 import dashboard
 
 dotenv_path = join(dirname(__file__), '.env')

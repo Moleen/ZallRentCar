@@ -1,0 +1,47 @@
+body {
+    display: grid;
+    grid-template-columns: 25rem 1fr 1fr;
+    grid-template-rows: 7rem 1fr 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 100vh;
+    transition: all ease-in-out 1s;
+}
+
+.header {
+    grid-row: 1;
+    grid-column: 2/-1;
+    display: flex;
+    justify-content: end;
+    align-items: center ;
+    padding: 0 2rem;
+    background-color: aqua;
+}
+
+.sidebar{
+    grid-column: 1;
+    grid-row: 1/-1;
+    background-color: rgb(119, 148, 51);
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 7rem;
+    padding: 1rem 2rem;
+}
+
+.menu .nav-link.active{
+    background-color: blue;
+}
+
+.other-menu{
+    padding: 1rem 2rem;
+
+}
+
+.content{
+    grid-column: 2/-1;
+    grid-row: 2/-1;
+}

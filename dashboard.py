@@ -26,8 +26,20 @@ def dashboard_page():
     token_receive = request.cookies.get("token")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
-        user_info = db.users.find_one({"username": payload["user"]})
-        return render_template('dasboard/index.html',user_info=user_info)
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        return render_template('dashboard/dashboard.html',user_info=user_info)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
+
+@dashboard.route('/dashboard/product')
+def product():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        return render_template('dashboard/product.html',user_info=user_info)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
@@ -35,7 +47,7 @@ def dashboard_page():
 
 @dashboard.route('/dashboard-login', methods = ['GET'])
 def dashboard_login():
-    return render_template('dasboard/login.html')
+    return render_template('dashboard/login.html')
 
 
 # POST METHODS
@@ -45,7 +57,7 @@ def dashboard_login_post():
     password = request.form.get("password")
 
     pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
-    result = db.users.find_one({'username': user, 'password': pw_hash})
+    result = db.users_admin.find_one({'username': user, 'password': pw_hash})
     if result:
         payload = {
             "user": user,

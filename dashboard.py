@@ -27,7 +27,8 @@ def dashboard_page():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
-        return render_template('dashboard/dashboard.html',user_info=user_info)
+        data = db.data.find({})
+        return render_template('dashboard/dashboard.html',user_info=user_info, data=data)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
@@ -40,6 +41,18 @@ def product():
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
         return render_template('dashboard/product.html',user_info=user_info)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
+    
+@dashboard.route('/dashboard/add-data')
+def addData():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        return render_template('dashboard/tambahdata.html',user_info=user_info)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
@@ -73,3 +86,15 @@ def dashboard_login_post():
             'result' : 'unsucces',
             'msg' : 'password atau username salah'
         })
+    
+@dashboard.route('/dashboard/add-data', methods = ['POST'])
+def addData_post():
+    mobil = request.form.get('mobil')
+    harga = request.form.get('harga')
+
+    db.data.insert_one({
+        'mobil' : mobil,
+        'harga' : harga
+    })
+
+    return jsonify({'result':'success'})

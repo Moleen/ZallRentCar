@@ -1,0 +1,24 @@
+{% extends 'dashboard/layout_dashboard.html' %}
+
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/dashboard/tambahdata.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="">
+        <h1>Tambah data</h1>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Nama Mobil</label>
+            <input type="text" class="form-control" id="mobil" placeholder="name@example.com">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Harga</label>
+            <input type="text" class="form-control" id="harga" placeholder="name@example.com">
+          </div>
+          <button type="button" class="btn btn-primary" onclick="addData()">Primary</button>
+    </div>
+
+
+{% endblock %}

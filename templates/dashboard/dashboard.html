@@ -1,10 +1,27 @@
-{% extends 'dashboard/layout_dashboard.html' %}
+{% extends 'dashboard/layout_dashboard.html' %} {% block content %}
 
-
-{% block content %}
-
-
-    <h1>ini dashboard</h1>
-
+<div class="container-fluid p-0">
+    <a class="btn btn-primary mb-3" href="/dashboard/add-data">add data</a>
+  <table class="table table-curved border ">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nama Mobil</th>
+        <th scope="col">Harga</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for dt in data %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{dt.mobil}}</td>
+        <td>{{dt.harga}}</td>
+        <td>ac</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

@@ -1,24 +1,41 @@
 {% extends 'dashboard/layout_dashboard.html' %}
 
 {% block javascript %}
-<script src="{{ url_for('static', filename='js/dashboard/tambahdata.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard/tambahdata.js') }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
 
 
-    <div class="">
-        <h1>Tambah data</h1>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Nama Mobil</label>
-            <input type="text" class="form-control" id="mobil" placeholder="name@example.com">
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Harga</label>
-            <input type="text" class="form-control" id="harga" placeholder="name@example.com">
-          </div>
-          <button type="button" class="btn btn-primary" onclick="addData()">Primary</button>
-    </div>
+<div class="">
+  <h1>Tambah data</h1>
+  <div class="mb-3">
+    <label class="form-label">Merek Mobil</label>
+    <input type="text" class="form-control" id="merek" placeholder="">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Model</label>
+    <input type="text" class="form-control" id="model" placeholder="">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tahun Pembuatan</label>
+    <select class="form-control" name="startyear" id="tahunM">
+      {% for year in range(1900, 2025) %}
+        <option value="{{ year }}">{{ year }}</option>
+      {% endfor %}
+    </select>
+    
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Warna</label>
+    <input type="text" class="form-control" id="warna" placeholder="">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Harga Sewa</label>
+    <input type="text" class="form-control" id="harga" placeholder="">
+  </div>
+  <button type="button" class="btn btn-primary" onclick="addData()">Tamba</button>
+</div>
 
 
 {% endblock %}

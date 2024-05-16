@@ -1,22 +1,11 @@
 from flask import Blueprint, render_template, request,redirect, url_for, jsonify
-import os
-from os.path import join, dirname
-from dotenv import load_dotenv
 import jwt
 import hashlib
 from datetime import datetime,timedelta
-from pymongo import MongoClient
-
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-
+from dbconnection import db
+import os
 
 SECRET_KEY_DASHBOARD = os.environ.get("SECRET_KEY_DASHBOARD")
-MONGODB_URI = os.environ.get("MONGODB_URI")
-DB =  os.environ.get("DB")
-
-client = MongoClient(MONGODB_URI)
-db = client[DB]
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -27,8 +16,7 @@ def dashboard_page():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
-        data = db.data.find({})
-        return render_template('dashboard/dashboard.html',user_info=user_info, data=data)
+        return render_template('dashboard/dashboard.html',user_info=user_info)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
@@ -40,13 +28,14 @@ def product():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
-        return render_template('dashboard/product.html',user_info=user_info)
+        data = db.dataMobil.find({})
+        return render_template('dashboard/product.html',user_info=user_info, data=data)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/add-data')
+@dashboard.route('/dashboard/product/add-data')
 def addData():
     token_receive = request.cookies.get("token")
     try:
@@ -87,14 +76,24 @@ def dashboard_login_post():
             'msg' : 'password atau username salah'
         })
     
-@dashboard.route('/dashboard/add-data', methods = ['POST'])
+@dashboard.route('/dashboard/product/add-data', methods = ['POST'])
 def addData_post():
-    mobil = request.form.get('mobil')
+    payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+    user_info = db.users_admin.find_one({"username": payload["user"]})
+    merek = request.form.get('merek')
+    model = request.form.get('model')
+    tahun = request.form.get('tahun')
+    warna = request.form.get('warna')
     harga = request.form.get('harga')
 
-    db.data.insert_one({
-        'mobil' : mobil,
-        'harga' : harga
+    db.dataMobil.insert_one({
+        'user' : user_info['username'],
+        'merek' : merek.capitalize(),
+        'model' : model.capitalize(),
+        'tahun' : tahun.capitalize(),
+        'warna' : warna.capitalize(),
+        'harga' : harga.capitalize(),
+        'status' : 'tersedia'.capitalize()
     })
 
     return jsonify({'result':'success'})

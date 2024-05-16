@@ -1,10 +1,49 @@
 {% extends 'dashboard/layout_dashboard.html' %}
 
-
 {% block content %}
 
+<div class="container-fluid p-0 px-4 data">
 
-    <h1>ini product</h1>
+  <div class="row g-3 align-items-center mb-3">
+    <div class="col-auto">
+      <input type="text" id="search-data" class="form-control" placeholder="Cari merek">
+    </div>
+    <div class="col text-end">
+      <a class="btn btn-primary" role="button" href="/dashboard/product/add-data">add data</a>
+    </div>
+  </div>
 
+  <table class="table table-curved border ">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Merek</th>
+        <th scope="col">Model</th>
+        <th scope="col">Tahun</th>
+        <th scope="col">Warna</th>
+        <th scope="col">Harga Sewa</th>
+        <th scope="col">Status</th>
+      </tr>
+
+    </thead>
+    <tbody id="list-data">
+      {% for dt in data %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{dt.merek}}</td>
+        <td>{{dt.model}}</td>
+        <td>{{dt.tahun}}</td>
+        <td>{{dt.warna}}</td>
+        <td>{{dt.harga}}</td>
+        <td id="status">{{dt.status}}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7" class="text-center">Tidak ada data yang tersedia.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

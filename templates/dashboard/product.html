@@ -1,5 +1,9 @@
 {% extends 'dashboard/layout_dashboard.html' %}
 
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/dashboard/datamobil.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="container-fluid p-0 px-4 data">
@@ -17,12 +21,11 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Merek</th>
-        <th scope="col">Model</th>
-        <th scope="col">Tahun</th>
-        <th scope="col">Warna</th>
+        <th scope="col">Nama Mobil</th>
+        <th scope="col">Tipe</th>
         <th scope="col">Harga Sewa</th>
         <th scope="col">Status</th>
+        <th scope="col"></th>
       </tr>
 
     </thead>
@@ -32,10 +35,22 @@
         <th scope="row">{{loop.index}}</th>
         <td>{{dt.merek}}</td>
         <td>{{dt.model}}</td>
-        <td>{{dt.tahun}}</td>
-        <td>{{dt.warna}}</td>
         <td>{{dt.harga}}</td>
         <td id="status">{{dt.status}}</td>
+        <td>
+          <button class="btn fa-solid fa-ellipsis" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+          <ul class="dropdown-menu">
+            {% if dt.status == 'Diproses' %}
+            <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')" role="button">Konfirmasi Pesanan</a></li>
+            {% elif dt.status == 'Digunakan' %}
+            <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')" role="button">Konfirmasi Kembali</a></li>
+            {% else %}
+              
+            <li><a class="dropdown-item" href="#">Edit Mobil</a></li>
+            {% endif %}
+          </ul>
+        </td>
+        </td>
       </tr>
       {% else %}
       <tr>

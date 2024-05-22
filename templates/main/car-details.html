@@ -1,0 +1,72 @@
+{% extends 'main/main_layout.html' %}
+{% block title %}| detail-{{ data.merek }} {{ data.model }} {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main/car_details.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/datepicker/bootstrap-datepicker.min.css') }}">
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main/car_details.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container-fluid h-100 car-details">
+    <div class="card w-50">
+        {% if data.status == 'Tersedia' %}
+        <div class="card-body">
+
+            <h5 class="card-title">Detail {{ data.merek }} {{ data.model }}</h5>
+            <p class="card-text">Merek : {{ data.merek }}</p>
+            <p class="card-text">Model : {{ data.model }}</p>
+            <p class="card-text">Status : {{ data.status }}</p>
+
+
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</a>
+
+        </div>
+        {% else %}
+        <div class="card-body">
+
+            <h5 class="card-title">Detail {{ data.merek }} {{ data.model }}</h5>
+            <p class="card-text">Merek : {{ data.merek }}</p>
+            <p class="card-text">Model : {{ data.model }}</p>
+            <p class="card-text">Status : Tidak tersedia</p>
+            <p class="card-text">Tersedia Tanggal : Tidak tersedia</p>
+
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ data.merek }} {{ data.model }}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="mb-3">
+                        <p>Masukkan hari rental</p>
+                        <input type="number" name="" id="hari">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="createTransaction('{{data.id_mobil}}')">Pesan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

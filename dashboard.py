@@ -4,6 +4,7 @@ import hashlib
 from datetime import datetime,timedelta
 from dbconnection import db
 import os
+import uuid
 
 SECRET_KEY_DASHBOARD = os.environ.get("SECRET_KEY_DASHBOARD")
 
@@ -30,6 +31,32 @@ def product():
         user_info = db.users_admin.find_one({"username": payload["user"]})
         data = db.dataMobil.find({})
         return render_template('dashboard/product.html',user_info=user_info, data=data)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
+    
+@dashboard.route('/dashboard/product/<id>')
+def productDetail(id):
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        data = db.transaction.find_one({'order_id' : id})
+        return render_template('dashboard/car-detail.html',user_info=user_info, data=data)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
+    
+@dashboard.route('/dashboard/transaction')
+def transaction():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        data = db.transaction.find({})
+        return render_template('dashboard/transaction.html',user_info=user_info, data=data)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
@@ -80,6 +107,7 @@ def dashboard_login_post():
 def addData_post():
     payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
+    id_mobil = uuid.uuid1()
     merek = request.form.get('merek')
     model = request.form.get('model')
     tahun = request.form.get('tahun')
@@ -87,13 +115,14 @@ def addData_post():
     harga = request.form.get('harga')
 
     db.dataMobil.insert_one({
+        'id_mobil' : str(id_mobil),
         'user' : user_info['username'],
         'merek' : merek.capitalize(),
         'model' : model.capitalize(),
         'tahun' : tahun.capitalize(),
         'warna' : warna.capitalize(),
         'harga' : harga.capitalize(),
-        'status' : 'tersedia'.capitalize()
+        'status' : 'tersedia'.capitalize(),
     })
 
     return jsonify({'result':'success'})

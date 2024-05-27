@@ -7,27 +7,87 @@
 
 {% block content %}
 
-<div class="container-fluid">
-    {% for dt in data %}
-    <div class="col-12">
-        <div class="row p-4">
-            <div class="col-auto">id : {{dt.order_id}}</div>
-            <div class="col-auto">nama : {{dt.item}}</div>
-            <div class="col-auto">status : {{dt.status}}</div>
-            {% if dt.status == 'sudah bayar' %}
-            <div class="col-auto">
+<section class="p-4">
 
-            </div>
-            {% else %}       
-            <div class="col-auto">
-                <button class="btn btn-danger" onclick="cancelPayment('{{dt.order_id}}')" role="button">Batal</button>
-                <a class="btn btn-primary" href="/transaksi/{{dt.order_id}}" role="button">Bayar</a>
+    <table class="table border table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">Tanggal</th>
+                <th scope="col">Nama mobil</th>
+                <th scope="col">Lama sewa</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dt in data %}
+            <tr data-bs-toggle="modal" data-bs-target="#{{dt._id}}" id="{{dt.status}}">
+                <td>{{dt.date_rent}}</td>
+                <td>{{dt.item}}</td>
+                <td>{{dt.lama_rental}}</td>
+                <td>Rp. {{dt.total}}</td>
+            </tr>
 
+            <div class="modal fade" id="{{dt._id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Transaksi</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <ul class="">
+                                <li class=" d-flex align-items-center mb-3">
+                                    <p class="m-0 px-2">Mobil</p>:
+                                    <p class="m-0 px-2">{{dt.item}}</p>
+                                </li>
+                                <li class=" d-flex align-items-center mb-3">
+                                    <p class="m-0 px-2">Tanggal sewa</p>:
+                                    <p class="m-0 px-2">{{dt.date_rent}}</p>
+                                </li>
+                                <li class=" d-flex align-items-center mb-3">
+                                    <p class="m-0 px-2">Lama sewa</p>:
+                                    <p class="m-0 px-2">{{dt.lama_rental}}</p>
+                                </li>
+                                <li class=" d-flex align-items-center mb-3">
+                                    <p class="m-0 px-2">Total</p>:
+                                    <p class="m-0 px-2">Rp. {{dt.total}}</p>
+                                </li>
+                                <li class=" d-flex align-items-center mb-3">
+                                    <p class="m-0 px-2">Status</p>:
+                                    <p class="m-0 px-2">{{dt.status}}</p>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        {% if dt.status == 'sudah bayar' %}
+
+                        {% else %}
+                        <div class="modal-footer">
+                            <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary">Bayar</a>
+                        </div>
+                        
+                        {% endif %}
+
+                    </div>
+                </div>
             </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
-</div>
+
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center"> Tidak ada transaksi </td>
+            </tr>
+            {% endfor %}
+
+
+            <!-- Modal -->
+
+
+        </tbody>
+    </table>
+
+</section>
 
 {% endblock %}

@@ -22,8 +22,9 @@ def transaksiUser():
 @app.route('/transaksi/<id>')
 def payment(id):
     data = db.transaction.find_one({'order_id' : id})
+    token = data['transaction_token']
     if data :
-        return render_template('main/payment.html', data = data)
+        return render_template('main/payment.html', data = data, token = token)
     else:
         return redirect(url_for('transaksiUser'))
 

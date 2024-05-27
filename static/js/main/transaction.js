@@ -11,3 +11,13 @@ function cancelPayment(order_id){
         }
     })
 }
+
+function addStatusLabel(){
+    $("tr#unpaid").each(function () {
+      $(this).addClass("table-warning");
+    });
+  }
+
+  $(document).ready(function () {
+    addStatusLabel();
+  })

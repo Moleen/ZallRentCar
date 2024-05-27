@@ -1,45 +1,21 @@
 {% extends 'main/main_layout.html' %}
-{% block title %} {% endblock %}
 
-{% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main/car_details.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/datepicker/bootstrap-datepicker.min.css') }}">
+
+{% block content %}
+<div class="w-100 p-4">
+    <div id="snap-container" class="d-flex justify-content-center"></div>
+</div>
+
+
+
 {% endblock %}
 
 {% block js %}
-<script src="{{ url_for('static', filename='js/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/main/car_details.js') }}"></script>
-{% endblock %}
-
-{% block content %}
-
-
-
-<div class="container-fluid h-100 car-details">
-    <div class="card w-50">
-        <div class="card-body">
-
-            <h5 class="card-title">Detail {{ data.item }}</h5>
-            <p class="card-text">pemesan : {{ data.user }}</p>
-            <p class="card-text">total : {{ data.total }}</p>
-            <p class="card-text">Status : {{ data.status }}</p>
-
-
-        </div>
-        <div class="card-footer">
-            <button class="btn btn-primary" onclick="pay('{{data.transaction_token}}')">Bayar</button>
-            <div id="result-json"></div>
-        </div>
-    </div>
-</div>
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="	
-SB-Mid-client-pYGOQrTmRDZCDTJt
-"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-pYGOQrTmRDZCDTJt"></script>
 <script type="text/javascript">
-    function pay(token) {
-        // SnapToken acquired from previous step
-        snap.pay(token, {
-            // Optional
+    $(document).ready(function(){   
+        window.snap.embed('{{data.transaction_token}}', {
+            embedId: 'snap-container',
             onSuccess: function (result) {
                 $.ajax({
                     url: "/api/transaction-success",
@@ -55,15 +31,7 @@ SB-Mid-client-pYGOQrTmRDZCDTJt
                     }
                 })
             },
-            // Optional
-            onPending: function (result) {
-          /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-            },
-            // Optional
-            onError: function (result) {
-          /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-            }
         });
-    };
+    })
 </script>
 {% endblock %}

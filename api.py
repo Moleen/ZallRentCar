@@ -58,16 +58,17 @@ def create_transaction():
     transaction_token = transaction['token']
 
     transakasi = {
+        'user' : user,
+        'user_id' : '123123123123',
         'order_id' : order_id,
         'id_mobil' : id_mobil,
         'transaction_token' : transaction_token,
         'item' : item_name,
         'total' : int(data_mobil['harga']) * int(hari),
         'lama_rental' : f'{hari} hari',
-        'user' : user,
         'date_rent' : dateRent,
         'end_rent' : endRent,
-        'status' : 'belum bayar',
+        'status' : 'unpaid',
     }
     db.transaction.insert_one(transakasi)
 

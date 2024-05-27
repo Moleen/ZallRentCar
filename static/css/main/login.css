@@ -70,7 +70,7 @@ nav a {
     display: none;
     padding: 30px;
     min-height: 200px;
-    /* Menambahkan tinggi minimum untuk form */
+    /* Menambahkan tinggi minimum untuk form dan */
 }
 
 .form-container.active {

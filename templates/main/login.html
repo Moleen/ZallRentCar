@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZallRentCar</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../../static/css/main/login.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main/login.css') }}">
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/plugins/datepicker/bootstrap-datepicker.min.css') }}">
+
+    <style>
+
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <div class="logo">ZallRentCar</div>
+        <nav>
+            <a href="#">Transaksi</a>
+            <a href="#">Settings</a>
+            <a href="#">Logout</a>
+        </nav>
+    </header>
+
+    <div class="brand-logo">
+        <img src="{{ url_for('static', filename='Gambar/login.png') }}" alt="Login Image">
+    </div>
+    <div class="container">
+        <div id="loginForm" class="form-container active">
+            <h2 class="form-title">Login</h2>
+            <form>
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="Masukan Email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Masukan Password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-custom">Login</button>
+                <div class="text-left">
+                    <p class="text-left">Belum Punya Akun? </p>
+                    <a class="color=blue" id="showRegister">Daftar</a>
+                </div>
+                <h3 style="color: #1b1bb3;" class="brand">Zall RentCar</h3>
+            </form>
+        </div>
+
+        <div id="registerForm" class="form-container">
+            <h2 class="form-title">Registrasi</h2>
+            <form>
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" class="form-control" id="registerUsername" placeholder="Masukan Username">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" class="form-control" id="registerEmail" placeholder="Masukan Email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Masukan Password">
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">No Telp</label>
+                    <input type="text" class="form-control" id="registerPhone" placeholder="Masukan No Telp">
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="termsCheck">
+                    <label class="form-check-label" for="termsCheck">Dengan Ini saya menyetujui <a href="#">Syarat &
+                            Ketentuan</a></label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-custom">Registrasi</button>
+                <div class="text-left">
+                    <p>Sudah Punya Akun? <a style="color: #1b1bb3;" id="showLogin">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('showRegister').addEventListener('click', function () {
+            document.querySelector('.brand-logo img').src = "{{ url_for('static', filename='Gambar/regis.jpg') }}";
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').classList.add('active');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function () {
+            document.querySelector('.brand-logo img').src = "{{ url_for('static', filename='Gambar/login.png') }}";
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').classList.add('active');
+        });
+    </script>
+</body>
+
+</html>

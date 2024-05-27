@@ -14,6 +14,15 @@ def home():
     data = db.dataMobil.find({})
     return render_template('main/main.html', data = data)
 
+
+@app.route('/login')
+def home():
+    return render_template('main/login.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 @app.route('/transaksi')
 def transaksiUser():
     data = db.transaction.find({})

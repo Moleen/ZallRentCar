@@ -15,13 +15,20 @@
 
 <body>
 
-    <nav class="navbar navbar-primary bg-primary px-4" style="height: 5rem;">
-        <a class="navbar-brand  text-white" href="/">
-            <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30"
-                class="d-inline-block align-top" alt="">
-            Bootstrap
-        </a>
-    </nav>
+    <header>
+        <div class="logo">ZallRentCar</div>
+        <nav>
+            <a href="#">Transaksi</a>
+            <a href="#">Settings</a>
+            {% if user %}
+            <a href="#">Logout</a>
+            
+            {% else %}
+            <a href="#">Login</a>
+                
+            {% endif %}
+        </nav>
+    </header>
 
     {% block content %}
 

@@ -12,16 +12,13 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     data = db.dataMobil.find({})
-    return render_template('main/main.html', data = data)
+    user = 'asdasd'
+    return render_template('main/home_page.html', data = data, user = user)
 
 
 @app.route('/login')
-def home():
+def login():
     return render_template('main/login.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
 
 @app.route('/transaksi')
 def transaksiUser():

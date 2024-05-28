@@ -1,105 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZallRentCar</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+{% extends 'main/main_layout.html' %}
+
+{% block css %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../../static/css/main/home_page.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main/home_page.css') }}">
+{% endblock %}
 
-    <link rel="stylesheet"
-        href="{{ url_for('static', filename='css/plugins/datepicker/bootstrap-datepicker.min.css') }}">
+{% block content %}
+    
+<section class="main-section">
+    <div class="text-content">
+        <h1>Lorem ipsum dolor sit amet</h1>
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+            Cum sociis natoque penatibus et</p>
+        <a class="btn" href="#list-mobil">Get Started</a>
+    </div>
+    <div class="image-content">
+        <img src="../../static/Gambar/fortuner.png" alt="Image Placeholder">
+    </div>
+</section>
 
-</head>
+<section class="about-section">
+    <h2>About us</h2>
+    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
+        sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+        ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo,
+        fringilla vel, aliquet nec, vulputate eget, arcu.</p>
+</section>
 
-<body>
-    <header>
-        <div class="logo">ZallRentCar</div>
-        <nav>
-            <a href="#">Transaksi</a>
-            <a href="#">Settings</a>
-            <a href="#">Logout</a>
-        </nav>
-    </header>
+<section class="car-list-section" id="list-mobil">
+    <h2>List Mobil</h2>
+    <div class="car-list">
+        <div class="car-item">
+            <h3 class="car-title">Mitsubishi Xpander</h3>
+            <p class="car-category">SUV</p>
+            <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
+            <div class="car-details">
+                <p class="car-capacity">
+                    <i class="fas fa-user">7</i>
+                    <i class="fas fa-cogs">Matic</i>
+                    <i class="car-price">Rp 800.000</i>
+                </p>
 
-    <section class="main-section">
-        <div class="text-content">
-            <h1>Lorem ipsum dolor sit amet</h1>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-                Cum sociis natoque penatibus et</p>
-            <a class="btn" href="#list-mobil">Get Started</a>
-        </div>
-        <div class="image-content">
-            <img src="../../static/Gambar/fortuner.png" alt="Image Placeholder">
-        </div>
-    </section>
-
-    <section class="about-section">
-        <h2>About us</h2>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
-            sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
-            ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo,
-            fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-    </section>
-
-    <section class="car-list-section" id="list-mobil">
-        <h2>List Mobil</h2>
-        <div class="car-list">
-            <div class="car-item">
-                <h3 class="car-title">Mitsubishi Xpander</h3>
-                <p class="car-category">SUV</p>
-                <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-                <div class="car-details">
-                    <p class="car-capacity">
-                        <i class="fas fa-user">7</i>
-                        <i class="fas fa-cogs">Matic</i>
-                        <i class="car-price">Rp 800.000</i>
-                    </p>
-
-                    <button class="btn car-btn">Detail</button>
-                </div>
-            </div>
-            <div class="car-item">
-                <h3 class="car-title">Mitsubishi Xpander</h3>
-                <p class="car-category">SUV</p>
-                <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-                <div class="car-details">
-                    <p class="car-capacity">
-                        <i class="fas fa-user">7</i>
-                        <i class="fas fa-cogs">Matic</i>
-                        <i class="car-price">Rp 800.000</i>
-                    </p>
-
-                    <button class="btn car-btn">Detail</button>
-                </div>
-            </div>
-            <div class="car-item">
-                <h3 class="car-title">Mitsubishi Xpander</h3>
-                <p class="car-category">SUV</p>
-                <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-                <div class="car-details">
-                    <p class="car-capacity">
-                        <i class="fas fa-user">7</i>
-                        <i class="fas fa-cogs">Matic</i>
-                        <i class="car-price">Rp 800.000</i>
-                    </p>
-                    <button class="btn car-btn">Detail</button>
-                </div>
+                <button class="btn car-btn">Detail</button>
             </div>
         </div>
-    </section>
+        <div class="car-item">
+            <h3 class="car-title">Mitsubishi Xpander</h3>
+            <p class="car-category">SUV</p>
+            <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
+            <div class="car-details">
+                <p class="car-capacity">
+                    <i class="fas fa-user">7</i>
+                    <i class="fas fa-cogs">Matic</i>
+                    <i class="car-price">Rp 800.000</i>
+                </p>
 
-
-    <footer>
-        Copyright
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+                <button class="btn car-btn">Detail</button>
+            </div>
+        </div>
+        <div class="car-item">
+            <h3 class="car-title">Mitsubishi Xpander</h3>
+            <p class="car-category">SUV</p>
+            <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
+            <div class="car-details">
+                <p class="car-capacity">
+                    <i class="fas fa-user">7</i>
+                    <i class="fas fa-cogs">Matic</i>
+                    <i class="car-price">Rp 800.000</i>
+                </p>
+                <button class="btn car-btn">Detail</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

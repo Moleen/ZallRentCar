@@ -1,4 +1,3 @@
-
 /* home */
 body {
     font-family: Arial, sans-serif;
@@ -95,7 +94,59 @@ nav a {
     margin: 0 auto;
 }
 
-.car-list-section {
+.flow {
+    width: 100%;
+    height: auto;
+    background-color: #ffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flow img {
+    height: 20rem;
+}
+
+.car-list-section .card-image{
+    object-fit: contain;
+    height: 20rem;
+}
+
+.car-list-section .list-detail{
+    display: flex;
+}
+.car-list-section .list-detail li{
+    display: flex;
+    align-items: center;
+    padding-right: 1rem;
+}
+.car-list-section .list-detail li img{
+    height: 2rem;
+    padding-right: 1rem;
+}
+
+.car-list-section .car-btn{
+    width: 100%;
+}
+
+
+.image-content {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+
+}
+
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #ddd;
+    margin-top: 50px;
+}
+
+
+/* .car-list-section {
     padding: 40px 50px;
 }
 
@@ -115,7 +166,6 @@ nav a {
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
-    width: 30%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
@@ -154,7 +204,6 @@ nav a {
 
 .car-capacity i {
     margin-right: 15px;
-    /* Sesuaikan jarak sesuai kebutuhan */
 }
 
 
@@ -178,19 +227,4 @@ nav a {
 
 .car-btn:hover {
     background-color: #1ac414;
-}
-
-.image-content {
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 50px;
-
-}
-
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #ddd;
-    margin-top: 50px;
-}
+} */

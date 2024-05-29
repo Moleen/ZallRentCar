@@ -2,13 +2,19 @@
 {% extends 'main/main_layout.html' %}
 
 {% block css %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main/home_page.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main/home_page.css') }}">
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ url_for('static', filename='js/main/home_page.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-    
-<section class="main-section">
+<section class="main-section mb-4">
     <div class="text-content">
         <h1>Lorem ipsum dolor sit amet</h1>
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
@@ -20,7 +26,7 @@
     </div>
 </section>
 
-<section class="about-section">
+<section class="about-section mb-4">
     <h2>About us</h2>
     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
         sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
@@ -28,50 +34,69 @@
         fringilla vel, aliquet nec, vulputate eget, arcu.</p>
 </section>
 
-<section class="car-list-section" id="list-mobil">
-    <h2>List Mobil</h2>
-    <div class="car-list">
-        <div class="car-item">
-            <h3 class="car-title">Mitsubishi Xpander</h3>
-            <p class="car-category">SUV</p>
-            <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-            <div class="car-details">
-                <p class="car-capacity">
-                    <i class="fas fa-user">7</i>
-                    <i class="fas fa-cogs">Matic</i>
-                    <i class="car-price">Rp 800.000</i>
-                </p>
-
-                <button class="btn car-btn">Detail</button>
-            </div>
-        </div>
-        <div class="car-item">
-            <h3 class="car-title">Mitsubishi Xpander</h3>
-            <p class="car-category">SUV</p>
-            <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-            <div class="car-details">
-                <p class="car-capacity">
-                    <i class="fas fa-user">7</i>
-                    <i class="fas fa-cogs">Matic</i>
-                    <i class="car-price">Rp 800.000</i>
-                </p>
-
-                <button class="btn car-btn">Detail</button>
-            </div>
-        </div>
-        <div class="car-item">
-            <h3 class="car-title">Mitsubishi Xpander</h3>
-            <p class="car-category">SUV</p>
-            <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-            <div class="car-details">
-                <p class="car-capacity">
-                    <i class="fas fa-user">7</i>
-                    <i class="fas fa-cogs">Matic</i>
-                    <i class="car-price">Rp 800.000</i>
-                </p>
-                <button class="btn car-btn">Detail</button>
+<section class="flow mb-4">
+    <h2 class="pt-4">Bagaimana memulainya?</h2>
+    <img src="{{ url_for('static', filename='gambar/flow.png') }}" alt="" cl>
+</section>
+<section class="car-list-section p-4" id="list-mobil">
+    <h2 class="mb-3">List Mobil</h2>
+    <div class="car-list owl-carousel">
+        <div class="card">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-4">Mitsubishi Xpander</h3>
+                <img src="../../static/gambar/a.png" alt="Mitsubishi Xpander" class="card-image pb-4">
+                <div class="d-flex flex-column align-items-center">
+                    <ul class="list-detail m-0 p-0 py-4 w-75">
+                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}" >3</li>
+                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/manual-transmission-icon.svg') }}" >Manual</li>
+                        <li class="d-flex ms-auto"> Rp.20000</li>
+                    </ul>
+                    <button class="btn car-btn btn-primary m-auto w-75">Detail</button>
+                </div>
             </div>
         </div>
     </div>
 </section>
 {% endblock %}
+
+<!-- <div class="car-item">
+    <h3 class="car-title">Mitsubishi Xpander</h3>
+    <p class="car-category">SUV</p>
+    <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
+    <div class="car-details">
+        <p class="car-capacity">
+            <i class="fas fa-user">7</i>
+            <i class="fas fa-cogs">Matic</i>
+            <i class="car-price">Rp 800.000</i>
+        </p>
+
+        <button class="btn car-btn">Detail</button>
+    </div>
+</div>
+<div class="car-item">
+    <h3 class="car-title">Mitsubishi Xpander</h3>
+    <p class="car-category">SUV</p>
+    <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
+    <div class="car-details">
+        <p class="car-capacity">
+            <i class="fas fa-user">7</i>
+            <i class="fas fa-cogs">Matic</i>
+            <i class="car-price">Rp 800.000</i>
+        </p>
+
+        <button class="btn car-btn">Detail</button>
+    </div>
+</div>
+<div class="car-item">
+    <h3 class="car-title">Mitsubishi Xpander</h3>
+    <p class="car-category">SUV</p>
+    <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
+    <div class="car-details">
+        <p class="car-capacity">
+            <i class="fas fa-user">7</i>
+            <i class="fas fa-cogs">Matic</i>
+            <i class="car-price">Rp 800.000</i>
+        </p>
+        <button class="btn car-btn">Detail</button>
+    </div>
+</div> -->

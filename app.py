@@ -3,17 +3,28 @@ import dashboard
 import api
 from dbconnection import db
 from bson import ObjectId
+import jwt
+import os
 import midtransclient
 import random
 import datetime
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
+    token_receive = request.cookies.get("token")
     data = db.dataMobil.find({})
-    user = 'asdasd'
-    return render_template('main/home_page.html', data = data, user = user)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        return render_template('main/home_page.html', data = data,user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return render_template('main/home_page.html', data = data)
+    except jwt.exceptions.DecodeError:
+        return render_template('main/home_page.html', data = data)
 
 
 @app.route('/login')

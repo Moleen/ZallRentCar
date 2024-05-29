@@ -116,6 +116,14 @@ def cancelPayment():
         'result' :'success'
     })
 
+@api.route('/reg', methods=['POST'])
+def reg():
+    username = request.form.get('username')
+    print(username)
+    return jsonify({
+        'username' : username
+    })
+
 # @api.route('/api/change-status', methods=['POST'])
 # def changeStatus():
 #     orderid=request.form.get('orderid')

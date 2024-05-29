@@ -20,11 +20,11 @@
         <nav>
             <a href="#">Transaksi</a>
             <a href="#">Settings</a>
-            {% if user %}
+            {% if user_info %}
             <a href="#">Logout</a>
             
             {% else %}
-            <a href="#">Login</a>
+            <a href="/login">Login</a>
                 
             {% endif %}
         </nav>

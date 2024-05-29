@@ -1,13 +1,4 @@
-/* home */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #f8f9fa;
-}
 
-html {
-    scroll-behavior: smooth;
-}
 
 header {
     width: 100%;

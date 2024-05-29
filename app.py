@@ -27,8 +27,24 @@ def home():
         return render_template('main/home_page.html', data = data)
 
 
-@app.route('/login')
+# Login
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = db.users_admin.find_one({"username": username, "password": password})
+        if user:
+            payload = {
+                "user": username,
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            }
+            token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+            response = make_response(redirect(url_for('home')))
+            response.set_cookie("token", token)
+            return response
+        else:
+            return render_template('main/login.html', error="Invalid username or password")
     return render_template('main/login.html')
 
 @app.route('/transaksi')

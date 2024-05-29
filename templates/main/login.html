@@ -12,11 +12,23 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main/login.css') }}">
+
+    <script>
+        $(document).ready(function () {
+            $('#showRegister').click(function () {
+                $('#loginForm').hide();
+                $('#registerForm').show();
+            });
+            $('#showLogin').click(function () {
+                $('#registerForm').hide();
+                $('#loginForm').show();
+            });
+        });
+    </script>
 </head>
 
+
 <body>
-
-
     <div class="brand-logo">
         <img src="{{ url_for('static', filename='Gambar/login.png') }}" alt="Login Image">
     </div>
@@ -24,58 +36,61 @@
     <div class="container">
         <div id="loginForm" class="form-container rounded-4 active">
             <h2 class="form-title mb-4">Login <span style="color: #1b1bb3;" class="brand m-0">Zall RentCar</span></h2>
-            <form>
+            <form method="POST" action="{{ url_for('login') }}">
                 <div class="form-group mb-3">
                     <label for="loginEmail" class="fs-3 mb-1">Email</label>
-                    <input type="email" class="form-control rounded-5" id="loginEmail" placeholder="Masukan Email">
+                    <input type="email" class="form-control rounded-5" id="loginEmail" name="username"
+                        placeholder="Masukan Email" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="loginPassword" class="fs-3 mb-1">Password</label>
-                    <input type="password" class="form-control rounded-5" id="loginPassword"
-                        placeholder="Masukan Password">
+                    <input type="password" class="form-control rounded-5" id="loginPassword" name="password"
+                        placeholder="Masukan Password" required>
                 </div>
                 <button type="submit" class="btn btn-primary rounded-5 mb-3 w-100">Login</button>
                 <div class="">
-                    <p class="ps-2 m-0">Belum Punya Akun? <a class="color=blue" id="showRegister">Daftar</a></p>
-
+                    <p class="ps-2 m-0">Belum Punya Akun? <a class="color=blue" id="showRegister" href="#">Daftar</a>
+                    </p>
                 </div>
             </form>
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
         </div>
 
-        <div id="registerForm" class="form-container rounded-4">
+        <div id="registerForm" class="form-container rounded-4" style="display: none;">
             <h2 class="form-title">Registrasi</h2>
-            <form id="form-register">
+            <form method="POST" action="{{ url_for('register') }}">
                 <div class="form-group mb-3">
                     <label for="reg_username" class="fs-3 mb-1">Username</label>
-                    <input type="text" class="form-control rounded-5" id="reg_username" placeholder="Masukan Username">
+                    <input type="text" class="form-control rounded-5" id="reg_username" name="username"
+                        placeholder="Masukan Username" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="reg_email" class="fs-3 mb-1">Email</label>
-                    <input type="email" class="form-control rounded-5" id="reg_email" data-inputmask-alias="email" placeholder="Masukan Email">
+                    <input type="email" class="form-control rounded-5" id="reg_email" name="email"
+                        placeholder="Masukan Email" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="reg_password" class="fs-3 mb-1">Password</label>
-                    <input type="password" class="form-control rounded-5" id="reg_password"
-                        placeholder="Masukan Password">
+                    <input type="password" class="form-control rounded-5" id="reg_password" name="password"
+                        placeholder="Masukan Password" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="reg_phone" class="fs-3 mb-1">No telp</label>
-                    <input type="text" class="form-control rounded-5" id="reg_phone" name="reg_phone" required
-                    data-inputmask="'mask': '+62 999 9999 9999'" placeholder="+62">
+                    <input type="text" class="form-control rounded-5" id="reg_phone" name="phone" required
+                        data-inputmask="'mask': '+62 999 9999 9999'" placeholder="+62">
                 </div>
                 <button type="submit" class="btn btn-primary rounded-5 mb-3 w-100" id="reg_button">Registrasi</button>
                 <div class="text-left">
-                    <p>Sudah Punya Akun? <a style="color: #1b1bb3;" id="showLogin">Login</a></p>
+                    <p>Sudah Punya Akun? <a style="color: #1b1bb3;" id="showLogin" href="#">Login</a></p>
                 </div>
-
             </form>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='plugins/inputmask/dist/inputmask.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='plugins/inputmask/dist/jquery.inputmask.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='plugins/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main/login.js') }}"></script>
 
 </body>
 

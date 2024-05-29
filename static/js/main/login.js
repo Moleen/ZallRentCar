@@ -1,13 +1,20 @@
-document.getElementById('showRegister').addEventListener('click', function () {
-    document.getElementById('loginForm').classList.remove('active');
-    document.getElementById('registerForm').classList.add('active');
+$(document).ready(function () {
+    $("#reg_phone").inputmask({'placeholder':""});
+    $('#showRegister').click(function () {
+        $('#loginForm').hide();
+        $('#registerForm').show();
+    });
+    $('#showLogin').click(function () {
+        $('#registerForm').hide();
+        $('#loginForm').show();
+    });
 });
+// login
 
-document.getElementById('showLogin').addEventListener('click', function () {
-    document.getElementById('registerForm').classList.remove('active');
-    document.getElementById('loginForm').classList.add('active');
-});
 
+
+
+// registrasi
 $('#form-register').on('submit', function(){
     $('#reg_button').attr('disabled','disabled');
     $.ajax({
@@ -20,8 +27,7 @@ $('#form-register').on('submit', function(){
             "phone" : $('#reg_phone').val()
         },
         success : function(response){
-            if(response['result' == 'success']){
-                alert(response['username']);
+            if(response['result']  == 'success'){
                 $.cookie("token", response["token"], { path: "/" });
                 window.location.replace('/')
             }else{
@@ -31,4 +37,3 @@ $('#form-register').on('submit', function(){
     })
 })
 
-$("#reg_phone").inputmask({'placeholder':""});

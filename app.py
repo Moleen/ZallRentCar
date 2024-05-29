@@ -40,11 +40,15 @@ def login():
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
             }
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-            response = make_response(redirect(url_for('home')))
-            response.set_cookie("token", token)
-            return response
+            return jsonify({
+                'token' : token
+            })
+        
         else:
-            return render_template('main/login.html', error="Invalid username or password")
+            return jsonify({
+                'result' : 'username ga ada'
+            })
+        
     return render_template('main/login.html')
 
 @app.route('/transaksi')

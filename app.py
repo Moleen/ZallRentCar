@@ -19,7 +19,7 @@ def home():
     data = db.dataMobil.find({})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users_admin.find_one({"username": payload["user"]})
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
         return render_template('main/home_page.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
         return render_template('main/home_page.html', data = data)

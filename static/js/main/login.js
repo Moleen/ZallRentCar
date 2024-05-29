@@ -11,7 +11,7 @@ document.getElementById('showLogin').addEventListener('click', function () {
 $('#form-register').on('submit', function(){
     $('#reg_button').attr('disabled','disabled');
     $.ajax({
-        url : '/reg',
+        url : '/register',
         type : 'post',
         data : {
             "username" : $('#reg_username').val(),
@@ -19,9 +19,14 @@ $('#form-register').on('submit', function(){
             "password" : $('#reg_password').val(),
             "phone" : $('#reg_phone').val()
         },
-        success : function(data){
-            alert(data['username']);
-            window.location.replace('/')
+        success : function(response){
+            if(response['result' == 'success']){
+                alert(response['username']);
+                $.cookie("token", response["token"], { path: "/" });
+                window.location.replace('/')
+            }else{
+                alert(response['msg']);
+            }
         }
     })
 })

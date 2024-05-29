@@ -7,7 +7,8 @@ from bson import ObjectId
 import midtransclient
 import requests
 import uuid
-
+import os
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
 api = Blueprint('api', __name__)
@@ -116,13 +117,43 @@ def cancelPayment():
         'result' :'success'
     })
 
-@api.route('/reg', methods=['POST'])
+@api.route('/register', methods=['POST'])
 def reg():
     username = request.form.get('username')
-    print(username)
-    return jsonify({
-        'username' : username
-    })
+    email = request.form.get("email")
+    password = request.form.get("password")
+    phone = request.form.get("phone")
+    user_id = str(uuid.uuid1())
+
+    pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
+
+    if db.users.find_one({'username': username}):
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'username sudah ada'
+        })
+    elif db.users_admin.find_one({'email': email}):
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'email sudah ada'
+        })
+    else:
+        db.users.insert_one({
+            'user_id' : user_id,
+            'username' : username,
+            'email' : email,
+            'phone' : phone,
+            'password' : pw_hash,
+        })
+        payload = {
+            "user_id": user_id,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({
+            "result": "success",
+            "token": token
+        })
 
 # @api.route('/api/change-status', methods=['POST'])
 # def changeStatus():

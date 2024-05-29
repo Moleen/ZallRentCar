@@ -50,7 +50,7 @@
 
         <div id="registerForm" class="form-container rounded-4" style="display: none;">
             <h2 class="form-title">Registrasi</h2>
-            <form id="form-register" method="post">
+            <form id="form-register" action="">
                 <div class="form-group mb-3">
                     <label for="reg_username" class="fs-3 mb-1">Username</label>
                     <input type="text" class="form-control rounded-5" id="reg_username" name="username"
@@ -73,12 +73,13 @@
                 </div>
                 <button type="submit" class="btn btn-primary rounded-5 mb-3 w-100" id="reg_button">Registrasi</button>
                 <div class="text-left">
-                    <p>Sudah Punya Akun? <a style="color: #1b1bb3;" id="showLogin" href="#">Login</a></p>
+                    <p>Sudah Punya Akun? <a style="color: #1b1bb3;" id="showLogin">Login</a></p>
                 </div>
             </form>
         </div>
     </div>
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="{{ url_for('static', filename='plugins/inputmask/dist/inputmask.min.js') }}"></script>
     <script src="{{ url_for('static', filename='plugins/inputmask/dist/jquery.inputmask.min.js') }}"></script>
     <script src="{{ url_for('static', filename='plugins/inputmask/dist/bindings/inputmask.binding.js') }}"></script>

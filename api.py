@@ -8,6 +8,8 @@ import midtransclient
 import requests
 import uuid
 import os
+from validate_email import validate_email_or_fail
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
@@ -132,12 +134,19 @@ def reg():
             'result' : 'unsucces',
             'msg' : 'username sudah ada'
         })
-    elif db.users_admin.find_one({'email': email}):
+    elif db.users.find_one({'email': email}):
         return jsonify({
             'result' : 'unsucces',
             'msg' : 'email sudah ada'
         })
     else:
+        try:
+            validate_email_or_fail(check_format=True, email_address=email, smtp_timeout=10, dns_timeout=10,)
+        except:
+            return jsonify({
+                'result' : 'unsucces',
+                'msg' : 'email tidak valid'
+            })
         db.users.insert_one({
             'user_id' : user_id,
             'username' : username,

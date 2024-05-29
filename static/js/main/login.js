@@ -15,8 +15,9 @@ $(document).ready(function () {
 
 
 // registrasi
-$('#form-register').on('submit', function(){
-    $('#reg_button').attr('disabled','disabled');
+$('#form-register').on('submit', function(e){
+    e.preventDefault();
+    $('#reg_button').attr('disabled',true);
     $.ajax({
         url : '/register',
         type : 'post',
@@ -32,6 +33,8 @@ $('#form-register').on('submit', function(){
                 window.location.replace('/')
             }else{
                 alert(response['msg']);
+                $('#reg_button').removeAttr("disabled");
+                return false
             }
         }
     })

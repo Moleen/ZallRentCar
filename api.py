@@ -15,6 +15,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 api = Blueprint('api', __name__)
 
+
+
 @api.route('/api/search-dashboard')
 def searchDahboard():
     search = request.args.get('search')
@@ -141,12 +143,13 @@ def reg():
         })
     else:
         try:
-            validate_email_or_fail(check_format=True, email_address=email, smtp_timeout=10, dns_timeout=10,)
+            validate_email_or_fail(email_address=email, check_mx=True)
         except:
             return jsonify({
                 'result' : 'unsucces',
                 'msg' : 'email tidak valid'
             })
+        
         db.users.insert_one({
             'user_id' : user_id,
             'username' : username,

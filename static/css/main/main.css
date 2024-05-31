@@ -8,3 +8,34 @@ body {
 html {
     scroll-behavior: smooth;
 }
+
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b1bb3;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}

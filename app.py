@@ -72,9 +72,7 @@ def detail():
     print(id)
     return render_template('main/car-details.html', data = data)
 
-@app.route('/setting')
-def setting():
-    return render_template('main/profil.html')
+
 
 app.register_blueprint(dashboard.dashboard)
 app.register_blueprint(api.api)

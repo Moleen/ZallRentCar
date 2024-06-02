@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
     $("#reg_phone").inputmask({'placeholder':""});
     $('#showRegister').click(function () {
@@ -30,9 +32,10 @@ $('#form-register').on('submit', function(e){
         success : function(response){
             if(response['result']  == 'success'){
                 $.cookie("token", response["token"], { path: "/" });
+                
                 window.location.replace('/')
             }else{
-                alert(response['msg']);
+                toastr.warning(response['msg'])
                 $('#reg_button').removeAttr("disabled");
                 return false
             }

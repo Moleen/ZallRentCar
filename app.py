@@ -41,20 +41,38 @@ def login():
             }
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
             return jsonify({
-                'token' : token
+                'token' : token,
+                
             })
         
         else:
             return jsonify({
                 'result' : 'username ga ada'
             })
-        
-    return render_template('main/login.html')
+    else:
+        msg = request.args.get('msg')
+        try:
+            payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
+            msg=payload['message']
+            return render_template('main/login.html', msg=msg)
+        except:
+            return render_template('main/login.html')
 
 @app.route('/transaksi')
 def transaksiUser():
-    data = db.transaction.find({})
-    return render_template('main/transaction.html', data = data)
+    token_receive = request.cookies.get("token")
+    data = db.dataMobil.find({})
+    error = jwt.encode({'message': 'Akses transaksi login terlebih dahulu'}, SECRET_KEY,algorithm='HS256')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        data = db.transaction.find({})
+        return render_template('main/transaction.html', data = data,user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg = error))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg = error))
+    
 
 @app.route('/transaksi/<id>')
 def payment(id):
@@ -74,7 +92,18 @@ def detail():
 
 @app.route('/setting')
 def setting():
-    return render_template('main/profil.html')
+    token_receive = request.cookies.get("token")
+    data = db.dataMobil.find({})
+    error = jwt.encode({'message': 'login terlebih dahulu'}, SECRET_KEY,algorithm='HS256')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        data = db.transaction.find({})
+        return render_template('main/transaction.html', data = data,user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg = error))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg = error))
 
 app.register_blueprint(dashboard.dashboard)
 app.register_blueprint(api.api)

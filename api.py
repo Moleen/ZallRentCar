@@ -142,13 +142,6 @@ def reg():
             'msg' : 'email sudah ada'
         })
     else:
-        try:
-            validate_email_or_fail(email_address=email, check_mx=True)
-        except:
-            return jsonify({
-                'result' : 'unsucces',
-                'msg' : 'email tidak valid'
-            })
         
         db.users.insert_one({
             'user_id' : user_id,

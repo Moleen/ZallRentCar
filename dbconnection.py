@@ -11,5 +11,10 @@ SECRET_KEY_DASHBOARD = os.environ.get("SECRET_KEY_DASHBOARD")
 MONGODB_URI = os.environ.get("MONGODB_URI")
 DB =  os.environ.get("DB")
 
-client = MongoClient(MONGODB_URI)
-db = client[DB]
+def dataBase():
+    client = MongoClient(MONGODB_URI)
+    db = client[DB]
+    return db
+    
+
+        

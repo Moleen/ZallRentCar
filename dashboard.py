@@ -84,7 +84,6 @@ def dashboard_login():
 def dashboard_login_post():
     user = request.form.get("username")
     password = request.form.get("password")
-
     pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
     result = db.users_admin.find_one({'username': user, 'password': pw_hash})
     if result:

@@ -16,16 +16,14 @@
 <body>
 
     <header>
-        <div class="logo">ZallRentCar</div>
+        <div class="logo"><a href="/">ZallRentCar</a></div>
         <nav>
-            <a href="#">Transaksi</a>
+            <a href="/transaksi">Transaksi</a>
             <a href="/setting">Settings</a>
             {% if user_info %}
             <a href="" onclick="logout()">Logout</a>
-            
             {% else %}
             <a href="/login">Login</a>
-                
             {% endif %}
         </nav>
     </header>
@@ -44,7 +42,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
+    <script src="{{ url_for('static', filename='js/main/main.js') }}"></script>
     {% block js %}
 
     {% endblock %}

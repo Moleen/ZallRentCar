@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request,jsonify, redirect,url_for
 import dashboard
 import api
-from dbconnection import db
+from dbconnection import dataBase
 from bson import ObjectId
 import jwt
 import os
@@ -10,6 +10,8 @@ import random
 import datetime
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
+db = dataBase()
 
 app = Flask(__name__)
 

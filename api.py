@@ -15,8 +15,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 api = Blueprint('api', __name__)
 
-
-
 @api.route('/api/search-dashboard')
 def searchDahboard():
     search = request.args.get('search')

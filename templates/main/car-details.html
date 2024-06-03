@@ -1,5 +1,5 @@
 {% extends 'main/main_layout.html' %}
-{% block title %}| detail-{{ data.merek }} {{ data.model }} {% endblock %}
+{% block title %}| Detail - {{ data.merek }} {{ data.model }} {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main/car_details.css') }}">
@@ -12,41 +12,23 @@
 {% endblock %}
 
 {% block content %}
-
-
-
 <div class="container-fluid h-100 car-details">
-    <div class="card w-50">
-        {% if data.status == 'Tersedia' %}
+    <div class="card w-75">
+        <img src="{{ data.image_url }}" class="card-img-top" alt="{{ data.merek }} {{ data.model }}">
         <div class="card-body">
-
             <h5 class="card-title">Detail {{ data.merek }} {{ data.model }}</h5>
-            <p class="card-text">Merek : {{ data.merek }}</p>
-            <p class="card-text">Model : {{ data.model }}</p>
-            <p class="card-text">Status : {{ data.status }}</p>
-
-
+            <p class="card-text"><strong>Merek:</strong> {{ data.merek }}</p>
+            <p class="card-text"><strong>Model:</strong> {{ data.model }}</p>
+            <p class="card-text"><strong>Status:</strong> {{ data.status }}</p>
+            <p class="card-text"><strong>Harga per hari:</strong> Rp {{ data.harga }}</p>
         </div>
         <div class="card-footer">
-            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</a>
-
+            {% if data.status == 'Tersedia' %}
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</button>
+            {% else %}
+            <button class="btn btn-secondary" disabled>Tidak Tersedia</button>
+            {% endif %}
         </div>
-        {% else %}
-        <div class="card-body">
-
-            <h5 class="card-title">Detail {{ data.merek }} {{ data.model }}</h5>
-            <p class="card-text">Merek : {{ data.merek }}</p>
-            <p class="card-text">Model : {{ data.model }}</p>
-            <p class="card-text">Status : Tidak tersedia</p>
-            <p class="card-text">Tersedia Tanggal : Tidak tersedia</p>
-            
-
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</a>
-
-        </div>
-        {% endif %}
     </div>
 </div>
 
@@ -62,15 +44,15 @@
                 <form action="">
                     <div class="mb-3">
                         <p>Masukkan hari rental</p>
-                        <input type="number" name="" id="hari">
+                        <input type="number" name="hari" id="hari" class="form-control">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="createTransaction('{{data.id_mobil}}')">Pesan</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="createTransaction('{{data.id_mobil}}')">Pesan</button>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

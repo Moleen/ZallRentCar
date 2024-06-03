@@ -27,7 +27,7 @@ def home():
         return render_template('main/home_page.html', data = data)
 
 
-# Login
+# Login tes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

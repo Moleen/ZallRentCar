@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/toastr/toastr.css') }}">
    
 </head>
 
@@ -37,7 +38,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary rounded-5 mb-3 w-100">Login</button>
                 <div class="">
-                    <p class="ps-2 m-0">Belum Punya Akun? <a class="color=blue" id="showRegister" href="#">Daftar</a>
+                    <p class="ps-2 m-0">Belum Punya Akun? <a  id="showRegister" style="color: #1b1bb3; cursor: pointer;">Daftar</a>
                     </p>
                 </div>
             </form>
@@ -73,7 +74,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary rounded-5 mb-3 w-100" id="reg_button">Registrasi</button>
                 <div class="text-left">
-                    <p>Sudah Punya Akun? <a style="color: #1b1bb3;" id="showLogin">Login</a></p>
+                    <p>Sudah Punya Akun? <a style="color: #1b1bb3; cursor: pointer;" id="showLogin" >Login</a></p>
                 </div>
             </form>
         </div>
@@ -83,6 +84,15 @@
     <script src="{{ url_for('static', filename='plugins/inputmask/dist/inputmask.min.js') }}"></script>
     <script src="{{ url_for('static', filename='plugins/inputmask/dist/jquery.inputmask.min.js') }}"></script>
     <script src="{{ url_for('static', filename='plugins/inputmask/dist/bindings/inputmask.binding.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/toastr/toastr.js') }}"></script>
+
+    {% if msg %}        
+    <script>
+        msg = '{{msg}}'
+        toastr.error(msg)
+    </script>
+    {% endif %}
+
     <script src="{{ url_for('static', filename='js/main/login.js') }}"></script>
 
 </body>

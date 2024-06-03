@@ -5,6 +5,7 @@ from dbconnection import db
 from bson import ObjectId
 import jwt
 import os
+import hashlib
 import midtransclient
 import random
 import datetime
@@ -33,24 +34,30 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        user = db.users_admin.find_one({"username": username, "password": password})
+        pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        user = db.users.find_one({"username": username, "password": pw})
+
         if user:
             payload = {
-                "user": username,
+                "user_id": user['user_id'],
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
             }
+            
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
             return jsonify({
+                'result' : 'success',
                 'token' : token,
-                
             })
         
         else:
             return jsonify({
-                'result' : 'username ga ada'
+                'msg' : 'Invalid username or password'
             })
     else:
+
         msg = request.args.get('msg')
+
         try:
             payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
             msg=payload['message']
@@ -99,7 +106,7 @@ def setting():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
         data = db.transaction.find({})
-        return render_template('main/transaction.html', data = data,user_info=user_info)
+        return render_template('main/profil.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg = error))
     except jwt.exceptions.DecodeError:

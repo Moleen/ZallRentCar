@@ -21,7 +21,7 @@
             <a href="/transaksi">Transaksi</a>
             <a href="/setting">Settings</a>
             {% if user_info %}
-            <a href="" onclick="logout()">Logout</a>
+            <a onclick="logout()" class="text-danger">Logout</a>
             {% else %}
             <a href="/login">Login</a>
             {% endif %}

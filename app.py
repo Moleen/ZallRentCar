@@ -1,3 +1,4 @@
+
 from flask import Flask,render_template,request,jsonify, redirect,url_for
 import dashboard
 import api
@@ -31,12 +32,12 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
-        user = db.users_admin.find_one({"username": username, "password": password})
+        user = db.users.find_one({"email": email, "password": password})
         if user:
             payload = {
-                "user": username,
+                "user": email,
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
             }
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -47,7 +48,7 @@ def login():
         
         else:
             return jsonify({
-                'result' : 'username ga ada'
+                'result' : 'email ga ada'
             })
     else:
         msg = request.args.get('msg')
@@ -60,19 +61,8 @@ def login():
 
 @app.route('/transaksi')
 def transaksiUser():
-    token_receive = request.cookies.get("token")
-    data = db.dataMobil.find({})
-    error = jwt.encode({'message': 'Akses transaksi login terlebih dahulu'}, SECRET_KEY,algorithm='HS256')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"user_id": payload["user_id"]})
-        data = db.transaction.find({})
-        return render_template('main/transaction.html', data = data,user_info=user_info)
-    except jwt.ExpiredSignatureError:
-        return redirect(url_for('login', msg = error))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for('login', msg = error))
-    
+    data = db.transaction.find({})
+    return render_template('main/transaction.html', data = data)
 
 @app.route('/transaksi/<id>')
 def payment(id):
@@ -92,18 +82,62 @@ def detail():
 
 @app.route('/setting')
 def setting():
-    token_receive = request.cookies.get("token")
-    data = db.dataMobil.find({})
-    error = jwt.encode({'message': 'login terlebih dahulu'}, SECRET_KEY,algorithm='HS256')
+    return render_template('main/profil.html')
+
+
+# Profile 
+@app.route('/profile', methods=['GET'])
+def get_profile():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'result': 'unsuccess', 'msg': 'Token is missing'}), 401
+
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"user_id": payload["user_id"]})
-        data = db.transaction.find({})
-        return render_template('main/transaction.html', data = data,user_info=user_info)
+        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        user_id = data['user_id']
+        user = db.users.find_one({'user_id': user_id}, {'_id': 0, 'password': 0})
+        if user:
+            return jsonify({'result': 'success', 'profile': user})
+        else:
+            return jsonify({'result': 'unsuccess', 'msg': 'User not found'}), 404
     except jwt.ExpiredSignatureError:
-        return redirect(url_for('login', msg = error))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for('login', msg = error))
+        return jsonify({'result': 'unsuccess', 'msg': 'Token has expired'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
+
+# Edit Profil
+@app.route('/profile', methods=['POST'])
+def update_profile():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'result': 'unsuccess', 'msg': 'Token is missing'}), 401
+
+    try:
+        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        user_id = data['user_id']
+        user = db.users.find_one({'user_id': user_id})
+        if user:
+            updates = {
+                'full_name': request.form.get('full_name', user['full_name']),
+                'address': request.form.get('address', user['address']),
+                'phone': request.form.get('phone', user['phone']),
+                'email': request.form.get('email', user['email'])
+            }
+            if 'ktp_image' in request.files:
+                ktp_image = request.files.get('ktp_image')
+                ktp_image_path = f'ktp_images/{user_id}.jpg'
+                ktp_image.save(ktp_image_path)
+                updates['ktp_image_path'] = ktp_image_path
+
+            db.users.update_one({'user_id': user_id}, {'$set': updates})
+            return jsonify({'result': 'success', 'msg': 'Profile updated successfully'})
+        else:
+            return jsonify({'result': 'unsuccess', 'msg': 'User not found'}), 404
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result': 'unsuccess', 'msg': 'Token has expired'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
+
 
 app.register_blueprint(dashboard.dashboard)
 app.register_blueprint(api.api)

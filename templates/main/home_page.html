@@ -42,20 +42,26 @@
 <section class="car-list-section p-4" id="list-mobil">
     <h2 class="mb-3">List Mobil</h2>
     <div class="car-list owl-carousel">
+        {% for dt in data %}
         <div class="card">
             <div class="card-body p-4">
-                <h3 class="card-title mb-4">Mitsubishi Xpander</h3>
+                <h3 class="card-title mb-4">{{dt.merek}}</h3>
                 <img src="../../static/gambar/a.png" alt="Mitsubishi Xpander" class="card-image pb-4">
                 <div class="d-flex flex-column align-items-center">
                     <ul class="list-detail m-0 p-0 py-4 w-75">
-                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}" >3</li>
-                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/manual-transmission-icon.svg') }}" >Manual</li>
-                        <li class="d-flex ms-auto"> Rp.20000</li>
+                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}" >{{dt.seat}}</li>
+                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/manual-transmission-icon.svg') }}" >{{dt.transmisi}}</li>
+                        <li class="d-flex ms-auto"> Rp.{{dt.harga}}</li>
                     </ul>
-                    <button class="btn car-btn btn-primary m-auto w-75">Detail</button>
+                    <a class="btn car-btn btn-primary m-auto w-75" href="">Detail</a>
                 </div>
             </div>
         </div>
+        {% else %}
+            
+        {% endfor %}
+        
+
     </div>
 </section>
 {% endblock %}

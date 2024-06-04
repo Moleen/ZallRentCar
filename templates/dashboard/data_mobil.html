@@ -13,7 +13,7 @@
       <input type="text" id="search-data" class="form-control" placeholder="Cari merek">
     </div>
     <div class="col text-end">
-      <a class="btn btn-primary" role="button" href="/dashboard/product/add-data">add data</a>
+      <a class="btn btn-primary" role="button" href="/dashboard/data_mobil/add-data">add data</a>
     </div>
   </div>
 
@@ -22,8 +22,9 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Nama Mobil</th>
-        <th scope="col">Tipe</th>
-        <th scope="col">Harga Sewa</th>
+        <th scope="col">Seat</th>
+        <th scope="col">Transmisi</th>
+        <th scope="col">Harga</th>
         <th scope="col">Status</th>
         <th scope="col"></th>
       </tr>
@@ -34,7 +35,8 @@
       <tr>
         <th scope="row">{{loop.index}}</th>
         <td>{{dt.merek}}</td>
-        <td>{{dt.model}}</td>
+        <td>{{dt.seat}}</td>
+        <td>{{dt.transmisi}}</td>
         <td>{{dt.harga}}</td>
         <td id="status">{{dt.status}}</td>
         <td>

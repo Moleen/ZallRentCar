@@ -7,14 +7,13 @@ function addData(){
         type: 'post',
         data:{
             merek : $('#merek').val(),
-            model: $('#model').val(),
-            tahun : $('#tahunM').val(),
-            warna : $('#warna').val(),
+            seat: $('#seat').val(),
+            transmisi : $('#transmisi').val(),
             harga: $('#harga').val()
         },
         success : function(response){
             alert(`berhasil : ${response['result']}`)
-            window.location.replace('/dashboard/product')
+            window.location.replace('/dashboard/data_mobil')
         }
     })
 }

@@ -13,6 +13,29 @@ $(document).ready(function () {
     });
 });
 
+// login
+$('#form-login').on('submit', function(e){
+    e.preventDefault();
+    $('#login_button').attr('disabled',true);
+    $.ajax({
+        url : '/login',
+        type : 'post',
+        data : {
+            "username" : $('#login_username').val(),
+            "password" : $('#login_password').val(),
+        },
+        success : function(response){
+            if(response['result']  == 'success'){
+                $.cookie("token", response["token"], { path: "/" });
+                window.location.replace('/')
+            }else{
+                toastr.warning(response['msg'])
+                $('#reg_button').removeAttr("disabled");
+                return false
+            }
+        }
+    })
+})
 
 // Login//
 $(document).ready(function () {

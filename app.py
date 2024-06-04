@@ -6,6 +6,7 @@ from dbconnection import db
 from bson import ObjectId
 import jwt
 import os
+import hashlib
 import midtransclient
 import random
 import datetime
@@ -28,30 +29,39 @@ def home():
         return render_template('main/home_page.html', data = data)
 
 
-# Login
+# Login tes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        user = db.users.find_one({"email": email, "password": password})
+
+        pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        user = db.users.find_one({"username": username, "password": pw})
+
         if user:
             payload = {
-                "user": email,
+                "user_id": user['user_id'],
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
             }
+            
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
             return jsonify({
+                'result' : 'success',
                 'token' : token,
-                
             })
         
         else:
             return jsonify({
-                'result' : 'email ga ada'
+
+                'msg' : 'Invalid username or password'
+
             })
     else:
+
         msg = request.args.get('msg')
+
         try:
             payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
             msg=payload['message']
@@ -93,6 +103,7 @@ def get_profile():
         return jsonify({'result': 'unsuccess', 'msg': 'Token is missing'}), 401
 
     try:
+
         data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
         user_id = data['user_id']
         user = db.users.find_one({'user_id': user_id}, {'_id': 0, 'password': 0})
@@ -100,6 +111,7 @@ def get_profile():
             return jsonify({'result': 'success', 'profile': user})
         else:
             return jsonify({'result': 'unsuccess', 'msg': 'User not found'}), 404
+
     except jwt.ExpiredSignatureError:
         return jsonify({'result': 'unsuccess', 'msg': 'Token has expired'}), 401
     except jwt.InvalidTokenError:
@@ -145,3 +157,4 @@ app.register_blueprint(api.api)
  
 if __name__ == '__main__':
     app.run(debug=True)
+    # tessss

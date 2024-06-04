@@ -14,27 +14,22 @@
     <input type="text" class="form-control" id="merek" placeholder="">
   </div>
   <div class="mb-3">
-    <label class="form-label">Model</label>
-    <input type="text" class="form-control" id="model" placeholder="">
+    <label class="form-label">Seat</label>
+    <input type="number" class="form-control" id="seat" placeholder="">
   </div>
   <div class="mb-3">
-    <label class="form-label">Tahun Pembuatan</label>
-    <select class="form-control" name="startyear" id="tahunM">
-      {% for year in range(1900, 2025) %}
-        <option value="{{ year }}">{{ year }}</option>
-      {% endfor %}
+    <label class="form-label">Transmisi</label>
+    <select class="form-control" id="transmisi">
+        <option value="manual">Manual</option>
+        <option value="matic">Matic</option>
     </select>
     
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Warna</label>
-    <input type="text" class="form-control" id="warna" placeholder="">
   </div>
   <div class="mb-3">
     <label class="form-label">Harga Sewa</label>
     <input type="text" class="form-control" id="harga" placeholder="">
   </div>
-  <button type="button" class="btn btn-primary" onclick="addData()">Tamba</button>
+  <button type="button" class="btn btn-primary" onclick="addData()">Tambah</button>
 </div>
 
 

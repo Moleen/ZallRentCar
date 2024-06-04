@@ -33,7 +33,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
+        username = request.form.get('username')
         password = request.form.get('password')
 
         pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
@@ -71,8 +71,19 @@ def login():
 
 @app.route('/transaksi')
 def transaksiUser():
-    data = db.transaction.find({})
-    return render_template('main/transaction.html', data = data)
+    token_receive = request.cookies.get("token")
+    
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        data = db.transaction.find({})
+        return render_template('main/transaction.html', data = data,user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        msg = createSecreteMassage('Akses transaksi login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
+    except jwt.exceptions.DecodeError:
+        msg = createSecreteMassage('Akses transaksi login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
 
 @app.route('/transaksi/<id>')
 def payment(id):
@@ -90,32 +101,25 @@ def detail():
     print(id)
     return render_template('main/car-details.html', data = data)
 
-@app.route('/setting')
-def setting():
-    return render_template('main/profil.html')
-
 
 # Profile 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    token = request.headers.get('Authorization')
-    if not token:
-        return jsonify({'result': 'unsuccess', 'msg': 'Token is missing'}), 401
-
+    token_receive = request.cookies.get("token")
     try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
 
-        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        user_id = data['user_id']
-        user = db.users.find_one({'user_id': user_id}, {'_id': 0, 'password': 0})
-        if user:
-            return jsonify({'result': 'success', 'profile': user})
-        else:
-            return jsonify({'result': 'unsuccess', 'msg': 'User not found'}), 404
-
+        # data ada disini
+        data = db.users.find({})
+        
+        return render_template('main/profil.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
-        return jsonify({'result': 'unsuccess', 'msg': 'Token has expired'}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
+        msg = createSecreteMassage('login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
+    except jwt.exceptions.DecodeError:
+        msg = createSecreteMassage('login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
 
 # Edit Profil
 @app.route('/profile', methods=['POST'])
@@ -150,6 +154,13 @@ def update_profile():
     except jwt.InvalidTokenError:
         return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
 
+
+def createSecreteMassage(msg):
+    payload = {
+            "message": msg,
+        }
+    msg = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+    return msg
 
 app.register_blueprint(dashboard.dashboard)
 app.register_blueprint(api.api)

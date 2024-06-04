@@ -43,16 +43,16 @@ $(document).ready(function () {
     $('#form-login').on('submit', function (e) {
         e.preventDefault(); // Mencegah form untuk melakukan submit secara default
 
-        // Mengambil nilai email dan password dari input
-        var email = $('#loginEmail').val();
-        var password = $('#loginPassword').val();
+        // Mengambil nilai username dan password dari input
+        var username = $('#login_username').val();
+        var password = $('#login_password').val();
 
         // Mengirim data login ke server menggunakan AJAX
         $.ajax({
             url: '/login', // URL endpoint untuk login
             type: 'post', // Metode HTTP POST
             data: {
-                "email": email, // Menggunakan "email" sebagai nama variabel
+                "username": username, // Menggunakan "username" sebagai nama variabel
                 "password": password
             },
             success: function (response) { // Ketika permintaan berhasil

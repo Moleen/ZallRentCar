@@ -97,7 +97,7 @@ def payment(id):
 @app.route('/detail-mobil')
 def detail():
     id = request.args.get('id')
-    data = db.dataMobil.find_one({'_id' : ObjectId(id)})
+    data = db.dataMobil.find_one({'id_mobil' : id})
     print(id)
     return render_template('main/car-details.html', data = data)
 

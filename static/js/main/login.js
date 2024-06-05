@@ -1,7 +1,8 @@
+//login js
 
 
 $(document).ready(function () {
-    $("#reg_phone").inputmask({'placeholder':""});
+    $("#reg_phone").inputmask({ 'placeholder': "" });
     $('#showRegister').click(function () {
         $('#loginForm').hide();
         $('#registerForm').show();
@@ -11,31 +12,85 @@ $(document).ready(function () {
         $('#loginForm').show();
     });
 });
+
 // login
-
-
-
-
-// registrasi
-$('#form-register').on('submit', function(e){
+$('#form-login').on('submit', function(e){
     e.preventDefault();
-    $('#reg_button').attr('disabled',true);
+    $('#login_button').attr('disabled',true);
     $.ajax({
-        url : '/register',
+        url : '/login',
         type : 'post',
         data : {
-            "username" : $('#reg_username').val(),
-            "email" : $('#reg_email').val(),
-            "password" : $('#reg_password').val(),
-            "phone" : $('#reg_phone').val()
+            "username" : $('#login_username').val(),
+            "password" : $('#login_password').val(),
         },
         success : function(response){
             if(response['result']  == 'success'){
                 $.cookie("token", response["token"], { path: "/" });
-                
                 window.location.replace('/')
             }else{
                 toastr.warning(response['msg'])
+                $('#reg_button').removeAttr("disabled");
+                return false
+            }
+        }
+    })
+})
+
+// Login//
+$(document).ready(function () {
+    // Fungsi untuk menangani submit form login
+    $('#form-login').on('submit', function (e) {
+        e.preventDefault(); // Mencegah form untuk melakukan submit secara default
+
+        // Mengambil nilai username dan password dari input
+        var username = $('#login_username').val();
+        var password = $('#login_password').val();
+
+        // Mengirim data login ke server menggunakan AJAX
+        $.ajax({
+            url: '/login', // URL endpoint untuk login
+            type: 'post', // Metode HTTP POST
+            data: {
+                "username": username, // Menggunakan "username" sebagai nama variabel
+                "password": password
+            },
+            success: function (response) { // Ketika permintaan berhasil
+                if (response['token']) { // Jika token diterima dari server
+                    window.location.replace('/'); // Mengarahkan pengguna ke halaman utama
+                } else { // Jika token tidak diterima dari server
+                    alert('Login gagal. Harap coba lagi.'); // Menampilkan pesan kesalahan umum
+                }
+            },
+            error: function (xhr, status, error) { // Ketika permintaan gagal
+                console.error(xhr.responseText); // Menampilkan pesan error di konsol
+                alert('Terjadi kesalahan saat proses login.'); // Menampilkan pesan kesalahan kepada pengguna
+            }
+        });
+    });
+});
+
+
+
+// registrasi
+$('#form-register').on('submit', function (e) {
+    e.preventDefault();
+    $('#reg_button').attr('disabled', true);
+    $.ajax({
+        url: '/register',
+        type: 'post',
+        data: {
+            "username": $('#reg_username').val(),
+            "email": $('#reg_email').val(),
+            "password": $('#reg_password').val(),
+            "phone": $('#reg_phone').val()
+        },
+        success: function (response) {
+            if (response['result'] == 'success') {
+                $.cookie("token", response["token"], { path: "/" });
+                window.location.replace('/')
+            } else {
+                alert(response['msg']);
                 $('#reg_button').removeAttr("disabled");
                 return false
             }

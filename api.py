@@ -8,14 +8,12 @@ import midtransclient
 import requests
 import uuid
 import os
-from validate_email import validate_email_or_fail
+from validate_email_address import validate_email
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
 api = Blueprint('api', __name__)
-
-
 
 @api.route('/api/search-dashboard')
 def searchDahboard():

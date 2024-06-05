@@ -19,9 +19,9 @@
         <div class="logo"><a href="/">ZallRentCar</a></div>
         <nav>
             <a href="/transaksi">Transaksi</a>
-            <a href="/setting">Settings</a>
+            <a href="/profile">Settings</a>
             {% if user_info %}
-            <a href="" onclick="logout()">Logout</a>
+            <a onclick="logout()" class="text-danger">Logout</a>
             {% else %}
             <a href="/login">Login</a>
             {% endif %}
@@ -43,6 +43,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="{{ url_for('static', filename='js/main/main.js') }}"></script>
+    
     {% block js %}
 
     {% endblock %}

@@ -23,21 +23,21 @@ def dashboard_page():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
 
-@dashboard.route('/dashboard/product')
-def product():
+@dashboard.route('/dashboard/data_mobil')
+def data_mobil():
     token_receive = request.cookies.get("token")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
         data = db.dataMobil.find({})
-        return render_template('dashboard/product.html',user_info=user_info, data=data)
+        return render_template('dashboard/data_mobil.html',user_info=user_info, data=data)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/product/<id>')
-def productDetail(id):
+@dashboard.route('/dashboard/data_mobil/<id>')
+def data_mobilDetail(id):
     token_receive = request.cookies.get("token")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
@@ -62,7 +62,7 @@ def transaction():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/product/add-data')
+@dashboard.route('/dashboard/data_mobil/add-data')
 def addData():
     token_receive = request.cookies.get("token")
     try:
@@ -84,7 +84,6 @@ def dashboard_login():
 def dashboard_login_post():
     user = request.form.get("username")
     password = request.form.get("password")
-
     pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
     result = db.users_admin.find_one({'username': user, 'password': pw_hash})
     if result:
@@ -103,24 +102,22 @@ def dashboard_login_post():
             'msg' : 'password atau username salah'
         })
     
-@dashboard.route('/dashboard/product/add-data', methods = ['POST'])
+@dashboard.route('/dashboard/data_mobil/add-data', methods = ['POST'])
 def addData_post():
     payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
     id_mobil = uuid.uuid1()
     merek = request.form.get('merek')
-    model = request.form.get('model')
-    tahun = request.form.get('tahun')
-    warna = request.form.get('warna')
+    seat = request.form.get('seat')
+    transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
 
     db.dataMobil.insert_one({
         'id_mobil' : str(id_mobil),
         'user' : user_info['username'],
         'merek' : merek.capitalize(),
-        'model' : model.capitalize(),
-        'tahun' : tahun.capitalize(),
-        'warna' : warna.capitalize(),
+        'seat' : seat.capitalize(),
+        'transmisi' : transmisi.capitalize(),
         'harga' : harga.capitalize(),
         'status' : 'tersedia'.capitalize(),
     })

@@ -21,6 +21,7 @@
             <p class="card-text"><strong>Model:</strong> {{ data.model }}</p>
             <p class="card-text"><strong>Status:</strong> {{ data.status }}</p>
             <p class="card-text"><strong>Harga per hari:</strong> <span data-target="currency">{{ data.harga }}</span></p>
+
         </div>
         <div class="card-footer">
             {% if data.status == 'Tersedia' %}

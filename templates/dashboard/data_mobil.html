@@ -1,5 +1,9 @@
 {% extends 'dashboard/layout_dashboard.html' %}
 
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/data_mobil.css') }}">
+{% endblock %}
+
 {% block javascript %}
 <script src="{{ url_for('static', filename='js/dashboard/datamobil.js') }}"></script>
 {% endblock %}
@@ -17,50 +21,57 @@
     </div>
   </div>
 
-  <table class="table table-curved border ">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nama Mobil</th>
-        <th scope="col">Seat</th>
-        <th scope="col">Transmisi</th>
-        <th scope="col">Harga</th>
-        <th scope="col">Status</th>
-        <th scope="col"></th>
-      </tr>
+  <div class="table_data">
+    <table class="shadow">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nama Mobil</th>
+          <th>Seat</th>
+          <th>Transmisi</th>
+          <th>Harga</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
 
-    </thead>
-    <tbody id="list-data">
-      {% for dt in data %}
-      <tr>
-        <th scope="row">{{loop.index}}</th>
-        <td>{{dt.merek}}</td>
-        <td>{{dt.seat}}</td>
-        <td>{{dt.transmisi}}</td>
-        <td>{{dt.harga}}</td>
-        <td id="status">{{dt.status}}</td>
-        <td>
-          <button class="btn fa-solid fa-ellipsis" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu">
-            {% if dt.status == 'Diproses' %}
-            <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')" role="button">Konfirmasi Pesanan</a></li>
-            {% elif dt.status == 'Digunakan' %}
-            <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')" role="button">Konfirmasi Kembali</a></li>
-            {% else %}
-              
-            <li><a class="dropdown-item" href="#">Edit Mobil</a></li>
-            {% endif %}
-          </ul>
-        </td>
-        </td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="7" class="text-center">Tidak ada data yang tersedia.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody id="list-data">
+        {% for dt in data %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td id="merek">{{dt.merek}}</td>
+          <td>{{dt.seat}}</td>
+          <td>{{dt.transmisi}}</td>
+          <td data-target="currency">{{dt.harga}}</td>
+          <td id="status">{{dt.status}}</td>
+          <td>
+            <button class="btn fa-solid fa-ellipsis" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false"></button>
+            <ul class="dropdown-menu">
+              {% if dt.status == 'Diproses' %}
+              <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
+                  role="button">Konfirmasi Pesanan</a></li>
+              {% elif dt.status == 'Digunakan' %}
+              <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
+                  role="button">Konfirmasi Kembali</a></li>
+              {% else %}
+
+              <li><a class="dropdown-item" href="#">Edit Mobil</a></li>
+              {% endif %}
+            </ul>
+          </td>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center">Tidak ada data yang tersedia.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
 </div>
 
 {% endblock %}

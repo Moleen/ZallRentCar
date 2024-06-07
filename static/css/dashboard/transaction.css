@@ -1,0 +1,36 @@
+.table_data table {
+    width: 100%;
+}
+
+.table_data table thead th {
+    padding: 1rem;
+    color: aliceblue    ;
+    background-color: #0d6dfdb6;
+}
+
+.table_data table th:first-child {
+    border-radius: 0.5rem 0 0;
+}
+
+.table_data table th:last-child {
+    border-radius: 0 0.5rem 0 0;
+}
+
+.table_data table tbody td {
+    /* text-align: center; */
+    padding: 0.5rem 1rem;
+}
+
+.table-success {
+    background-color: rgba(0, 255, 0, 0.137);
+}
+.table-danger {
+    background-color: rgba(255, 0, 0, 0.137);
+}
+
+.table_data table tr > *:nth-child(1) { width:2rem; }
+.table_data table tr > *:nth-child(2) { width:20%; }
+.table_data table tr > *:nth-child(3) { width:10%; }
+.table_data table tr > *:nth-child(4) { width:10%; }
+.table_data table tr > *:nth-child(5) { width:10%; }
+.table_data table tr > *:nth-child(6) { width:15%; }

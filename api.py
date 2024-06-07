@@ -158,19 +158,3 @@ def reg():
             "token": token
         })
 
-# @api.route('/api/change-status', methods=['POST'])
-# def changeStatus():
-#     orderid=request.form.get('orderid')
-#     status=request.form.get('status')
-    
-#     if checkStatusTrans(orderid):
-#         db.dataMobil.update_one({'order_id' : orderid})
-#     return
-
-
-
-
-# def checkStatusTrans(orderid):
-#     data = db.transaction.find_one({'order_id':orderid})
-#     if data.status == 'sudah bayar':
-#         return True

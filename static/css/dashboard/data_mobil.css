@@ -32,4 +32,4 @@
 .table_data table tr > *:nth-child(2) { width:20%; }
 .table_data table tr > *:nth-child(4) { width:15%; }
 .table_data table tr > *:nth-child(5) { width:15%; }
-.table_data table tr > *:nth-child(6) { width:15%; }
+/* .table_data table tr > *:nth-child(7) { width:5rem; } */

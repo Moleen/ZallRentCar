@@ -24,14 +24,14 @@
   <div class="table_data">
     <table class="shadow">
       <thead>
-        <tr>
+        <tr for>
           <th>#</th>
           <th>Nama Mobil</th>
           <th>Seat</th>
           <th>Transmisi</th>
           <th>Harga</th>
           <th>Status</th>
-          <th></th>
+          <th>Action</th>
         </tr>
 
       </thead>
@@ -44,12 +44,13 @@
           <td>{{dt.transmisi}}</td>
           <td data-target="currency">{{dt.harga}}</td>
           <td id="status">{{dt.status}}</td>
+
           <td>
-            <button class="btn fa-solid fa-ellipsis" type="button" data-bs-toggle="dropdown"
+            <button class="btn fa-solid fa-edit" type="button" data-bs-toggle="dropdown"
               aria-expanded="false"></button>
             <ul class="dropdown-menu">
               {% if dt.status == 'Diproses' %}
-              <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
+              <li><a class="dropdown-item" id="btn" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
                   role="button">Konfirmasi Pesanan</a></li>
               {% elif dt.status == 'Digunakan' %}
               <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
@@ -60,6 +61,7 @@
               {% endif %}
             </ul>
           </td>
+
           </td>
         </tr>
         {% else %}
@@ -75,3 +77,4 @@
 </div>
 
 {% endblock %}
+<!-- komen -->

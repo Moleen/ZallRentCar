@@ -1,8 +1,15 @@
 {% extends 'dashboard/layout_dashboard.html' %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/transaction.css') }}">
+{% endblock %}
+
 {% block javascript %}
 <script src="{{ url_for('static', filename='js/dashboard/transaksi.js') }}"></script>
 {% endblock %}
+
 {% block content %}
+
 
 <div class="container-fluid p-0 px-4 data">
 
@@ -11,48 +18,51 @@
       <a class="btn btn-primary" role="button" href="/dashboard/product/add-data">Tambah Transaksi</a>
     </div>
     <div class="col-auto">
-        <select class="form-select" aria-valuenow="filter">
-            <option value="" selected disabled hidden>filter</option>
-            <option value="1">Tanggal Rental</option>
-            <option value="2">Sudah Bayar</option>
-            <option value="3">Akhir Rental</option>
-          </select>
+      <select class="form-select" aria-valuenow="filter">
+        <option value="" selected disabled hidden>filter</option>
+        <option value="1">Tanggal Rental</option>
+        <option value="2">Sudah Bayar</option>
+        <option value="3">Akhir Rental</option>
+      </select>
     </div>
   </div>
+  <div class="table_data">
 
-  <table class="table table-curved border ">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Mobil</th>
-        <th scope="col">Penyewa</th>
-        <th scope="col">Lama rental</th>
-        <th scope="col">Total</th>
-        <th scope="col">tanggal rental</th>
-        <th scope="col">akhir rental</th>
-        <th scope="col">Status</th>
-      </tr>
+    <table class="shadow">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Mobil</th>
+          <th scope="col">Penyewa</th>
+          <th scope="col">Lama rental</th>
+          <th scope="col">Total</th>
+          <th scope="col">tanggal rental</th>
+          <th scope="col">akhir rental</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
 
-    </thead>
-    <tbody id="list-data">
-      {% for dt in data %}
-      <tr>
-        <th scope="row">{{loop.index}}</th>
-        <td>{{dt.item}}</td>
-        <td>{{dt.user}}</td>
-        <td>{{dt.lama_rental}}</td>
-        <td>{{dt.total}}</td>
-        <td>{{dt.date_rent}}</td>
-        <td>{{dt.end_rent}}</td>
-        <td id="status">{{dt.status}}</td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="7" class="text-center">Tidak ada data yang tersedia.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      <tbody id="list-data">
+        {% for dt in data %}
+        <tr>
+          <td>{{loop.index}}</th>
+          <td>{{dt.item}}</td>
+          <td>{{dt.user}}</td>
+          <td>{{dt.lama_rental}}</td>
+          <td>{{dt.total}}</td>
+          <td>{{dt.date_rent}}</td>
+          <td>{{dt.end_rent}}</td>
+          <td id="status">{{dt.status}}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center">Tidak ada data yang tersedia.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
 </div>
 
 {% endblock %}

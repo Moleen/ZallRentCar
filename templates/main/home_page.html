@@ -47,7 +47,7 @@
         <div class="card">
             <div class="card-body p-4">
                 <h3 class="card-title mb-4">{{dt.merek}}</h3>
-                <img src="../../static/gambar/a.png" alt="Mitsubishi Xpander" class="card-image pb-4">
+                <img src="{{ url_for('static', filename='gambar/') }}{{dt.gambar}}" alt="{{dt.gambar}}" class="rounded card-image mb-4 ">
                 <div class="d-flex flex-column align-items-center">
                     <ul class="list-detail m-0 p-0 py-4 w-75">
                         <li class="d-flex"><img src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}" >{{dt.seat}}</li>

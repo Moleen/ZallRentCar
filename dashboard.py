@@ -104,18 +104,32 @@ def dashboard_login_post():
     
 @dashboard.route('/dashboard/data_mobil/add-data', methods = ['POST'])
 def addData_post():
+
     payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
     id_mobil = uuid.uuid1()
+    file = request.files['gambar']
     merek = request.form.get('merek')
     seat = request.form.get('seat')
     transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
 
+    if file:
+        extension = file.filename.split('.')[-1]
+        upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
+        gambar_name = f'mobil-{upload_date}.{extension}'
+        file.save(f'static/gambar/{gambar_name}')
+    else:
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'Masukkan gambar'
+        }) 
+
     db.dataMobil.insert_one({
         'id_mobil' : str(id_mobil),
         'user' : user_info['username'],
         'merek' : merek.capitalize(),
+        'gambar' : gambar_name,
         'seat' : seat.capitalize(),
         'transmisi' : transmisi.capitalize(),
         'harga' : harga.capitalize(),

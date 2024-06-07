@@ -11,3 +11,4 @@ function hideSidebar() {
     $("body").css("grid-template-columns", "5rem 1fr 1fr");
   });
 }
+

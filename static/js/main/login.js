@@ -16,6 +16,10 @@ $(document).ready(function () {
 // login
 $('#form-login').on('submit', function(e){
     e.preventDefault();
+    redirect = $('#login_button').attr('data-redirect')
+    if (redirect == ''){
+        redirect = '/';
+    }
     $('#login_button').attr('disabled',true);
     $.ajax({
         url : '/login',
@@ -27,50 +31,19 @@ $('#form-login').on('submit', function(e){
         success : function(response){
             if(response['result']  == 'success'){
                 $.cookie("token", response["token"], { path: "/" });
-                window.location.replace('/')
+                window.location.replace(redirect)
             }else{
                 toastr.warning(response['msg'])
                 $('#reg_button').removeAttr("disabled");
                 return false
             }
+        },
+        error: function (xhr, status, error) { // Ketika permintaan gagal
+            console.error(xhr.responseText); // Menampilkan pesan error di konsol
+            alert('Terjadi kesalahan saat proses login.'); // Menampilkan pesan kesalahan kepada pengguna
         }
     })
 })
-
-// Login//
-$(document).ready(function () {
-    // Fungsi untuk menangani submit form login
-    $('#form-login').on('submit', function (e) {
-        e.preventDefault(); // Mencegah form untuk melakukan submit secara default
-
-        // Mengambil nilai username dan password dari input
-        var username = $('#login_username').val();
-        var password = $('#login_password').val();
-
-        // Mengirim data login ke server menggunakan AJAX
-        $.ajax({
-            url: '/login', // URL endpoint untuk login
-            type: 'post', // Metode HTTP POST
-            data: {
-                "username": username, // Menggunakan "username" sebagai nama variabel
-                "password": password
-            },
-            success: function (response) { // Ketika permintaan berhasil
-                if (response['token']) { // Jika token diterima dari server
-                    window.location.replace('/'); // Mengarahkan pengguna ke halaman utama
-                } else { // Jika token tidak diterima dari server
-                    alert('Login gagal. Harap coba lagi.'); // Menampilkan pesan kesalahan umum
-                }
-            },
-            error: function (xhr, status, error) { // Ketika permintaan gagal
-                console.error(xhr.responseText); // Menampilkan pesan error di konsol
-                alert('Terjadi kesalahan saat proses login.'); // Menampilkan pesan kesalahan kepada pengguna
-            }
-        });
-    });
-});
-
-
 
 // registrasi
 $('#form-register').on('submit', function (e) {

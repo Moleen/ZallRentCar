@@ -67,7 +67,7 @@
                         {% else %}
                         <div class="modal-footer">
                             <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary">Bayar</a>
-                            <button type="button" name="" id="" class="btn btn-danger">Batalkan</button>
+                            <button type="button" onclick="cancelPayment('{{dt.order_id}}')" class="btn btn-danger">Batalkan</button>
                         </div>
 
                         {% endif %}

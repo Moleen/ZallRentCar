@@ -3,12 +3,12 @@ from dbconnection import db
 import jwt
 import hashlib
 from datetime import datetime,timedelta
-from bson import ObjectId
 import midtransclient
 import requests
 import uuid
 import os
 from validate_email_address import validate_email
+from func import createSecretMessage
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -24,61 +24,75 @@ def searchDahboard():
 @api.route('/api/create_transaction', methods = ['POST'])
 def create_transaction():
     id_mobil = request.form.get('id_mobil')
-    hari = request.form.get('hari')
-    user = request.form.get('user')
-    order_id = str(uuid.uuid1())
-    dateRent = datetime.now().strftime("%d-%B-%Y")
-    endRent = datetime.now() + timedelta(days=int(hari))
-    endRent = endRent.strftime("%d-%B-%Y")
     data_mobil = db.dataMobil.find_one({'id_mobil': id_mobil})
-    item_name = f"{data_mobil['merek']} {data_mobil['model']}"
 
-    snap = midtransclient.Snap(
-    is_production=False,
-    server_key='SB-Mid-server-ArjIt5WM6gvnMrxhx9Q3nufJ',
-    client_key='SB-Mid-client-pYGOQrTmRDZCDTJt'
-    )
-    param = {
-            "transaction_details": {
-                "order_id": order_id,
-                "gross_amount": int(data_mobil['harga']) * int(hari)
-            },
-            "item_details": [{
-                "id": id_mobil,
-                "price": data_mobil['harga'],
-                "quantity": int(hari),
-                "name": item_name
-            }],
-            "customer_details": {
-                "first_name": user,
-                "email": "taytai4869@gmail.com",
+    user = request.form.get('user_id')
+    data_user = db.users.find_one({'user_id': user})
+
+    stat = db.transaction.find_one({'user_id': user, 'status': 'unpaid'})
+    if stat:
+        return jsonify({'status': 'unpaid_transaction', 'message': 'anda memiliki transaksi yang belum dibayar, batalkan transaksi sebelumnya terlebih dahulu untuk melanjutkan pemesanan'})
+
+    elif user:
+        order_id = str(uuid.uuid1())
+        hari = request.form.get('hari')
+        dateRent = datetime.now().strftime("%d-%B-%Y")
+        endRent = datetime.now() + timedelta(days=int(hari))
+        endRent = endRent.strftime("%d-%B-%Y")
+        item_name = f"{data_mobil['merek']}"
+
+        snap = midtransclient.Snap(
+        is_production=False,
+        server_key='SB-Mid-server-ArjIt5WM6gvnMrxhx9Q3nufJ',
+        client_key='SB-Mid-client-pYGOQrTmRDZCDTJt'
+        )
+        param = {
+                "transaction_details": {
+                    "order_id": order_id,
+                    "gross_amount": int(data_mobil['harga']) * int(hari)
+                },
+                "item_details": [{
+                    "id": id_mobil,
+                    "price": data_mobil['harga'],
+                    "quantity": int(hari),
+                    "name": item_name
+                }],
+                "customer_details": {
+                    "first_name": data_user['username'],
+                    "email": data_user['email'],
+                }
             }
+
+        transaction = snap.create_transaction(param)
+        transaction_token = transaction['token']
+
+        transakasi = {
+            'user_id' : data_user['user_id'],
+            'order_id' : order_id,
+            'id_mobil' : id_mobil,
+            'transaction_token' : transaction_token,
+            'item' : item_name,
+            'total' : int(data_mobil['harga']) * int(hari),
+            'lama_rental' : f'{hari} hari',
+            'date_rent' : dateRent,
+            'end_rent' : endRent,
+            'status' : 'unpaid',
         }
+        db.transaction.insert_one(transakasi)
 
-
-
-    transaction = snap.create_transaction(param)
-    transaction_token = transaction['token']
-
-    transakasi = {
-        'user' : user,
-        'user_id' : '123123123123',
-        'order_id' : order_id,
-        'id_mobil' : id_mobil,
-        'transaction_token' : transaction_token,
-        'item' : item_name,
-        'total' : int(data_mobil['harga']) * int(hari),
-        'lama_rental' : f'{hari} hari',
-        'date_rent' : dateRent,
-        'end_rent' : endRent,
-        'status' : 'unpaid',
-    }
-    db.transaction.insert_one(transakasi)
-
+        
+        return jsonify({
+            'status' : 'success',
+            'id' : order_id
+        })
     
-    return jsonify({
-        'id' : order_id
-    })
+    else:
+        msg = createSecretMessage('Login terlebih dahulu untuk memesan', SECRET_KEY=SECRET_KEY,redirect=f'/detail-mobil?id={id_mobil}')
+        return jsonify({
+            'status' : 'NotLoggedIn',
+            'msg' : msg
+        })
+    
 
 @api.route('/api/transaction-success', methods=['POST'])
 def transactionSuccess():

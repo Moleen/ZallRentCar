@@ -20,12 +20,17 @@
             <p class="card-text"><strong>Merek:</strong> {{ data.merek }}</p>
             <p class="card-text"><strong>Model:</strong> {{ data.model }}</p>
             <p class="card-text"><strong>Status:</strong> {{ data.status }}</p>
-            <p class="card-text"><strong>Harga per hari:</strong> <span data-target="currency">{{ data.harga }}</span></p>
+            <p class="card-text"><strong>Harga per hari:</strong> <span data-target="currency">{{ data.harga }}</span>
+            </p>
 
         </div>
         <div class="card-footer">
-            {% if data.status == 'Tersedia' %}
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</button>
+            {% if data.status == 'Tersedia'%}
+                {% if user_info %}
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</button>
+                {% else %}
+                <button type="button" class="btn btn-primary" onclick="createTransaction(id_mobil = '{{data.id_mobil}}')">Pesan</button>
+                {% endif %}
             {% else %}
             <button class="btn btn-secondary" disabled>Tidak Tersedia</button>
             {% endif %}
@@ -38,7 +43,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ data.merek }} {{ data.model }}</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ data.merek }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -50,8 +55,10 @@
                 </form>
             </div>
             <div class="modal-footer">
+                {% if user_info %}
                 <button type="button" class="btn btn-primary"
-                    onclick="createTransaction('{{data.id_mobil}}')">Pesan</button>
+                    onclick="createTransaction(id_mobil = '{{data.id_mobil}}', user_id ='{{user_info.user_id}}')">Pesan</button>
+                {% endif %}
             </div>
         </div>
     </div>

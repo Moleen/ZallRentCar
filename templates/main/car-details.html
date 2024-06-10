@@ -3,11 +3,9 @@
 
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main/car_details.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/datepicker/bootstrap-datepicker.min.css') }}">
 {% endblock %}
 
 {% block js %}
-<script src="{{ url_for('static', filename='js/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main/car_details.js') }}"></script>
 {% endblock %}
 
@@ -29,7 +27,7 @@
                 {% if user_info %}
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</button>
                 {% else %}
-                <button type="button" class="btn btn-primary" onclick="createTransaction(id_mobil = '{{data.id_mobil}}')">Pesan</button>
+                <button type="button" class="btn btn-primary" onclick="createTransaction()">Pesan</button>
                 {% endif %}
             {% else %}
             <button class="btn btn-secondary" disabled>Tidak Tersedia</button>
@@ -56,7 +54,7 @@
             </div>
             <div class="modal-footer">
                 {% if user_info %}
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-primary" id="btn_pesan"
                     onclick="createTransaction(id_mobil = '{{data.id_mobil}}', user_id ='{{user_info.user_id}}')">Pesan</button>
                 {% endif %}
             </div>

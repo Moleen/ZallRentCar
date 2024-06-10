@@ -88,10 +88,7 @@ def create_transaction():
     
     else:
         msg = createSecretMessage('Login terlebih dahulu untuk memesan', SECRET_KEY=SECRET_KEY,redirect=f'/detail-mobil?id={id_mobil}')
-        return jsonify({
-            'status' : 'NotLoggedIn',
-            'msg' : msg
-        })
+        return redirect(url_for('login',msg = msg))
     
 
 @api.route('/api/transaction-success', methods=['POST'])

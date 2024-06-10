@@ -1,4 +1,5 @@
 function createTransaction(id_mobil, user_id) {
+  $('#btn_pesan').attr('disabled',true);
   var hari = $("#hari").val();
   $.ajax({
     url: "/api/create_transaction",
@@ -9,12 +10,14 @@ function createTransaction(id_mobil, user_id) {
       user_id: user_id,
     },
     success: function (response) {
-      if (response.status == "success") {
-        window.location.replace(`/transaksi/${response.id}`);
-      } else if (response.status == "NotLoggedIn") {
-        window.location.replace(`/login?msg=${response.msg}`);
-      } else if(response.status == "unpaid_transaction"){
-        alert(response.message)
+      if(response.status == "unpaid_transaction"){
+        toastr.warning(response['message'], 'Notification',{
+          onHidden: function() {
+            $('#btn_pesan').attr('disabled',false);
+        }
+        })
+      }else{
+        window.location.replace(`/transaksi/${response.id}`)
       }
     },
   });

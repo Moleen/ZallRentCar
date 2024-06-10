@@ -17,6 +17,8 @@ $(document).ready(function () {
 $('#form-login').on('submit', function(e){
     e.preventDefault();
     redirect = $('#login_button').attr('data-redirect')
+
+    // redirect default
     if (redirect == ''){
         redirect = '/';
     }
@@ -31,6 +33,7 @@ $('#form-login').on('submit', function(e){
         success : function(response){
             if(response['result']  == 'success'){
                 $.cookie("token", response["token"], { path: "/" });
+                localStorage.setItem('login','true')
                 window.location.replace(redirect)
             }else{
                 toastr.warning(response['msg'])

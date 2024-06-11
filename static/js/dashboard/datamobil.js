@@ -22,14 +22,14 @@ $(document).ready(function () {
                <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.status}}','{{dt.order_id}}')"
                          role="button">Konfirmasi Pesanan</a></li>
                          </ul>`;
-            } else if (data[i].status == "Diproses") {
+            } else if (data[i].status == "Digunakan") {
               button = `<ul class="dropdown-menu">
                <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.status}}','{{dt.order_id}}')"
                          role="button">Konfirmasi Kembali</a></li>
                          </ul>`;
             } else {
               button = `<ul class="dropdown-menu">
-               <li><a class="dropdown-item" href="/dashboard/data_mobil/edit?id=${data[i].id_mobil}">Edit Mobil</a></li>
+               <li><a class="dropdown-item" href="/data_mobil/edit?id=${data[i].id_mobil}">Edit Mobil</a></li>
                          </ul>`;
             }
             var temp = `<tr>

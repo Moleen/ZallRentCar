@@ -67,8 +67,14 @@
 
                         {% else %}
                         <div class="modal-footer">
-                            <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary">Bayar</a>
-                            <button type="button" onclick="cancelPayment('{{dt.order_id}}')" class="btn btn-danger">Batalkan</button>
+                            <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary"
+                                style="height: 2.5rem;">Bayar</a>
+                            <button type="button" id="cancel_button" onclick="cancelPayment('{{dt.order_id}}')"
+                                class="btn btn-danger" style="height: 2.5rem; width:5rem;">
+                                <img src="{{ url_for('static', filename='icon/loading.gif') }}" alt=""
+                                    class="h-100 opacity-25" hidden>
+                                <span>Batalkan</span>
+                            </button>
                         </div>
 
                         {% endif %}

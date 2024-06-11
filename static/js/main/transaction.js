@@ -1,4 +1,5 @@
 function cancelPayment(order_id) {
+
   Swal.fire({
     position: "top",
     text: "Anda yakin ingin membatalkan transaksi?",
@@ -8,8 +9,12 @@ function cancelPayment(order_id) {
     cancelButtonColor: "#d33",
     confirmButtonText: "Yes",
   }).then((result) => {
+
     if (result.isConfirmed) {
       // jika terkonfirmasi jalankan ajax
+      $('#cancel_button').attr('disabled', true)
+      $('#cancel_button span').attr('hidden', true)
+      $('#cancel_button img').attr('hidden', false)
       $.ajax({
         url: "/api/cancelPayment",
         type: "POST",
@@ -17,7 +22,6 @@ function cancelPayment(order_id) {
           order_id: order_id,
         },
         success: function (response) {
-          // alert("anda membatalkan transaksi");
           localStorage.setItem('dataDeleted','true')
           location.reload();
         },

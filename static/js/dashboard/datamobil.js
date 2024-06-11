@@ -17,6 +17,21 @@ $(document).ready(function () {
           $("#list-data").append(temp);
         } else {
           for (let i = 0; i < data.length; i++) {
+            if (data[i].status == "Diproses") {
+              button = `<ul class="dropdown-menu">
+               <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.status}}','{{dt.order_id}}')"
+                         role="button">Konfirmasi Pesanan</a></li>
+                         </ul>`;
+            } else if (data[i].status == "Diproses") {
+              button = `<ul class="dropdown-menu">
+               <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.status}}','{{dt.order_id}}')"
+                         role="button">Konfirmasi Kembali</a></li>
+                         </ul>`;
+            } else {
+              button = `<ul class="dropdown-menu">
+               <li><a class="dropdown-item" href="/dashboard/data_mobil/edit?id=${data[i].id_mobil}">Edit Mobil</a></li>
+                         </ul>`;
+            }
             var temp = `<tr>
                    <td>${i + 1}</td>
                    <td id="merek">${data[i].merek}</td>
@@ -25,20 +40,9 @@ $(document).ready(function () {
                    <td data-target="currency">${data[i].harga}</td>
                    <td id="status">${data[i].status}</td>
                    <td>
-                   <button class="btn fa-solid fa-ellipsis" type="button" data-bs-toggle="dropdown"
+                   <button class="btn fa-solid fa-edit" type="button" data-bs-toggle="dropdown"
                      aria-expanded="false"></button>
-                   <ul class="dropdown-menu">
-                     {% if dt.status == 'Diproses' %}
-                     <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
-                         role="button">Konfirmasi Pesanan</a></li>
-                     {% elif dt.status == 'Digunakan' %}
-                     <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
-                         role="button">Konfirmasi Kembali</a></li>
-                     {% else %}
-       
-                     <li><a class="dropdown-item" href="#">Edit Mobil</a></li>
-                     {% endif %}
-                   </ul>
+                    ${button}
                  </td>
                  </tr>`;
             $("#list-data").append(temp);
@@ -76,7 +80,34 @@ function changeCurrency() {
   });
 }
 
-// function changeStatus(status,ordeid){
+function confirmPesanan(id_mobil){
+  Swal.fire({
+    position: "top",
+    text: "Pastikan client sudah datang dan menyerahkan ktp ke kantor yakin untuk konfirmasi pesanan?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type: "POST",
+        url: "/api/confirmPesanan",
+        data: {
+          id_mobil: id_mobil
+          },
+          success: function (data) {
+            location.reload()
+          }
+
+      })
+    } 
+  });
+
+}
+
+// function confirmPesanan(status,ordeid){
 //   if (status == 'Diproses'){
 //     alert('Pastikan User telah mengambil mobil')
 //     $.ajax({

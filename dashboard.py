@@ -36,14 +36,15 @@ def data_mobil():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/data_mobil/<id>')
-def data_mobilDetail(id):
+@dashboard.route('/dashboard/data_mobil/edit')
+def data_mobilDetail():
+    id = request.args.get('id')
     token_receive = request.cookies.get("token")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
-        data = db.transaction.find_one({'order_id' : id})
-        return render_template('dashboard/car-detail.html',user_info=user_info, data=data)
+        data = db.dataMobil.find_one({'id_mobil' : id})
+        return render_template('dashboard/edit_mobil.html',user_info=user_info, data=data)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:

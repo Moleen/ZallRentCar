@@ -168,4 +168,13 @@ def reg():
             "result": "success",
             "token": token
         })
+    
+@api.route('/api/confirmPesanan', methods=['POST'])
+def confirmPesanan():
+    id_mobil = request.form.get('id_mobil')
+    db.transaction.update_one({'id_mobil' : id_mobil},{'$set':{'status_mobil':'diambil'}})
+    db.dataMobil.update_one({'id_mobil' : id_mobil},{'$set':{'status':'Digunakan'}})
+    return jsonify({
+        'result' : 'success'
+    })
 

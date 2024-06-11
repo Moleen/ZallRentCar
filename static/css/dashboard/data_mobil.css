@@ -27,6 +27,9 @@
 .table-danger {
     background-color: rgba(255, 0, 0, 0.137);
 }
+.table-warning {
+    background-color: rgba(255, 251, 0, 0.137);
+}
 
 .table_data table tr > *:nth-child(1) { width:2rem; }
 .table_data table tr > *:nth-child(2) { width:20%; }

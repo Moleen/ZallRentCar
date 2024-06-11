@@ -1,3 +1,11 @@
+
+.input input{
+    border: none;
+}
+.input input:focus{
+    outline: none;
+}
+
 .table_data table {
     width: 100%;
 }
@@ -5,7 +13,7 @@
 .table_data table thead th {
     padding: 1rem;
     color: aliceblue    ;
-    background-color: #0d6dfdb6;
+    background-color: #0d6dfd;
 }
 
 .table_data table th:first-child {

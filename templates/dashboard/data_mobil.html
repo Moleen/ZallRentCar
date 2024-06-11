@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<div class="container-fluid p-0 px-4 data">
+<div class="container-fluid p-0 p-4 data">
 
   <div class="row g-3 align-items-center mb-3">
     <div class="col-auto">
@@ -50,14 +50,14 @@
               aria-expanded="false"></button>
             <ul class="dropdown-menu">
               {% if dt.status == 'Diproses' %}
-              <li><a class="dropdown-item" id="btn" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
+              <li><a class="dropdown-item" id="btn" onclick="confirmPesanan('{{dt.id_mobil}}')"
                   role="button">Konfirmasi Pesanan</a></li>
               {% elif dt.status == 'Digunakan' %}
-              <li><a class="dropdown-item" onclick="changeStatus('{{dt.status}}','{{dt.order_id}}')"
+              <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.id_mobil}}')"
                   role="button">Konfirmasi Kembali</a></li>
               {% else %}
-
-              <li><a class="dropdown-item" href="#">Edit Mobil</a></li>
+              <li><a class="dropdown-item" href="/dashboard/data_mobil/edit?id={{dt.id_mobil}}">Edit Mobil</a></li>
+              <li><a class="dropdown-item" href="#">Hapus</a></li>
               {% endif %}
             </ul>
           </td>

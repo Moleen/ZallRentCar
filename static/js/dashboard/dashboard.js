@@ -37,4 +37,8 @@ $('.nav.menu .nav-link').each(function(){
   }
 })
 
+if(localStorage.getItem('tambahData') == 'true'){
+  toastr.success('Berhasil Tambah Data');
+  localStorage.removeItem('tambahData')
+}
 

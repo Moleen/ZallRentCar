@@ -28,10 +28,10 @@ function addData() {
     processData: false,
     success: function (response) {
       if (response["result"] == "success") {
-        alert(`berhasil : ${response["result"]}`);
-        window.location.replace("/dashboard/data_mobil");
+        localStorage.setItem('tambahData','true')
+        window.location.replace("/data_mobil");
       } else {
-        alert(response["msg"]);
+        toastr.warning(response['msg']);
       }
     },
   });

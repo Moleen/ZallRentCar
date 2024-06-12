@@ -119,7 +119,7 @@ def dashboard_login_post():
 @dashboard.route('/data_mobil/add-data', methods = ['POST'])
 def addData_post():
 
-    payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+    payload = jwt.decode(request.cookies.get("tokenDashboard"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
     id_mobil = uuid.uuid1()
     file = request.files['gambar']
@@ -149,5 +149,41 @@ def addData_post():
         'harga' : harga.capitalize(),
         'status' : 'tersedia'.capitalize(),
     })
+
+    return jsonify({'result':'success'})
+
+@dashboard.route('/data_mobil/update-data', methods = ['POST'])
+def updateData_post():
+
+    payload = jwt.decode(request.cookies.get("tokenDashboard"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+    user_info = db.users_admin.find_one({"username": payload["user"]})
+    id_mobil = request.form.get('id_mobil')
+    merek = request.form.get('merek')
+    seat = request.form.get('seat')
+    transmisi = request.form.get('transmisi')
+    harga = request.form.get('harga')
+
+    try:
+        file = request.files['gambar']
+        extension = file.filename.split('.')[-1]
+        upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
+        gambar_name = f'mobil-{upload_date}.{extension}'
+        file.save(f'static/gambar/{gambar_name}')
+    except:
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'Masukkan gambar'
+        }) 
+    
+    db.dataMobil.update_one({'id_mobil' : id_mobil},
+    {'$set':{
+        'user' : user_info['username'],
+        'merek' : merek.capitalize(),
+        'gambar' : gambar_name,
+        'seat' : seat.capitalize(),
+        'transmisi' : transmisi.capitalize(),
+        'harga' : harga.capitalize(),
+        'status' : 'tersedia'.capitalize(),
+    }})
 
     return jsonify({'result':'success'})

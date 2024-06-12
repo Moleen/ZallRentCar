@@ -25,7 +25,7 @@
                 <td>{{dt.date_rent}}</td>
                 <td>{{dt.item}}</td>
                 <td>{{dt.lama_rental}}</td>
-                <td>Rp. {{dt.total}}</td>
+                <td data-target="currency">{{dt.total}}</td>
             </tr>
 
             <div class="modal fade" id="{{dt._id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -53,7 +53,7 @@
                                 </li>
                                 <li class=" d-flex align-items-center mb-3">
                                     <p class="m-0 px-2">Total</p>:
-                                    <p class="m-0 px-2">Rp. {{dt.total}}</p>
+                                    <p class="m-0 px-2" data-target="currency">{{dt.total}}</p>
                                 </li>
                                 <li class=" d-flex align-items-center mb-3">
                                     <p class="m-0 px-2">Status</p>:

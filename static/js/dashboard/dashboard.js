@@ -11,8 +11,8 @@ function logout() {
     confirmButtonText: "Yes",
   }).then((result) => {
     if (result.isConfirmed) {
-        $.removeCookie('token');
-        localStorage.setItem('logout','true')
+        $.removeCookie('tokenDashboard');
+        localStorage.setItem('logoutDashboard','true')
         window.location.reload()
     } 
   });
@@ -37,4 +37,8 @@ $('.nav.menu .nav-link').each(function(){
   }
 })
 
+if(localStorage.getItem('tambahData') == 'true'){
+  toastr.success('Berhasil Tambah Data');
+  localStorage.removeItem('tambahData')
+}
 

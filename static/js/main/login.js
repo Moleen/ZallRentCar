@@ -32,12 +32,12 @@ $('#form-login').on('submit', function(e){
         },
         success : function(response){
             if(response['result']  == 'success'){
-                $.cookie("token", response["token"], { path: "/" });
+                $.cookie("tokenMain", response["token"], { path: "/" });
                 localStorage.setItem('login','true')
                 window.location.replace(redirect)
             }else{
                 toastr.warning(response['msg'])
-                $('#reg_button').removeAttr("disabled");
+                $('#login_button').attr("disabled",false);
                 return false
             }
         },

@@ -70,6 +70,7 @@ def create_transaction():
             'user_id' : data_user['user_id'],
             'order_id' : order_id,
             'id_mobil' : id_mobil,
+            'penyewa' : data_user['username'],
             'transaction_token' : transaction_token,
             'item' : item_name,
             'total' : int(data_mobil['harga']) * int(hari),

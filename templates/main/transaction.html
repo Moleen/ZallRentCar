@@ -25,7 +25,7 @@
                 <td>{{dt.date_rent}}</td>
                 <td>{{dt.item}}</td>
                 <td>{{dt.lama_rental}}</td>
-                <td>Rp. {{dt.total}}</td>
+                <td data-target="currency">{{dt.total}}</td>
             </tr>
 
             <div class="modal fade" id="{{dt._id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -53,7 +53,7 @@
                                 </li>
                                 <li class=" d-flex align-items-center mb-3">
                                     <p class="m-0 px-2">Total</p>:
-                                    <p class="m-0 px-2">Rp. {{dt.total}}</p>
+                                    <p class="m-0 px-2" data-target="currency">{{dt.total}}</p>
                                 </li>
                                 <li class=" d-flex align-items-center mb-3">
                                     <p class="m-0 px-2">Status</p>:
@@ -67,8 +67,14 @@
 
                         {% else %}
                         <div class="modal-footer">
-                            <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary">Bayar</a>
-                            <button type="button" onclick="cancelPayment('{{dt.order_id}}')" class="btn btn-danger">Batalkan</button>
+                            <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary"
+                                style="height: 2.5rem;">Bayar</a>
+                            <button type="button" id="cancel_button" onclick="cancelPayment('{{dt.order_id}}')"
+                                class="btn btn-danger" style="height: 2.5rem; width:5rem;">
+                                <img src="{{ url_for('static', filename='icon/loading.gif') }}" alt=""
+                                    class="h-100 opacity-25" hidden>
+                                <span>Batalkan</span>
+                            </button>
                         </div>
 
                         {% endif %}

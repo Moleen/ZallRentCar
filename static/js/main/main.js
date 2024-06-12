@@ -10,7 +10,7 @@ function logout(){
         confirmButtonText: "Yes",
       }).then((result) => {
         if (result.isConfirmed) {
-            $.removeCookie('token');
+            $.removeCookie('tokenMain');
             localStorage.setItem('logout','true')
             window.location.replace('/')
         } 

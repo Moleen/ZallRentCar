@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenMain")
     data = db.dataMobil.find({})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -53,7 +53,10 @@ def login():
 
 @app.route('/transaksi')
 def transaksiUser():
-    token_receive = request.cookies.get("token")
+
+    token_receive = request.cookies.get("tokenMain")
+    
+
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
@@ -68,7 +71,7 @@ def transaksiUser():
 
 @app.route('/transaksi/<id>')
 def payment(id):
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenMain")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
@@ -88,8 +91,12 @@ def payment(id):
 @app.route('/detail-mobil')
 def detail():
     id = request.args.get('id')
-    data = db.dataMobil.find_one({'id_mobil': id})
-    token_receive = request.cookies.get("token")
+
+    data = db.dataMobil.find_one({'id_mobil' : id})
+
+    # MEMBUAT KONDISI USER SUDAH LOGIN ATAU BELUM
+    token_receive = request.cookies.get("tokenMain")
+
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
@@ -101,7 +108,7 @@ def detail():
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenMain")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})

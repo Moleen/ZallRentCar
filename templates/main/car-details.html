@@ -1,5 +1,5 @@
 {% extends 'main/main_layout.html' %}
-{% block title %}| Detail - {{ data.merek }} {{ data.model }} {% endblock %}
+{% block title %}| Detail - {{ data.merek }} {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main/car_details.css') }}">
@@ -10,28 +10,51 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100 car-details">
-    <div class="card w-75">
-        <img src="{{ data.image_url }}" class="card-img-top" alt="{{ data.merek }} {{ data.model }}">
-        <div class="card-body">
-            <h5 class="card-title">Detail {{ data.merek }} {{ data.model }}</h5>
-            <p class="card-text"><strong>Merek:</strong> {{ data.merek }}</p>
-            <p class="card-text"><strong>Model:</strong> {{ data.model }}</p>
-            <p class="card-text"><strong>Status:</strong> {{ data.status }}</p>
-            <p class="card-text"><strong>Harga per hari:</strong> <span data-target="currency">{{ data.harga }}</span>
-            </p>
+<div class="container">
+    <div style="height: 150px;"></div>
 
-        </div>
-        <div class="card-footer">
-            {% if data.status == 'Tersedia'%}
-            {% if user_info %}
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</button>
-            {% else %}
-            <button type="button" class="btn btn-primary" onclick="createTransaction()">Pesan</button>
-            {% endif %}
-            {% else %}
-            <button class="btn btn-secondary" disabled>Tidak Tersedia</button>
-            {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <img width="500px" src="{{ url_for('static', filename='images/' ~ data.gambar) }}" alt="Car Image">
+                </div>
+                <div class="col-md-6">
+                    <table class="table">
+                        <tr>
+                            <th>Merek</th>
+                            <td>{{ data.merek }}</td>
+                        </tr>
+                        <tr>
+                            <th>No. Plat</th>
+                            <td>{{ data.plat_nomor }}</td>
+                        </tr>
+                        <tr>
+                            <th>Warna</th>
+                            <td>{{ data.warna }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tahun Mobil</th>
+                            <td>{{ data.tahun }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ data.status }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                {% if data.status == 'Tersedia' and user_info %}
+                                <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModalCenter">Rental</a>
+                                {% else %}
+                                <button class="btn btn-secondary" disabled>Tidak Tersedia</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

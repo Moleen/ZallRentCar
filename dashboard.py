@@ -23,7 +23,7 @@ def dashboard_page():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
 
-@dashboard.route('/dashboard/data_mobil')
+@dashboard.route('/data_mobil')
 def data_mobil():
     token_receive = request.cookies.get("token")
     try:
@@ -36,7 +36,7 @@ def data_mobil():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/data_mobil/edit')
+@dashboard.route('/data_mobil/edit')
 def data_mobilDetail():
     id = request.args.get('id')
     token_receive = request.cookies.get("token")
@@ -50,7 +50,7 @@ def data_mobilDetail():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/transaction')
+@dashboard.route('/transaction')
 def transaction():
     token_receive = request.cookies.get("token")
     try:
@@ -63,7 +63,20 @@ def transaction():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/data_mobil/add-data')
+@dashboard.route('/settings')
+def setting():
+    token_receive = request.cookies.get("token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        data = db.transaction.find({})
+        return render_template('dashboard/setting.html',user_info=user_info, data=data)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
+    
+@dashboard.route('/data_mobil/add-data')
 def addData():
     token_receive = request.cookies.get("token")
     try:
@@ -103,7 +116,7 @@ def dashboard_login_post():
             'msg' : 'password atau username salah'
         })
     
-@dashboard.route('/dashboard/data_mobil/add-data', methods = ['POST'])
+@dashboard.route('/data_mobil/add-data', methods = ['POST'])
 def addData_post():
 
     payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])

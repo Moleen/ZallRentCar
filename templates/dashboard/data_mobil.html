@@ -10,16 +10,22 @@
 
 {% block content %}
 
-<div class="container-fluid p-0 p-4 data">
+<div class="title px-4 d-flex align-items-center justify-content-between">
+  <h2 class="text-primary m-0">Data Mobil</h2>
+  <div class="w-50 position-relative">
 
-  <div class="row g-3 align-items-center mb-3">
-    <div class="col-auto">
-      <input type="text" id="search-data" class="form-control" placeholder="Cari merek">
+    <div class="input d-flex align-items-center border p-2 px-4 rounded-5">
+      <input type="text" id="search-data" class="w-100" placeholder="Cari merek">
+      <span class="text-secondary"><i class="fa-solid fa-magnifying-glass"></i></span>
     </div>
-    <div class="col text-end">
-      <a class="btn btn-primary" role="button" href="/dashboard/data_mobil/add-data">add data</a>
-    </div>
+
   </div>
+  <div class="">
+    <a class="btn btn-primary" role="button" href="/data_mobil/add-data">add data</a>
+  </div>
+</div>
+
+<div class="container-fluid p-0 p-4 data">
 
   <div class="table_data">
     <table class="shadow">
@@ -56,7 +62,7 @@
               <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.id_mobil}}')"
                   role="button">Konfirmasi Kembali</a></li>
               {% else %}
-              <li><a class="dropdown-item" href="/dashboard/data_mobil/edit?id={{dt.id_mobil}}">Edit Mobil</a></li>
+              <li><a class="dropdown-item" href="/data_mobil/edit?id={{dt.id_mobil}}">Edit Mobil</a></li>
               <li><a class="dropdown-item" href="#">Hapus</a></li>
               {% endif %}
             </ul>

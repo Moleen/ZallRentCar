@@ -1,8 +1,21 @@
 
 
 function logout() {
-  $.removeCookie("token", { path: "/" });
-  window.location.reload();
+  Swal.fire({
+    position: "top",
+    text: "Anda yakin untuk logout?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+        $.removeCookie('token');
+        localStorage.setItem('logout','true')
+        window.location.reload()
+    } 
+  });
 }
 
 function hideSidebar() {
@@ -11,4 +24,17 @@ function hideSidebar() {
     $("body").css("grid-template-columns", "5rem 1fr 1fr");
   });
 }
+
+
+
+$('.nav.menu .nav-link').each(function(){
+  path = $(this).attr('href')
+  if(window.location.pathname.includes(path)){
+    $(this).removeClass('text-white')
+    $(this).addClass('text-primary')
+    $(this).addClass('active');
+    $(this).parent().children('b').removeAttr('hidden');
+  }
+})
+
 

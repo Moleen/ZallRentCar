@@ -1,5 +1,4 @@
-
-from flask import Flask,render_template,request,jsonify, redirect,url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import dashboard
 import api
 from dbconnection import db
@@ -20,69 +19,52 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
-        return render_template('main/home_page.html', data = data,user_info=user_info)
+        return render_template('main/home_page.html', data=data, user_info=user_info)
     except jwt.ExpiredSignatureError:
-        return render_template('main/home_page.html', data = data)
+        return render_template('main/home_page.html', data=data)
     except jwt.exceptions.DecodeError:
-        return render_template('main/home_page.html', data = data)
+        return render_template('main/home_page.html', data=data)
 
-
-# Login tes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-
         pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
         user = db.users.find_one({"username": username, "password": pw})
-
         if user:
             payload = {
                 "user_id": user['user_id'],
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
             }
-            
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-
-            return jsonify({
-                'result' : 'success',
-                'token' : token,
-            })
-        
+            return jsonify({'result': 'success', 'token': token})
         else:
-            return jsonify({
-
-                'msg' : 'Invalid username or password'
-
-            })
+            return jsonify({'msg': 'Invalid username or password'})
     else:
-
         msg = request.args.get('msg')
-
         try:
             payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
-            msg=payload['message']
-            redirect=payload['redirect']
-            return render_template('main/login.html', msg=msg,redirect=redirect)
+            msg = payload['message']
+            redirect = payload['redirect']
+            return render_template('main/login.html', msg=msg, redirect=redirect)
         except:
             return render_template('main/login.html')
 
 @app.route('/transaksi')
 def transaksiUser():
     token_receive = request.cookies.get("token")
-    
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
         data = db.transaction.find({"user_id": payload["user_id"]})
-        return render_template('main/transaction.html', data = data,user_info=user_info)
+        return render_template('main/transaction.html', data=data, user_info=user_info)
     except jwt.ExpiredSignatureError:
-        msg = createSecretMessage('Akses transaksi login terlebih dahulu',SECRET_KEY=SECRET_KEY,redirect='/transaksi')
-        return redirect(url_for('login', msg = msg))
+        msg = createSecretMessage('Akses transaksi login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/transaksi')
+        return redirect(url_for('login', msg=msg))
     except jwt.exceptions.DecodeError:
-        msg = createSecretMessage('Akses transaksi login terlebih dahulu',SECRET_KEY=SECRET_KEY,redirect='/transaksi')
-        return redirect(url_for('login', msg = msg))
+        msg = createSecretMessage('Akses transaksi login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/transaksi')
+        return redirect(url_for('login', msg=msg))
 
 @app.route('/transaksi/<id>')
 def payment(id):
@@ -90,63 +72,53 @@ def payment(id):
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
-        data = db.transaction.find_one({'order_id' : id})
-        if data :
+        data = db.transaction.find_one({'order_id': id})
+        if data:
             token = data['transaction_token']
-            return render_template('main/payment.html', data = data, token = token, user_info = user_info)
+            return render_template('main/payment.html', data=data, token=token, user_info=user_info)
         else:
             return redirect(url_for('transaksiUser'))
-        
     except jwt.ExpiredSignatureError:
-        msg = createSecretMessage('Akses transaksi login terlebih dahulu',SECRET_KEY=SECRET_KEY,redirect='/transaksi')
-        return redirect(url_for('login', msg = msg))
+        msg = createSecretMessage('Akses transaksi login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/transaksi')
+        return redirect(url_for('login', msg=msg))
     except jwt.exceptions.DecodeError:
-        msg = createSecretMessage('Akses transaksi login terlebih dahulu',SECRET_KEY=SECRET_KEY,redirect='/transaksi')
-        return redirect(url_for('login', msg = msg))
+        msg = createSecretMessage('Akses transaksi login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/transaksi')
+        return redirect(url_for('login', msg=msg))
 
 @app.route('/detail-mobil')
 def detail():
     id = request.args.get('id')
-    data = db.dataMobil.find_one({'id_mobil' : id})
-
-    # MEMBUAT KONDISI USER SUDAH LOGIN ATAU BELUM
+    data = db.dataMobil.find_one({'id_mobil': id})
     token_receive = request.cookies.get("token")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
-        return render_template('main/car-details.html', data = data,user_info=user_info)
+        return render_template('main/car-details.html', data=data, user_info=user_info)
     except jwt.ExpiredSignatureError:
-        return render_template('main/car-details.html', data = data)
+        return render_template('main/car-details.html', data=data)
     except jwt.exceptions.DecodeError:
-        return render_template('main/car-details.html', data = data)
+        return render_template('main/car-details.html', data=data)
 
-
-# Profile 
 @app.route('/profile', methods=['GET'])
 def get_profile():
     token_receive = request.cookies.get("token")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
-
-        # data ada disini
         data = db.users.find({})
-        
-        return render_template('main/profil.html', data = data,user_info=user_info)
+        return render_template('main/profil.html', data=data, user_info=user_info)
     except jwt.ExpiredSignatureError:
         msg = createSecretMessage('login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/profile')
-        return redirect(url_for('login', msg = msg))
+        return redirect(url_for('login', msg=msg))
     except jwt.exceptions.DecodeError:
         msg = createSecretMessage('login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/profile')
-        return redirect(url_for('login', msg = msg))
+        return redirect(url_for('login', msg=msg))
 
-# Edit Profil
 @app.route('/profile', methods=['POST'])
 def update_profile():
     token = request.headers.get('Authorization')
     if not token:
         return jsonify({'result': 'unsuccess', 'msg': 'Token is missing'}), 401
-
     try:
         data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
         user_id = data['user_id']
@@ -163,7 +135,6 @@ def update_profile():
                 ktp_image_path = f'ktp_images/{user_id}.jpg'
                 ktp_image.save(ktp_image_path)
                 updates['ktp_image_path'] = ktp_image_path
-
             db.users.update_one({'user_id': user_id}, {'$set': updates})
             return jsonify({'result': 'success', 'msg': 'Profile updated successfully'})
         else:
@@ -173,12 +144,8 @@ def update_profile():
     except jwt.InvalidTokenError:
         return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
 
-
-
 app.register_blueprint(dashboard.dashboard)
 app.register_blueprint(api.api)
 
- 
 if __name__ == '__main__':
     app.run(debug=True)
-    # tessss

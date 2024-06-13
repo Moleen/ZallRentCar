@@ -1,34 +1,59 @@
 {% extends 'main/main_layout.html' %}
-{% block title %}| Detail - {{ data.merek }} {{ data.model }} {% endblock %}
+{% block title %}| Detail - {{ data.merek }} {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main/car_details.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/datepicker/bootstrap-datepicker.min.css') }}">
 {% endblock %}
 
 {% block js %}
-<script src="{{ url_for('static', filename='js/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main/car_details.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100 car-details">
-    <div class="card w-75">
-        <img src="{{ data.image_url }}" class="card-img-top" alt="{{ data.merek }} {{ data.model }}">
-        <div class="card-body">
-            <h5 class="card-title">Detail {{ data.merek }} {{ data.model }}</h5>
-            <p class="card-text"><strong>Merek:</strong> {{ data.merek }}</p>
-            <p class="card-text"><strong>Model:</strong> {{ data.model }}</p>
-            <p class="card-text"><strong>Status:</strong> {{ data.status }}</p>
-            <p class="card-text"><strong>Harga per hari:</strong> <span data-target="currency">{{ data.harga }}</span></p>
+<div class="container">
+    <div style="height: 150px;"></div>
 
-        </div>
-        <div class="card-footer">
-            {% if data.status == 'Tersedia' %}
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Pesan</button>
-            {% else %}
-            <button class="btn btn-secondary" disabled>Tidak Tersedia</button>
-            {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <img width="100%" height="300px" src="{{ url_for('static', filename='gambar/' + data.gambar) }}" alt="Car Image" style="object-fit: cover;">
+                </div>
+                <div class="col-md-6">
+                    <table class="table">
+                        <tr>
+                            <th>Merek</th>
+                            <td>{{ data.merek }}</td>
+                        </tr>
+                        <tr>
+                            <th>No. Plat</th>
+                            <td>{{ data.plat_nomor }}</td>
+                        </tr>
+                        <tr>
+                            <th>Warna</th>
+                            <td>{{ data.warna }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ data.status }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                {% if data.status == 'Tersedia' %}
+                                <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModalCenter">Rental</a>
+                                    {% elif user_info %}
+                                    <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalCenter">Rental</a>
+                                {% else %}
+                                <button class="btn btn-secondary" disabled>Login dahulu</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -38,7 +63,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ data.merek }} {{ data.model }}</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ data.merek }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -50,8 +75,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary"
-                    onclick="createTransaction('{{data.id_mobil}}')">Pesan</button>
+                {% if user_info %}
+                <button type="button" class="btn btn-primary" id="btn_pesan"
+                    onclick="createTransaction(id_mobil = '{{data.id_mobil}}', user_id ='{{user_info.user_id}}')">Pesan</button>
+                {% endif %}
             </div>
         </div>
     </div>

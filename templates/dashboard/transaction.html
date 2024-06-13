@@ -13,7 +13,10 @@
 
 <div class="container-fluid p-0 px-4 data">
 
-  <div class="row g-3 align-items-center mb-3">
+  <div class="row g-3 align-items-center">
+    <div class="col">
+      <h2 class="text-primary m-0">Transaksi</h2>
+    </div>
     <div class="col-auto">
       <a class="btn btn-primary" role="button" href="/dashboard/product/add-data">Tambah Transaksi</a>
     </div>
@@ -26,7 +29,7 @@
       </select>
     </div>
   </div>
-  <div class="table_data">
+  <div class="table_data py-4">
 
     <table class="shadow">
       <thead>
@@ -47,7 +50,7 @@
         <tr>
           <td>{{loop.index}}</th>
           <td>{{dt.item}}</td>
-          <td>{{dt.user}}</td>
+          <td>{{dt.penyewa}}</td>
           <td>{{dt.lama_rental}}</td>
           <td>{{dt.total}}</td>
           <td>{{dt.date_rent}}</td>

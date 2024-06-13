@@ -16,7 +16,7 @@ function loginDashboard() {
       success: function (response) {
         if (response["result"] == "success") {
           alert(`status  :${response["result"]} login berhasil`);
-          $.cookie("token", response["token"], { path: "/" });
+          $.cookie("tokenDashboard", response["token"], { path: "/" });
           window.location.replace("/dashboard");
         } else {
           alert("login gagal");

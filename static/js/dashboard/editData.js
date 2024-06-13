@@ -12,26 +12,27 @@ $(document).ready(function () {
   });
 });
 
-function addData() {
+function updateData(id_mobil) {
   var formData = new FormData();
+  formData.append("id_mobil", id_mobil);
   formData.append("gambar", $("#input-file")[0].files[0]);
   formData.append("merek", $("#merek").val());
   formData.append("seat", $("#seat").val());
   formData.append("transmisi", $("#transmisi").val());
   formData.append("harga", $("#harga").val());
-
+  $(this).attr('disabled', true)
   $.ajax({
-    url: "add-data",
+    url: "update-data",
     type: "post",
     data: formData,
     contentType: false,
     processData: false,
     success: function (response) {
       if (response["result"] == "success") {
-        localStorage.setItem('tambahData','true')
+        localStorage.setItem("updateData", "true");
         window.location.replace("/data_mobil");
       } else {
-        toastr.warning(response['msg']);
+        toastr.warning(response["msg"]);
       }
     },
   });

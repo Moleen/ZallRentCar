@@ -13,7 +13,7 @@ dashboard = Blueprint('dashboard', __name__)
 # GET METHODS
 @dashboard.route('/dashboard')
 def dashboard_page():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenDashboard")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
@@ -23,9 +23,9 @@ def dashboard_page():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
 
-@dashboard.route('/dashboard/data_mobil')
+@dashboard.route('/data_mobil')
 def data_mobil():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenDashboard")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
@@ -36,22 +36,23 @@ def data_mobil():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/data_mobil/<id>')
-def data_mobilDetail(id):
-    token_receive = request.cookies.get("token")
+@dashboard.route('/data_mobil/edit')
+def data_mobilDetail():
+    id = request.args.get('id')
+    token_receive = request.cookies.get("tokenDashboard")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
-        data = db.transaction.find_one({'order_id' : id})
-        return render_template('dashboard/car-detail.html',user_info=user_info, data=data)
+        data = db.dataMobil.find_one({'id_mobil' : id})
+        return render_template('dashboard/edit_mobil.html',user_info=user_info, data=data)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/transaction')
+@dashboard.route('/transaction')
 def transaction():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenDashboard")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
@@ -62,9 +63,22 @@ def transaction():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
     
-@dashboard.route('/dashboard/data_mobil/add-data')
+@dashboard.route('/settings')
+def setting():
+    token_receive = request.cookies.get("tokenDashboard")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        data = db.transaction.find({})
+        return render_template('dashboard/setting.html',user_info=user_info, data=data)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
+    
+@dashboard.route('/data_mobil/add-data')
 def addData():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenDashboard")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
@@ -102,10 +116,10 @@ def dashboard_login_post():
             'msg' : 'password atau username salah'
         })
     
-@dashboard.route('/dashboard/data_mobil/add-data', methods = ['POST'])
+@dashboard.route('/data_mobil/add-data', methods = ['POST'])
 def addData_post():
 
-    payload = jwt.decode(request.cookies.get("token"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+    payload = jwt.decode(request.cookies.get("tokenDashboard"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
     id_mobil = uuid.uuid1()
     file = request.files['gambar']
@@ -138,12 +152,38 @@ def addData_post():
 
     return jsonify({'result':'success'})
 
+@dashboard.route('/data_mobil/update-data', methods = ['POST'])
+def updateData_post():
 
+    payload = jwt.decode(request.cookies.get("tokenDashboard"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+    user_info = db.users_admin.find_one({"username": payload["user"]})
+    id_mobil = request.form.get('id_mobil')
+    merek = request.form.get('merek')
+    seat = request.form.get('seat')
+    transmisi = request.form.get('transmisi')
+    harga = request.form.get('harga')
 
-# list mobil
-@dashboard.route('/api/daftar_mobil')
-def api_daftar_mobil():
-    data_mobil = list(db.dataMobil.find({}))
-    for mobil in data_mobil:
-        mobil['_id'] = str(mobil['_id'])  # Convert ObjectId to string
-    return jsonify({'data_mobil': data_mobil})
+    try:
+        file = request.files['gambar']
+        extension = file.filename.split('.')[-1]
+        upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
+        gambar_name = f'mobil-{upload_date}.{extension}'
+        file.save(f'static/gambar/{gambar_name}')
+    except:
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'Masukkan gambar'
+        }) 
+    
+    db.dataMobil.update_one({'id_mobil' : id_mobil},
+    {'$set':{
+        'user' : user_info['username'],
+        'merek' : merek.capitalize(),
+        'gambar' : gambar_name,
+        'seat' : seat.capitalize(),
+        'transmisi' : transmisi.capitalize(),
+        'harga' : harga.capitalize(),
+        'status' : 'tersedia'.capitalize(),
+    }})
+
+    return jsonify({'result':'success'})

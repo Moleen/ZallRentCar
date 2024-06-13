@@ -1,3 +1,11 @@
+
+.input input{
+    border: none;
+}
+.input input:focus{
+    outline: none;
+}
+
 .table_data table {
     width: 100%;
 }
@@ -5,7 +13,7 @@
 .table_data table thead th {
     padding: 1rem;
     color: aliceblue    ;
-    background-color: #0d6dfdb6;
+    background-color: #0d6dfd;
 }
 
 .table_data table th:first-child {
@@ -27,9 +35,12 @@
 .table-danger {
     background-color: rgba(255, 0, 0, 0.137);
 }
+.table-warning {
+    background-color: rgba(255, 251, 0, 0.137);
+}
 
 .table_data table tr > *:nth-child(1) { width:2rem; }
 .table_data table tr > *:nth-child(2) { width:20%; }
 .table_data table tr > *:nth-child(4) { width:15%; }
 .table_data table tr > *:nth-child(5) { width:15%; }
-.table_data table tr > *:nth-child(6) { width:15%; }
+/* .table_data table tr > *:nth-child(7) { width:5rem; } */

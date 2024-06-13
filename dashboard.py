@@ -137,3 +137,13 @@ def addData_post():
     })
 
     return jsonify({'result':'success'})
+
+
+
+# list mobil
+@dashboard.route('/api/daftar_mobil')
+def api_daftar_mobil():
+    data_mobil = list(db.dataMobil.find({}))
+    for mobil in data_mobil:
+        mobil['_id'] = str(mobil['_id'])  # Convert ObjectId to string
+    return jsonify({'data_mobil': data_mobil})

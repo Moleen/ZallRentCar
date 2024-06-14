@@ -92,9 +92,10 @@ def payment(id):
 def detail():
     id = request.args.get('id')
 
-    data = db.dataMobil.find_one({'id_mobil' : id})
+    data = db.dataMobil.find_one({'id_mobil': id})
+    if data:
+        data['harga'] = int(data.get('harga', 0))
 
-    # MEMBUAT KONDISI USER SUDAH LOGIN ATAU BELUM
     token_receive = request.cookies.get("tokenMain")
 
     try:
@@ -105,6 +106,7 @@ def detail():
         return render_template('main/car-details.html', data=data)
     except jwt.exceptions.DecodeError:
         return render_template('main/car-details.html', data=data)
+
 
 @app.route('/profile', methods=['GET'])
 def get_profile():

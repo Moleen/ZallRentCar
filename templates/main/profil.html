@@ -1,46 +1,73 @@
 {% extends 'main/main_layout.html' %}
 
-{% block js %}
-<script src="{{ url_for('static', filename='js/main/profile.js') }}"></script>
-
+{% block title %}
+| Setting
 {% endblock %}
 
-{% block title %}
-    | Setting
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main/profil.css') }}">
 {% endblock %}
 
 {% block content %}
-<section style="margin-top: 10rem;">
-
-    <!-- Profile Section -->
-    <div class="container">
-        <div class="d-flex align-items-center justify-content-between bg-primary text-white rounded px-3 py-2 mb-4">
-            <img src="path_to_profile_icon.png" alt="Profile Icon" class="rounded-circle" width="50">
-            <div class="h4 mb-0">Muhammad Afgan</div>
-        </div>
-
-        <h2 class="text-center font-weight-bold mb-4">Informasi Profil</h2>
-
-        <div class="mb-3">
-            <label class="font-weight-bold">Nama Lengkap</label>
-            <input type="text" class="form-control" value="{{user_info.username}}" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label class="font-weight-bold">Alamat</label>
-            <input type="text" class="form-control" value="" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label class="font-weight-bold">Email</label>
-            <input type="email" class="form-control" value="{{user_info.email}}" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label class="font-weight-bold">No Telp</label>
-            <input type="text" class="form-control" value="{{user_info.phone}}" readonly>
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-12 col-md-12">
+                <div class="card user-card-full">
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-sm-4 bg-c-lite-green user-profile">
+                            <div class="card-block text-center text-white">
+                                <div class="m-b-25">
+                                    <img src="{{ url_for('static', filename='Gambar/naruto.png') }}" class="img-radius">
+                                    <input type="file" id="fileInput" style="display:none;" accept="image/*">
+                                </div>
+                                <h6 class="f-w-600">Naruto Uzumaki</h6>
+                                <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"
+                                   id="editIcon" style="cursor:pointer;"></i>
+                                   <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="card-block">
+                                <h6 class="m-b-20 p-b-5 b-b-default f-w-600">
+                                    <i class="fa-regular fa-id-card"></i> Selamat Datang Di Halaman Profil
+                                </h6>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">
+                                            <i class="fa-solid fa-envelope"></i> Email
+                                        </p>
+                                        <h6 class="text-muted f-w-400">Mario@gmail.com</h6>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">
+                                            <i class="fa-solid fa-mobile-screen-button"></i> No Telpon
+                                        </p>
+                                        <h6 class="text-muted f-w-400">82248139052</h6>
+                                    </div>
+                                </div>
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600"></h6>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">
+                                            <i class="fa-solid fa-map-location"></i> Alamat
+                                        </p>
+                                        <h6 class="text-muted f-w-400">Desa Konoha</h6>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">Status</p>
+                                        <h6 class="text-muted f-w-400">User</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-</section>
 {% endblock %}

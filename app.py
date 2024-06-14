@@ -92,24 +92,6 @@ def payment(id):
 def detail():
     id = request.args.get('id')
 
-    data = db.dataMobil.find_one({'id_mobil' : id})
-
-    # MEMBUAT KONDISI USER SUDAH LOGIN ATAU BELUM
-    token_receive = request.cookies.get("tokenMain")
-
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"user_id": payload["user_id"]})
-        return render_template('main/car-details.html', data=data, user_info=user_info)
-    except jwt.ExpiredSignatureError:
-        return render_template('main/car-details.html', data=data)
-    except jwt.exceptions.DecodeError:
-        return render_template('main/car-details.html', data=data)
-
-@app.route('/detail-mobil')
-def detail():
-    id = request.args.get('id')
-
     data = db.dataMobil.find_one({'id_mobil': id})
     if data:
         data['harga'] = int(data.get('harga', 0))
@@ -124,6 +106,22 @@ def detail():
         return render_template('main/car-details.html', data=data)
     except jwt.exceptions.DecodeError:
         return render_template('main/car-details.html', data=data)
+
+
+@app.route('/profile', methods=['GET'])
+def get_profile():
+    token_receive = request.cookies.get("tokenMain")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        data = db.users.find({})
+        return render_template('main/profil.html', data=data, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        msg = createSecretMessage('login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/profile')
+        return redirect(url_for('login', msg=msg))
+    except jwt.exceptions.DecodeError:
+        msg = createSecretMessage('login terlebih dahulu', SECRET_KEY=SECRET_KEY, redirect='/profile')
+        return redirect(url_for('login', msg=msg))
 
 @app.route('/profile', methods=['POST'])
 def update_profile():

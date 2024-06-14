@@ -133,8 +133,3 @@ footer {
     margin-top: 50px;
 }
 
-.footer{
-    min-height: 20rem;
-    background: rgb(1, 65, 159);
-    background: linear-gradient(0deg, rgba(1, 65, 159, 1) 0%, rgba(13, 110, 253, 1) 100%);
-}

@@ -1,5 +1,10 @@
 {% extends 'main/main_layout.html' %}
 
+{% block js %}
+<script src="{{ url_for('static', filename='js/main/profile.js') }}"></script>
+
+{% endblock %}
+
 {% block title %}
     | Setting
 {% endblock %}
@@ -18,27 +23,22 @@
 
         <div class="mb-3">
             <label class="font-weight-bold">Nama Lengkap</label>
-            <input type="text" class="form-control" value="Muhammad Afgan" readonly>
+            <input type="text" class="form-control" value="{{user_info.username}}" readonly>
         </div>
 
         <div class="mb-3">
             <label class="font-weight-bold">Alamat</label>
-            <input type="text" class="form-control" value="Depok, Jawa Barat" readonly>
+            <input type="text" class="form-control" value="" readonly>
         </div>
 
         <div class="mb-3">
             <label class="font-weight-bold">Email</label>
-            <input type="email" class="form-control" value="afgan123@gmail.com" readonly>
+            <input type="email" class="form-control" value="{{user_info.email}}" readonly>
         </div>
 
         <div class="mb-3">
             <label class="font-weight-bold">No Telp</label>
-            <input type="text" class="form-control" value="123 456 789" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label class="font-weight-bold">KTP</label>
-            <input type="file" class="form-control">
+            <input type="text" class="form-control" value="{{user_info.phone}}" readonly>
         </div>
     </div>
 

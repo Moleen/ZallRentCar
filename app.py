@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenMain")
     data = db.dataMobil.find({})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -71,7 +71,7 @@ def login():
 
 @app.route('/transaksi')
 def transaksiUser():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenMain")
     
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -115,15 +115,12 @@ def detail():
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    token_receive = request.cookies.get("token")
+    token_receive = request.cookies.get("tokenMain")
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
-
-        # data ada disini
-        data = db.users.find({})
         
-        return render_template('main/profil.html', data = data,user_info=user_info)
+        return render_template('main/profil.html',user_info=user_info)
     except jwt.ExpiredSignatureError:
         msg = createSecreteMassage('login terlebih dahulu')
         return redirect(url_for('login', msg = msg))

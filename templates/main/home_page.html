@@ -1,57 +1,129 @@
-
 {% extends 'main/main_layout.html' %}
 
 {% block css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css"
+    integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main/home_page.css') }}">
 {% endblock %}
 
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{ url_for('static', filename='js/main/home_page.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 <section class="main-section mb-4">
     <div class="text-content">
-        <h1>Lorem ipsum dolor sit amet</h1>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-            Cum sociis natoque penatibus et</p>
+        <h1>Selamat datang di ZallRentCar</h1>
+        <p class="fs-6">Kami adalah perusahaan penyewaan mobil yang berkomitmen untuk memberikan layanan berkualitas tinggi dengan harga yang terjangkau. Dengan pengalaman bertahun-tahun di industri ini, kami memahami pentingnya kenyamanan dan keandalan dalam setiap perjalanan Anda</p>
         <a class="btn" href="#list-mobil">Get Started</a>
     </div>
     <div class="image-content">
-        <img src="../../static/Gambar/fortuner.png" alt="Image Placeholder">
+        <img src="../../static/Gambar/xpander.png" alt="Image Placeholder">
     </div>
 </section>
 
-<section class="about-section mb-4">
-    <h2>About us</h2>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
-        sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
-        ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo,
-        fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-        <!-- test123 -->
+<section class="about-section mb-4 d-flex justify-content-center">
+    <div class="text-center w-100">
+
+        <h2 class="fs-2 mb-3 text-primary">Mengapa memilih kita ?</h2>
+
+        <div class="row row-cols-3 gx-3" id="">
+            <div class="col">
+                <div class="rounded p-3 item shadow">
+                    <img src="{{ url_for('static', filename='icon/believe.png') }}" alt="" style="height: 4rem; width:4rem;">
+                    <h4 class="text-primary">Kepercayaan</h4>
+                    <p class="text-justify"> Banyak dari pelanggan kami adalah pelanggan setia yang terus kembali menggunakan layanan kami.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="rounded p-3 item shadow">
+                    <img src="{{ url_for('static', filename='icon/fast.png') }}" alt="" style="height: 4rem; width:4rem;">
+                    <h4 class="text-primary">Mudah dan cepat</h4>
+                    <p class="text-justify">Pemesanan begitu mudah dilakukan karena prosesnya tidak kompleks dan sangat ramah pengguna, memastikan pengalaman yang lancar.
+                    </p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="rounded p-3 item shadow">
+                    <img src="{{ url_for('static', filename='icon/Vector.png') }}" alt="" style="height: 4rem; width:4rem;">
+                    <h4 class="text-primary">Fleksibel</h4>
+                    <p class="text-justify">penyewaan yang fleksibel sesuai dengan kebutuhan Anda, baik untuk perjalanan singkat maupun jangka panjang.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
-<section class="flow mb-4">
-    <h2 class="pt-4">Bagaimana memulainya?</h2>
-    <img src="{{ url_for('static', filename='gambar/flow.png') }}" alt="" cl>
+<section class="flow-section">
+    <div class="text-center border p-5 rounded cont">
+        <h2 class="fs-2 mb-4 pb-3">Bagaimana Memulainya?</h2>
+        <div class="row row-cols-4 gx-3">
+
+            <div class="col">
+                <div class="col-item rounded shadow position-relative">
+                    <div class="bg-primary text-center rounded-pill m-auto shadow-sm" id="number">1</div>
+                    <h4 class="title-number">Login</h4>
+                    <div class="text-center p-2">Sebelum memesan login terlebih dahulu atau mendaftar</div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="col-item rounded shadow position-relative">
+                    <div class="bg-primary text-center rounded-pill m-auto shadow-sm" id="number">2</div>
+                    <h4 class="title-number">Pilih Mobil</h4>
+                    <div class="text-center p-2">Pilih mobil yang ingin anda rental</div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="col-item rounded shadow position-relative">
+                    <div class="bg-primary text-center rounded-pill m-auto shadow-sm" id="number">3</div>
+                    <h4 class="title-number">Bayar</h4>
+                    <div class="text-center p-2">Setelah memilih mobil anda akan di arahkan ke pembayaran</div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="col-item rounded shadow position-relative">
+                    <div class="bg-primary text-center rounded-pill m-auto shadow-sm" id="number">4</div>
+                    <h4 class="title-number">Datang ke kantor</h4>
+                    <div class="text-center p-2">datang ke kantor untuk menyerahkan bukti pembayaran dan ktp setelah itu mobil siap digunakan</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
-<section class="car-list-section p-4" id="list-mobil">
-    <h2 class="mb-3">List Mobil</h2>
+
+
+
+
+
+<section class="car-list-section" id="list-mobil">
+    <h2 class="mb-3 text-primary">List Mobil</h2>
     <div class="car-list owl-carousel">
 
         {% for dt in data %}
-        <div class="card">
-            <div class="card-body p-4">
-                <h3 class="card-title mb-4">{{dt.merek}}</h3>
-                <img src="{{ url_for('static', filename='gambar/') }}{{dt.gambar}}" alt="{{dt.gambar}}" class="rounded card-image mb-4 ">
+        <div class="card border-1 rounded-4">
+            <div class="card-body">
+                <h3 class="card-title mb-2 text-primary">{{dt.merek}}</h3>
+                <img src="{{ url_for('static', filename='gambar/') }}{{dt.gambar}}" alt="{{dt.gambar}}"
+                    class="rounded card-image mb-3 ">
                 <div class="d-flex flex-column align-items-center">
-                    <ul class="list-detail m-0 p-0 py-4 w-75">
-                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}" >{{dt.seat}}</li>
-                        <li class="d-flex"><img src="{{ url_for('static', filename='icon/manual-transmission-icon.svg') }}" >{{dt.transmisi}}</li>
+                    <ul class="list-detail m-0 p-0 py-4 w-10">
+                        <li class="d-flex"><img
+                                src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}">{{dt.seat}}</li>
+                        <li class="d-flex"><img
+                                src="{{ url_for('static', filename='icon/manual-transmission-icon.svg') }}">{{dt.transmisi}}
+                        </li>
                         <li class="d-flex ms-auto" data-target="currency">{{dt.harga}}</li>
                     </ul>
                     <a class="btn car-btn btn-primary m-auto w-75" href="/detail-mobil?id={{dt.id_mobil}}">Detail</a>
@@ -59,51 +131,17 @@
             </div>
         </div>
         {% else %}
-            
+
         {% endfor %}
 
     </div>
 </section>
+
+<footer class="bg-primary footer m-0">
+    
+    <div class="">
+
+    </div>
+
+</footer>
 {% endblock %}
-
-<!-- <div class="car-item">
-    <h3 class="car-title">Mitsubishi Xpander</h3>
-    <p class="car-category">SUV</p>
-    <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-    <div class="car-details">
-        <p class="car-capacity">
-            <i class="fas fa-user">7</i>
-            <i class="fas fa-cogs">Matic</i>
-            <i class="car-price">Rp 800.000</i>
-        </p>
-
-        <button class="btn car-btn">Detail</button>
-    </div>
-</div>
-<div class="car-item">
-    <h3 class="car-title">Mitsubishi Xpander</h3>
-    <p class="car-category">SUV</p>
-    <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-    <div class="car-details">
-        <p class="car-capacity">
-            <i class="fas fa-user">7</i>
-            <i class="fas fa-cogs">Matic</i>
-            <i class="car-price">Rp 800.000</i>
-        </p>
-
-        <button class="btn car-btn">Detail</button>
-    </div>
-</div>
-<div class="car-item">
-    <h3 class="car-title">Mitsubishi Xpander</h3>
-    <p class="car-category">SUV</p>
-    <img src="../../static/gambar/alpart.png" alt="Mitsubishi Xpander" class="car-image">
-    <div class="car-details">
-        <p class="car-capacity">
-            <i class="fas fa-user">7</i>
-            <i class="fas fa-cogs">Matic</i>
-            <i class="car-price">Rp 800.000</i>
-        </p>
-        <button class="btn car-btn">Detail</button>
-    </div>
-</div> -->

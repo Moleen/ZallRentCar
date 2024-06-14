@@ -11,73 +11,77 @@
 
 {% block content %}
 <div class="container">
-    <div style="height: 150px;"></div>
-
-    <div class="card">
+    <div class="card shadow-lg">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <img width="100%" height="300px" src="{{ url_for('static', filename='gambar/' + data.gambar) }}" alt="Car Image" style="object-fit: cover;">
+                    <img src="{{ url_for('static', filename='gambar/' + data.gambar) }}" alt="Car Image"
+                        class="img-fluid rounded" style="object-fit: cover; height: 100%;">
                 </div>
                 <div class="col-md-6">
+                    <h3 class="mb-3">{{ data.merek }}</h3>
                     <table class="table">
-                        <tr>
-                            <th>Merek</th>
-                            <td>{{ data.merek }}</td>
-                        </tr>
-                        <tr>
-                            <th>No. Plat</th>
-                            <td>{{ data.plat_nomor }}</td>
-                        </tr>
-                        <tr>
-                            <th>Warna</th>
-                            <td>{{ data.warna }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Status</th>
-                            <td>{{ data.status }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="text-center">
-                                {% if data.status == 'Tersedia' %}
-                                <a href="#" class="btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModalCenter">Rental</a>
-                                    {% elif user_info %}
-                                    <a href="#" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter">Rental</a>
-                                {% else %}
-                                <button class="btn btn-secondary" disabled>Login dahulu</button>
-                                {% endif %}
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Transmisi</th>
+                                <td>{{ data.transmisi }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Seat</th>
+                                <td>{{ data.seat }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Harga</th>
+                                <td>Rp {{ data.harga }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Status</th>
+                                <td>{{ data.status }}</td>
+                            </tr>
+                        </tbody>
                     </table>
+                    <div class="text-center mt-4">
+                        {% if data.status == 'Tersedia' %}
+                        <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#rentalModal">Rental</a>
+                        {% elif user_info %}
+                        <a href="#" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#rentalModal">Rental</a>
+                        {% else %}
+                        <button class="btn btn-secondary" disabled>Login dahulu</button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<!-- Rental Modal -->
+<div class="modal fade" id="rentalModal" tabindex="-1" role="dialog" aria-labelledby="rentalModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ data.merek }}</h1>
+                <h5 class="modal-title" id="rentalModalLabel">{{ data.merek }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="">
+                <form>
                     <div class="mb-3">
-                        <p>Masukkan hari rental</p>
-                        <input type="number" name="hari" id="hari" class="form-control">
+                        <label for="hari" class="form-label">Masukkan hari rental</label>
+                        <input type="number" name="hari" id="hari" class="form-control" min="1" required>
+                        <input type="hidden" id="harga_per_hari" value="{{ data.harga }}">
+                    </div>
+                    <div id="total_price" class="mb-3">
+                        Total Harga: Rp 0
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 {% if user_info %}
                 <button type="button" class="btn btn-primary" id="btn_pesan"
-                    onclick="createTransaction(id_mobil = '{{data.id_mobil}}', user_id ='{{user_info.user_id}}')">Pesan</button>
+                    onclick="createTransaction('{{ data.id_mobil }}', '{{ user_info.user_id }}')">Pesan</button>
                 {% endif %}
             </div>
         </div>

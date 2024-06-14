@@ -97,12 +97,22 @@ def payment(id):
 @app.route('/detail-mobil')
 def detail():
     id = request.args.get('id')
-    data = db.dataMobil.find_one({'id_mobil' : id})
-    print(id)
-    return render_template('main/car-details.html', data = data)
 
+    data = db.dataMobil.find_one({'id_mobil': id})
+    if data:
+        data['harga'] = int(data.get('harga', 0))
 
-# Profile 
+    token_receive = request.cookies.get("tokenMain")
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        return render_template('main/car-details.html', data=data, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return render_template('main/car-details.html', data=data)
+    except jwt.exceptions.DecodeError:
+        return render_template('main/car-details.html', data=data)
+
 @app.route('/profile', methods=['GET'])
 def get_profile():
     token_receive = request.cookies.get("token")

@@ -2,6 +2,7 @@ function createTransaction(id_mobil, user_id) {
   $('#btn_pesan').attr('disabled', true);
   var hari = $("#hari").val();
   $.ajax({
+
       url: "/api/create_transaction",
       type: "post",
       data: {
@@ -23,6 +24,7 @@ function createTransaction(id_mobil, user_id) {
       error: function() {
           toastr.error('Something went wrong, please try again later.', 'Error');
           $('#btn_pesan').attr('disabled', false);
+
       }
   });
 }

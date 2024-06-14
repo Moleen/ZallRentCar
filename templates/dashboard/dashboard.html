@@ -1,7 +1,100 @@
 {% extends 'dashboard/layout_dashboard.html' %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/tampilan.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main/home_page.css') }}">
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/dashboard/tampilan.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+{% endblock %}
 
 {% block content %}
+<h1>Dashboard</h1>
+<div class="main-content">
+    <section class="dashboard">
+        <div class="data-dashbaord">
+            <div class="card weekly-sales">
+                <h3>Data Mobil</h3>
+                <i style="font-size: 50px;" class="fa-solid fa-car"></i>
+                <p>25.1k</p>
+                <p class="growth positive">+15%</p>
+                <a href="#">View Report</a>
+            </div>
+            <div class="card weekly-orders">
+                <h3>Transaksi</h3>
+                <i style="font-size: 50px;" class="fa-solid fa-cart-shopping"></i>
+                <p>175</p>
+                <p class="growth negative">-3.5%</p>
+                <a href="#">View Report</a>
+            </div>
+            <div class="card weekly-sales">
+                <h3>Customer</h3>
+                <i style="font-size: 50px;" class="fa-regular fa-user"></i>
+                <p>230</p>
+                <p class="growth positive">+10%</p>
+                <a href="#">View More</a>
+            </div>
+            <div class="card weekly-sales">
+                <h3>Pendapatan Setahun</h3>
+                <i style="font-size: 50px;" class="fas fa-dollar-sign"></i>
+                <p>230</p>
+                <p class="growth positive">+10%</p>
+                <a href="#">View More</a>
+            </div>
+        </div>
 
-<h1>ini dashboard</h1>
+        <div id="labels-example-2"></div>
+        <div></div>
+        <div class="chart">
+            <canvas id="myChart"></canvas>
+        </div>
+
+    </section>
+
+
+
+    <!-- <div class="traffic-sources"> -->
+        <section class="car-list-section p-4" id="list-mobil">
+            <h2 class="mb-3">List Mobil</h2>
+            <div class="car-list owl-carousel">
+                {% for dt in data_mobil %}
+                <div class="card-mobil">
+                    <!-- <div class="card-body p-4">
+                        <h3 class="card-title mb-4">{{dt.merek}}</h3>
+                        <img src="{{ url_for('static', filename='gambar/') }}{{dt.gambar}}" alt="{{dt.gambar}}"
+                            class="rounded card-image mb-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <ul class="list-detail m-0 p-0 py-4 w-75">
+                                <li class="d-flex"><img
+                                        src="{{ url_for('static', filename='icon/car-seat-icon.svg') }}">{{dt.seat}}
+                                </li>
+                                <li class="d-flex"><img
+                                        src="{{ url_for('static', filename='icon/manual-transmission-icon.svg') }}">{{dt.transmisi}}
+                                </li>
+                                <li class="d-flex ms-auto" data-target="currency">{{dt.harga}}</li>
+                            </ul>
+                            <a class="btn car-btn btn-primary m-auto w-75"
+                                href="/detail-mobil?id={{dt.id_mobil}}">Detail</a>
+                        </div>
+                    </div> -->
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    <!-- </div> -->
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% endblock %}

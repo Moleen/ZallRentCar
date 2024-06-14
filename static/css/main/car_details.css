@@ -8,3 +8,38 @@
     max-height: 400px;
     object-fit: cover;
 }
+
+.container {
+    padding: 5rem;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.img-fluid {
+    border-radius: 10px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.btn-primary, .btn-success, .btn-secondary {
+    border-radius: 25px;
+    padding: 10px 20px;
+}
+
+#total_price {
+    font-weight: bold;
+    font-size: 1.2em;
+}

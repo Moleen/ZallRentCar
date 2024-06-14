@@ -4,7 +4,9 @@
     font-family: "League Spartan", sans-serif;
 }
 #toast-container.toast-top-center {
-    top: 5rem !important; 
+    top: 0;
+    left: 50% !important; 
+    transform: translate(-50%, 0rem) !important;
 }
 body {
     margin: 0;
@@ -22,7 +24,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 50px;
+    padding: 15px 10rem;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -43,8 +45,9 @@ nav {
     gap: 1.5rem;
 }
 
-nav a {
+a {
     text-decoration: none;
     color: black;
-    font-size: 1.2rem;
+    font-weight:500;
+    font-size: 1.5rem;
 }

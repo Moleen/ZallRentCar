@@ -22,7 +22,7 @@ function updateData(id_mobil) {
   formData.append("harga", $("#harga").val());
   $(this).attr('disabled', true)
   $.ajax({
-    url: "update-data",
+    url: "/data_mobil/update-data",
     type: "post",
     data: formData,
     contentType: false,

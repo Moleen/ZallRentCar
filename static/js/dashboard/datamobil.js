@@ -19,17 +19,19 @@ $(document).ready(function () {
           for (let i = 0; i < data.length; i++) {
             if (data[i].status == "Diproses") {
               button = `<ul class="dropdown-menu">
-               <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.status}}','{{dt.order_id}}')"
+               <li><a class="dropdown-item" onclick="confirm('pesanan','{{dt.id_mobil}}')"
                          role="button">Konfirmasi Pesanan</a></li>
                          </ul>`;
             } else if (data[i].status == "Digunakan") {
               button = `<ul class="dropdown-menu">
-               <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.status}}','{{dt.order_id}}')"
+               <li><a class="dropdown-item" onclick="confirm('kembali','{{dt.id_mobil}}')"
                          role="button">Konfirmasi Kembali</a></li>
                          </ul>`;
             } else {
               button = `<ul class="dropdown-menu">
                <li><a class="dropdown-item" href="/data_mobil/edit?id=${data[i].id_mobil}">Edit Mobil</a></li>
+               <li><a class="dropdown-item" onclick="confirm('hapus','{{dt.id_mobil}}')"
+                role="button">Hapus</a></li>
                          </ul>`;
             }
             var temp = `<tr>
@@ -80,10 +82,38 @@ function changeCurrency() {
   });
 }
 
-function confirmPesanan(id_mobil){
+function confirm(fitur,id_mobil) {
+  doc = {
+    pesanan: {
+      text:
+        "Pastikan client sudah datang dan menyerahkan ktp ke kantor yakin untuk konfirmasi pesanan?",
+      url: "/api/confirmPesanan",
+    },
+    kembali: {
+      text:
+        "Pastikan client sudah mengembalikan mobil, yakin untuk merubah status?",
+      url: "/api/confirmKembali",
+    },
+    hapus: {
+      text: "Yakin unutk menghapus mobil?",
+      url: "/api/delete_mobil",
+    },
+  };
+
+  if (fitur == "pesanan") {
+    text = doc.pesanan.text;
+    url = doc.pesanan.url;
+  } else if (fitur == "kembali") {
+    text = doc.kembali.text;
+    url = doc.kembali.url;
+  } else if (fitur == "hapus") {
+    text = doc.hapus.text;
+    url = doc.hapus.url;
+  }
+
   Swal.fire({
     position: "top",
-    text: "Pastikan client sudah datang dan menyerahkan ktp ke kantor yakin untuk konfirmasi pesanan?",
+    text: text,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -93,30 +123,14 @@ function confirmPesanan(id_mobil){
     if (result.isConfirmed) {
       $.ajax({
         type: "POST",
-        url: "/api/confirmPesanan",
+        url: url,
         data: {
-          id_mobil: id_mobil
-          },
-          success: function (data) {
-            location.reload()
-          }
-
-      })
-    } 
+          id_mobil: id_mobil,
+        },
+        success: function (data) {
+          location.reload();
+        },
+      });
+    }
   });
-
 }
-
-// function confirmPesanan(status,ordeid){
-//   if (status == 'Diproses'){
-//     alert('Pastikan User telah mengambil mobil')
-//     $.ajax({
-//       url: "/api/change-status",
-//       type: "POST",
-//       data: { ordeid: ordeid, status: status },
-//       success: function (data) {
-//         window.location.reload()
-//         },
-//     })
-//   }
-// }

@@ -56,14 +56,15 @@
               aria-expanded="false"></button>
             <ul class="dropdown-menu">
               {% if dt.status == 'Diproses' %}
-              <li><a class="dropdown-item" id="btn" onclick="confirmPesanan('{{dt.id_mobil}}')"
+              <li><a class="dropdown-item" id="btn" onclick="confirm('pesanan','{{dt.id_mobil}}')"
                   role="button">Konfirmasi Pesanan</a></li>
               {% elif dt.status == 'Digunakan' %}
-              <li><a class="dropdown-item" onclick="confirmPesanan('{{dt.id_mobil}}')"
+              <li><a class="dropdown-item" onclick="confirm('kembali','{{dt.id_mobil}}')"
                   role="button">Konfirmasi Kembali</a></li>
               {% else %}
               <li><a class="dropdown-item" href="/data_mobil/edit?id={{dt.id_mobil}}">Edit Mobil</a></li>
-              <li><a class="dropdown-item" href="#">Hapus</a></li>
+              <li><a class="dropdown-item" onclick="confirm('hapus','{{dt.id_mobil}}')"
+                role="button">Hapus</a></li>
               {% endif %}
             </ul>
           </td>

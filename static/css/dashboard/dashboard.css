@@ -39,6 +39,7 @@
 .content {
   grid-column: 2/-1;
   grid-row: 1/-1;
+  overflow: auto;
 }
 
 .nav-item{

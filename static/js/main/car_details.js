@@ -22,3 +22,20 @@ function createTransaction(id_mobil, user_id) {
     },
   });
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const hariInput = document.getElementById('hari');
+  const totalPriceElement = document.getElementById('total_price');
+  const hargaPerHari = parseInt(document.getElementById('harga_per_hari').value, 10); // Mengambil harga dari elemen tersembunyi
+
+  hariInput.addEventListener('input', function() {
+      const hari = parseInt(hariInput.value);
+      if (!isNaN(hari) && hari > 0) {
+          const totalPrice = hargaPerHari * hari;
+          totalPriceElement.textContent = 'Total Harga: Rp ' + totalPrice.toLocaleString('id-ID');
+      } else {
+          totalPriceElement.textContent = 'Total Harga: Rp 0';
+      }
+  });
+});

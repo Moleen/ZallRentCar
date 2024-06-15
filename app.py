@@ -143,28 +143,37 @@ def get_profile():
 # Edit Profil
 @app.route('/profile', methods=['POST'])
 def update_profile():
-    token = request.headers.get('Authorization')
-    if not token:
+    token_receive = request.cookies.get("tokenMain")
+    if not token_receive:
         return jsonify({'result': 'unsuccess', 'msg': 'Token is missing'}), 401
 
     try:
-        data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        user_id = data['user_id']
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload['user_id']
         user = db.users.find_one({'user_id': user_id})
         if user:
             updates = {
-                'full_name': request.form.get('full_name', user['full_name']),
-                'address': request.form.get('address', user['address']),
+                'username': request.form.get('username', user['username']),
                 'phone': request.form.get('phone', user['phone']),
                 'email': request.form.get('email', user['email'])
             }
-            if 'ktp_image' in request.files:
-                ktp_image = request.files.get('ktp_image')
-                ktp_image_path = f'ktp_images/{user_id}.jpg'
-                ktp_image.save(ktp_image_path)
-                updates['ktp_image_path'] = ktp_image_path
+            # Handle address separately
+            address = request.form.get('address')
+            if address:
+                updates['address'] = address
+            elif 'address' in user:
+                updates['address'] = user['address']
+            else:
+                updates['address'] = ''
+
+            if 'profile_image' in request.files:
+                profile_image = request.files.get('profile_image')
+                profile_image_path = f'static/profile_images/{user_id}.jpg'
+                profile_image.save(profile_image_path)
+                updates['profile_image_path'] = profile_image_path
 
             db.users.update_one({'user_id': user_id}, {'$set': updates})
+            print(f"Profile updated for user_id: {user_id}")  # Log for debugging
             return jsonify({'result': 'success', 'msg': 'Profile updated successfully'})
         else:
             return jsonify({'result': 'unsuccess', 'msg': 'User not found'}), 404
@@ -172,6 +181,9 @@ def update_profile():
         return jsonify({'result': 'unsuccess', 'msg': 'Token has expired'}), 401
     except jwt.InvalidTokenError:
         return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
+
+
+
 
 
 def createSecreteMassage(msg):

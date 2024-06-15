@@ -163,17 +163,17 @@ def updateData_post():
     transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
 
+    data = db.dataMobil.find_one({"id_mobil": id_mobil})
+
     try:
         file = request.files['gambar']
+        os.remove(f'static/gambar/{data['gambar']}')
         extension = file.filename.split('.')[-1]
         upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
         gambar_name = f'mobil-{upload_date}.{extension}'
         file.save(f'static/gambar/{gambar_name}')
     except:
-        return jsonify({
-            'result' : 'unsucces',
-            'msg' : 'Masukkan gambar'
-        }) 
+        gambar_name = data['gambar']
 
     db.dataMobil.update_one({'id_mobil' : id_mobil},
     {'$set':{

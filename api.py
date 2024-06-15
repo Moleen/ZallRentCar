@@ -191,7 +191,9 @@ def confirmKembali():
 @api.route('/api/delete_mobil', methods=['POST'])
 def delete_mobil():
     id_mobil = request.form.get('id_mobil')
+    data = db.dataMobil.find_one({'id_mobil' : id_mobil})
     db.dataMobil.delete_one({'id_mobil' : id_mobil})
+    os.remove(f'static/gambar/{data['gambar']}')
     return jsonify({
         'result' : 'success'
     })

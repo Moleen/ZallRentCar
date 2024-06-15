@@ -17,7 +17,11 @@ def dashboard_page():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
         user_info = db.users_admin.find_one({"username": payload["user"]})
-        return render_template('dashboard/dashboard.html',user_info=user_info)
+        jumlah_mobil = db.dataMobil.count_documents({})
+        jumlah_transaksi = db.transaction.count_documents({})
+        total_transaksi = list(db.transaction.find({'status': 'sudah bayar'},{'_id': 0, 'total': 1}))
+        total_values = [trans['total'] for trans in total_transaksi]
+        return render_template('dashboard/dashboard.html',user_info=user_info, jumlah_mobil = jumlah_mobil,jumlah_transaksi= jumlah_transaksi,total_transaksi = sum(total_values))
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:

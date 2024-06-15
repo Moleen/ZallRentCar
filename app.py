@@ -87,12 +87,24 @@ def transaksiUser():
 
 @app.route('/transaksi/<id>')
 def payment(id):
-    data = db.transaction.find_one({'order_id' : id})
-    token = data['transaction_token']
-    if data :
-        return render_template('main/payment.html', data = data, token = token)
-    else:
-        return redirect(url_for('transaksiUser'))
+    token_receive = request.cookies.get("tokenMain")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        data = db.transaction.find_one({'order_id' : id})
+        token = data['transaction_token']
+        if data :
+            return render_template('main/payment.html', data = data, token = token,user_info=user_info)
+        else:
+            return redirect(url_for('transaksiUser'))
+    except jwt.ExpiredSignatureError:
+        msg = createSecreteMassage('Akses transaksi login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
+    except jwt.exceptions.DecodeError:
+        msg = createSecreteMassage('Akses transaksi login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
+    
+
 
 @app.route('/detail-mobil')
 def detail():

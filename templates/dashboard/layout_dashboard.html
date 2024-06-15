@@ -8,7 +8,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/SweetAlert2/sweetalert2.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/toastr/toastr.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/main_dashboard.css') }}">
 
     {% block css %}{% endblock %}
 
@@ -60,7 +60,7 @@
             </ul>
 
         </section>
-        <section class="content p-4 bg-white rounded-start-5">
+        <section class="content px-4 rounded-start-5">
             {% block content %}
 
             {% endblock %}

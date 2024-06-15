@@ -58,7 +58,6 @@ a {
     background: linear-gradient(0deg, rgba(1, 65, 159, 1) 0%, rgba(13, 110, 253, 1) 100%);
 }
 .container{
-    width: 1140px;
     margin: auto;
     display: flex;
     justify-content: center;
@@ -123,9 +122,7 @@ a{
     text-decoration: none;
     color: #ffffff;
 }
-a:hover{
-    color: #ffffff;
-}
+
 .social-icons i:hover{
     color: #094d90;
 }

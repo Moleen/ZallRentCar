@@ -29,22 +29,26 @@
         <div class="row row-cols-3">
 
             <div class="col">
-                <div class="rounded-4 bg-white p-3 shadow-sm" id="jumlah_item">
-                    <h5 class="text-primary">Jumlah Mobil</h5>
-                    <span>{{jumlah_mobil}}</span>
-                    <div id="icon_jumlah"><i class="fa-solid fa-car"></i></div>
-                </div>
+                <a href="/data_mobil" class="link">
+                    <div class="rounded-4 bg-white p-3 shadow-sm" id="jumlah_item">
+                        <h5 class="text-primary">Jumlah Mobil</h5>
+                        <span>{{jumlah_mobil}}</span>
+                        <div id="icon_jumlah"><i class="fa-solid fa-car"></i></div>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="rounded-4 bg-white p-3 shadow-sm" id="jumlah_item">
-                    <h5 class="text-primary">Jumlah Transaksi</h5>
-                    <span>{{jumlah_transaksi}}</span>
-                    <div id="icon_jumlah"><i class="fa-solid fa-cart-arrow-down"></i></div>
-                </div>
+                <a href="/transaction" class="link">
+                    <div class="rounded-4 bg-white p-3 shadow-sm" id="jumlah_item">
+                        <h5 class="text-primary">Jumlah Transaksi</h5>
+                        <span>{{jumlah_transaksi}}</span>
+                        <div id="icon_jumlah"><i class="fa-solid fa-cart-arrow-down"></i></div>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="rounded-4 bg-white p-3 shadow-sm" id="jumlah_item">
-                    <h5 class="text-primary">Pendapatan</h5>
+                <div class="rounded-4 bg-white p-3 shadow-sm" id="jumlah_item" role="button">
+                    <h5 class="text-primary">Pendapatan Tahun ini</h5>
                     <span data-target="currency">{{total_transaksi}}</span>
                     <div id="icon_jumlah"><i class="fa-solid fa-wallet"></i></div>
                 </div>
@@ -55,18 +59,25 @@
 
     <div class="chart p-4 shadow rounded-4 bg-white">
 
-        <div class="row g-3 align-items-center mb-3">
-            <div class="col-auto">
-                <select class="form-select" aria-valuenow="filter">
-                    <option value="" selected disabled hidden>filter</option>
-                    <option value="1">Tanggal Rental</option>
-                    <option value="2">Sudah Bayar</option>
-                    <option value="3">Akhir Rental</option>
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col">
+                <h5 class="text-primary">Grafik Pendapatan</h5>
+            </div>
+            <div class="col">
+                Total : <span data-target="currency" id="totalPendapatan">200000</span>
+            </div>
+            <div class="col-auto d-flex align-items-center">
+                <select class="form-select" id="filtercart">
+                    {% for tahun in tahun_transaksi|reverse %}
+                    <option value="{{tahun}}">{{tahun}}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
 
-        <canvas id="myChart"></canvas>
+        <div style="height: 60vh;">
+            <canvas id="myChart"></canvas>
+        </div>
 
     </div>
 </div>

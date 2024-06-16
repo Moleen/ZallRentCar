@@ -37,3 +37,7 @@ if (localStorage.getItem("tambahData") == "true") {
   toastr.success("Berhasil Tambah Data");
   localStorage.removeItem("tambahData");
 }
+
+$(window).on('load', function() {
+  $('#loading').hide()
+});

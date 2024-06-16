@@ -5,6 +5,7 @@ from datetime import datetime,timedelta
 from dbconnection import db
 import os
 import uuid
+from dateutil.relativedelta import relativedelta
 
 SECRET_KEY_DASHBOARD = os.environ.get("SECRET_KEY_DASHBOARD")
 
@@ -19,9 +20,26 @@ def dashboard_page():
         user_info = db.users_admin.find_one({"username": payload["user"]})
         jumlah_mobil = db.dataMobil.count_documents({})
         jumlah_transaksi = db.transaction.count_documents({})
-        total_transaksi = list(db.transaction.find({'status': 'sudah bayar'},{'_id': 0, 'total': 1}))
-        total_values = [trans['total'] for trans in total_transaksi]
-        return render_template('dashboard/dashboard.html',user_info=user_info, jumlah_mobil = jumlah_mobil,jumlah_transaksi= jumlah_transaksi,total_transaksi = sum(total_values))
+        datenow = datetime.now().strftime("%Y")
+        total_transaksi = list(db.transaction.find({'status': 'sudah bayar','date_rent' : {'$regex': datenow, '$options': 'i'}},{'_id': 0, 'total': 1}))
+        total_values = sum([trans['total'] for trans in total_transaksi])
+        
+        transaksi_pertahun = db.transaction.find({'status': 'sudah bayar'})
+
+        tahun_transaksi = []
+        for data in transaksi_pertahun:
+            date = datetime.strptime(data['date_rent'], "%d-%B-%Y")
+            tahun = str(date.year)
+
+            if tahun not in tahun_transaksi:
+                tahun_transaksi.append(tahun)
+           
+        return render_template('dashboard/dashboard.html',
+                               user_info=user_info,
+                                 jumlah_mobil = jumlah_mobil,
+                                 jumlah_transaksi= jumlah_transaksi,
+                                 total_transaksi = total_values,
+                                 tahun_transaksi = tahun_transaksi)
     except jwt.ExpiredSignatureError:
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:

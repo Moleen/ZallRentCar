@@ -1,7 +1,5 @@
 import { changeCurrency } from "./function.js";
 
-$("#loading").show();
-
 $(document).ready(function () {
   let myChart = null;
 

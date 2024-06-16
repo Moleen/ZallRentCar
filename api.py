@@ -80,8 +80,9 @@ def create_transaction():
             'end_rent' : endRent,
             'status' : 'unpaid',
         }
-        db.transaction.insert_one(transakasi)
 
+        db.transaction.insert_one(transakasi)
+        db.dataMobil.update_one({'id_mobil': id_mobil},{'$set':{'status_transaksi' : 'pembayaran'}})
         
         return jsonify({
             'status' : 'success',

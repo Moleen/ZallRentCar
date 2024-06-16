@@ -1,7 +1,7 @@
 export function addStatusLabel() {
   $("tr td#status").each(function () {
     var status = $(this).text();
-    if (status == "sudah bayar") {
+    if (status == "sudah bayar" || status == 'Tersedia') {
       $(this).parent().addClass("table-success");
     } else if (status === "Diproses") {
       $(this).parent().addClass("table-warning");

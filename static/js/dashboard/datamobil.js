@@ -4,6 +4,9 @@ $(document).ready(function () {
   addStatusLabel();
   changeCurrency();
 
+
+  
+
   $("#search-data").keyup(function () {
     var search = $(this).val();
     $.ajax({
@@ -59,8 +62,8 @@ $(document).ready(function () {
   });
 });
 
-function confirm(fitur, id_mobil) {
-  doc = {
+export function confirm(fitur, id_mobil) {
+  let doc = {
     pesanan: {
       text:
         "Pastikan client sudah datang dan menyerahkan ktp ke kantor yakin untuk konfirmasi pesanan?",
@@ -78,14 +81,14 @@ function confirm(fitur, id_mobil) {
   };
 
   if (fitur == "pesanan") {
-    text = doc.pesanan.text;
-    url = doc.pesanan.url;
+    var text = doc.pesanan.text;
+    var url = doc.pesanan.url;
   } else if (fitur == "kembali") {
-    text = doc.kembali.text;
-    url = doc.kembali.url;
+    var text = doc.kembali.text;
+    var url = doc.kembali.url;
   } else if (fitur == "hapus") {
-    text = doc.hapus.text;
-    url = doc.hapus.url;
+    var text = doc.hapus.text;
+    var url = doc.hapus.url;
   }
 
   Swal.fire({
@@ -111,3 +114,5 @@ function confirm(fitur, id_mobil) {
     }
   });
 }
+
+window.confirm = confirm;

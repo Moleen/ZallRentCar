@@ -1,31 +1,6 @@
+import { changeCurrency } from "./function.js";
+
 $("#loading").show();
-
-
-
-function loadChart() {
-
-}
-
-function changeCurrency() {
-  $('[data-target="currency"]').each(function () {
-    var currentText = $(this).text().trim();
-    console.log(currentText);
-    if(currentText.includes("Rp")){
-      return
-    }else{
-      $(this).text(
-        new Intl.NumberFormat("id", {
-          style: "currency",
-          currency: "IDR",
-          maximumFractionDigits: 0,
-        }).format(parseInt($(this).text()))
-      );
-    }
-
-    });
-}
-
-
 
 $(document).ready(function () {
   let myChart = null;
@@ -41,7 +16,7 @@ $(document).ready(function () {
       success: function (response) {
 
         let data = [];
-        total = 0
+        let total = 0
         $.each(response, function (key, value) {
           data.push(value);
           total += value

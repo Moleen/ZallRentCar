@@ -1,3 +1,5 @@
+import { addStatusLabel, changeCurrency } from "./function.js";
+
 $(document).ready(function () {
   addStatusLabel();
   changeCurrency();
@@ -57,32 +59,7 @@ $(document).ready(function () {
   });
 });
 
-function addStatusLabel() {
-  $("tr td#status").each(function () {
-    var status = $(this).text();
-    if (status === "Tersedia") {
-      $(this).parent().addClass("table-success");
-    } else if (status === "Diproses") {
-      $(this).parent().addClass("table-warning");
-    } else {
-      $(this).parent().addClass("table-danger");
-    }
-  });
-}
-
-function changeCurrency() {
-  $('[data-target="currency"]').each(function () {
-    $(this).text(
-      new Intl.NumberFormat("id", {
-        style: "currency",
-        currency: "IDR",
-        maximumFractionDigits: 0,
-      }).format(parseInt($(this).text()))
-    );
-  });
-}
-
-function confirm(fitur,id_mobil) {
+function confirm(fitur, id_mobil) {
   doc = {
     pesanan: {
       text:

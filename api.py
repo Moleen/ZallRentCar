@@ -8,7 +8,7 @@ import requests
 import uuid
 import os
 from validate_email_address import validate_email
-from func import createSecretMessage
+from func import createSecretMessage, canceltransaction
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -80,8 +80,9 @@ def create_transaction():
             'end_rent' : endRent,
             'status' : 'unpaid',
         }
-        db.transaction.insert_one(transakasi)
 
+        db.transaction.insert_one(transakasi)
+        db.dataMobil.update_one({'id_mobil': id_mobil},{'$set':{'status_transaksi' : 'pembayaran'}})
         
         return jsonify({
             'status' : 'success',
@@ -119,18 +120,17 @@ def transactionSuccess():
 @api.route('/api/cancelPayment', methods=['POST'])
 def cancelPayment():
     order_id = request.form.get('order_id')
-    url = f"https://api.sandbox.midtrans.com/v2/{order_id}/cancel"
-
-    headers = {
-        "accept": "application/json",
-        "Authorization" : "Basic U0ItTWlkLXNlcnZlci1BcmpJdDVXTTZndm5NcnhoeDlRM251Zko6"}
-
-    requests.post(url, headers=headers)
+    try:
+        canceltransaction(order_id=order_id, msg='Dibatalkan sendiri')
+        return jsonify({
+            'result' : 'success'
+        })
+    except:
+        return jsonify({
+            'result' : 'failed'
+            })
     
-    db.transaction.delete_one({'order_id' : order_id})
-    return jsonify({
-        'result' :'success'
-    })
+    
 
 @api.route('/register', methods=['POST'])
 def reg():

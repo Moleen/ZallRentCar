@@ -183,6 +183,15 @@ def confirmPesanan():
 @api.route('/api/confirmKembali', methods=['POST'])
 def confirmKembali():
     id_mobil = request.form.get('id_mobil')
+
+    # cek akhir rental
+    data_mobil =  db.dataMobil.find_one({'id_mobil' : id_mobil})
+    data =  db.transaction.find_one({'order_id' : data_mobil['order_id']})
+    if data['end_rent'] != datetime.now().strftime("%d-%B-%Y"):
+        return jsonify({
+            'result' : 'unsuccess',
+            'msg' : 'tanggal pengembalian tidak sesuai'
+            })
     db.transaction.update_one({'id_mobil' : id_mobil},{'$set':{'status_mobil':'selesai'}})
     db.dataMobil.update_one({'id_mobil' : id_mobil},{'$set':{'status':'Tersedia'}})
     return jsonify({

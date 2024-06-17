@@ -105,12 +105,12 @@
     display: flex;
     align-items: center;
     padding-right: 1rem;
-    font-size: 1.2vw;
+    font-size: 1.25rem;
 }
 
 .car-list-section .list-detail li img {
-    height: 2vw;
-    padding-right: 1vw;
+    height: 1.25rem;
+    padding-right: 1rem;
 }
 
 .car-list-section .car-btn {

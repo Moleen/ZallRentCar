@@ -1,0 +1,10 @@
+.icon-transmisi{
+    height: 1rem;
+    background-image: url('manual-transmission-icon.svg');
+}
+.icon-seat{
+    height: 1rem;
+    width: 1rem;
+    background-image: url('../icon/car-seat-icon.svg');
+    background-size: cover;
+}

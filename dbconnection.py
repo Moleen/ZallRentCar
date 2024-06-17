@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import pymongo
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -13,3 +14,5 @@ DB =  os.environ.get("DB")
 
 client = MongoClient(MONGODB_URI)
 db = client[DB]
+if 'transaction' in db.list_collection_names():
+    db.transaction.create_index([("expired", pymongo.ASCENDING)], expireAfterSeconds=0)

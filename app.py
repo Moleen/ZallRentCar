@@ -10,6 +10,8 @@ import hashlib
 import midtransclient
 import random
 import datetime
+import pymongo
+from func import canceltransaction
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -89,9 +91,16 @@ def transaksiUser():
 def payment(id):
     token_receive = request.cookies.get("tokenMain")
     try:
+        data = db.transaction.find_one({'order_id' : id})
+
+        # CEK MOBIL SUDAH DISEWA ATAU BELUM
+        data_mobil = db.dataMobil.find_one({'id_mobil' : data['id_mobil']})
+        if data_mobil['status'] == 'Diproses' and data_mobil['status'] == 'Digunakan':
+            canceltransaction(order_id=data['order_id'], msg='Sudah ada transaksi lain')
+            return render_template('main/transactionDetail.html', data = data)
+        
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
-        data = db.transaction.find_one({'order_id' : id})
         token = data['transaction_token']
         if data :
             return render_template('main/payment.html', data = data, token = token,user_info=user_info)

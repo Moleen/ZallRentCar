@@ -140,20 +140,58 @@ def reg():
     phone = request.form.get("phone")
     user_id = str(uuid.uuid1())
 
-    pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
-
-    if db.users.find_one({'username': username}):
+    if len(username) < 8:
         return jsonify({
-            'result' : 'unsucces',
+            'result' : 'ejected',
+            'msg' : 'Username minimal 8 karakter'
+            })
+    elif not username[0].isalpha():
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username harus diawali dengan huruf'
+            })
+    elif not username.replace('.', '').replace('_', '').isalnum():
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username tidak valid'
+            })
+    elif username == '':
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username tidak boleh kosong'
+            })
+    elif password == '':
+        return jsonify({
+            'result' : 'ejectedPW',
+            'msg' : 'Password tidak boleh kosong'
+            })
+    elif email == '':
+        return jsonify({
+            'result' : 'ejectedEmail',
+            'msg' : 'Email tidak boleh kosong'
+            })
+    elif db.users.find_one({'username': username}):
+        return jsonify({
+            'result' : 'ejected',
             'msg' : 'username sudah ada'
         })
     elif db.users.find_one({'email': email}):
         return jsonify({
-            'result' : 'unsucces',
+            'result' : 'ejectedEmail',
             'msg' : 'email sudah ada'
         })
+    elif len(password) < 8:
+        return jsonify({
+            'result' : 'ejectedPW',
+            'msg' : 'Password minimal 8 karakter'
+            })
+    elif phone == '':
+        return jsonify({
+            'result' : 'ejectedPhone',
+            'msg' : 'Nomor telepon tidak boleh kosong'
+            })
     else:
-        
+        pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
         db.users.insert_one({
             'user_id' : user_id,
             'username' : username,
@@ -183,6 +221,15 @@ def confirmPesanan():
 @api.route('/api/confirmKembali', methods=['POST'])
 def confirmKembali():
     id_mobil = request.form.get('id_mobil')
+
+    # cek akhir rental
+    data_mobil =  db.dataMobil.find_one({'id_mobil' : id_mobil})
+    data =  db.transaction.find_one({'order_id' : data_mobil['order_id']})
+    if data['end_rent'] != datetime.now().strftime("%d-%B-%Y"):
+        return jsonify({
+            'result' : 'unsuccess',
+            'msg' : 'tanggal pengembalian tidak sesuai'
+            })
     db.transaction.update_one({'id_mobil' : id_mobil},{'$set':{'status_mobil':'selesai'}})
     db.dataMobil.update_one({'id_mobil' : id_mobil},{'$set':{'status':'Tersedia'}})
     return jsonify({
@@ -212,5 +259,37 @@ def ambilPendapatan():
                 total[month] += int(dt['total'])
 
     return jsonify(total)
+
+@api.route('/api/check_username', methods=['POST'])
+def check_username():
+    username = request.form.get('username')
+
+    if len(username) < 8:
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username minimal 8 karakter'
+            })
+    elif db.users.find_one({'username': username}):
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username sudah ada'
+        })
+    elif not username[0].isalpha():
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username harus diawali dengan huruf'
+            })
+    elif not username.replace('.', '').replace('_', '').isalnum():
+        return jsonify({
+            'result' : 'ejected',
+            'msg' : 'Username tidak valid'
+            })
+    else:
+        return jsonify({
+            'result' : 'available'
+        })
+    
+
+    
 
 

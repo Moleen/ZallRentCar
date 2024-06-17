@@ -107,8 +107,12 @@ export function confirm(fitur, id_mobil) {
         data: {
           id_mobil: id_mobil,
         },
-        success: function (data) {
-          location.reload();
+        success: function (response) {
+          if(response['result'] == 'unsuccess'){
+            toastr.warning(response['msg'])
+          }else{
+            // location.reload();
+          }
         },
       });
     }

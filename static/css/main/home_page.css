@@ -6,6 +6,7 @@
     background: rgb(1, 65, 159);
     background: linear-gradient(180deg, rgba(1, 65, 159, 1) 0%, rgba(13, 110, 253, 1) 100%);
     color: white;
+    overflow: hidden;
 }
 
 .main-section .text-content {
@@ -91,40 +92,6 @@
 .car-list-section {
     padding: 2rem 10rem;
 }
-
-.car-list-section .card-image {
-    object-fit: cover;
-    height: 12.5rem;
-}
-
-.car-list-section .list-detail {
-    display: flex;
-}
-
-.car-list-section .list-detail li {
-    display: flex;
-    align-items: center;
-    padding-right: 1rem;
-    font-size: 1.2vw;
-}
-
-.car-list-section .list-detail li img {
-    height: 2vw;
-    padding-right: 1vw;
-}
-
-.car-list-section .car-btn {
-    width: 100%;
-}
-
-
-.image-content {
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 50px;
-
-}
-
 
 footer {
     text-align: center;

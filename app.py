@@ -10,7 +10,7 @@ import hashlib
 import midtransclient
 import random
 import datetime
-import pymongo
+from flask_mail import Mail, Message
 from func import canceltransaction
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -24,6 +24,8 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
+        if user_info['verif'] != 'verifed':
+            return redirect(url_for('verify_email'))
         return render_template('main/home_page.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
         return render_template('main/home_page.html', data = data)
@@ -78,6 +80,8 @@ def transaksiUser():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
+        if user_info['verif'] != 'verifed':
+            return redirect(url_for('verify_email'))
         data = db.transaction.find({})
         return render_template('main/transaction.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
@@ -101,6 +105,8 @@ def payment(id):
         
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
+        if user_info['verif'] != 'verifed':
+            return redirect(url_for('verify_email'))
         token = data['transaction_token']
         if data :
             return render_template('main/payment.html', data = data, token = token,user_info=user_info)
@@ -128,6 +134,8 @@ def detail():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
+        if user_info['verif'] != 'verifed':
+            return redirect(url_for('verify_email'))
         return render_template('main/car-details.html', data=data, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return render_template('main/car-details.html', data=data)
@@ -140,6 +148,8 @@ def get_profile():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
+        if user_info['verif'] != 'verifed':
+            return redirect(url_for('verify_email'))
         
         return render_template('main/profil.html',user_info=user_info)
     except jwt.ExpiredSignatureError:
@@ -192,8 +202,68 @@ def update_profile():
         return jsonify({'result': 'unsuccess', 'msg': 'Invalid token'}), 401
 
 
+@app.route('/verify_email')
+def verify_email():
+    token_receive = request.cookies.get("tokenMain")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"user_id": payload["user_id"]})
+        mesagge = ''
+        if user_info['verif'] == 'sending_email':
+            mesagge = 'Email Sudah Terkirim, masukkan kode yang diberikan ke bawah ini'
+        else:
+            mesagge = 'Zallrentcar perlu tahu kalau emailmu aktif, jadi verifikasi emailmu dengan klik tombol dibawah'
 
+        return render_template('main/verify_email.html', mesagge =mesagge, user_info = user_info)
+    except jwt.ExpiredSignatureError:
+        msg = createSecreteMassage('login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
+    except jwt.exceptions.DecodeError:
+        msg = createSecreteMassage('login terlebih dahulu')
+        return redirect(url_for('login', msg = msg))
 
+@app.route('/api/verify', methods=['POST'])
+def verify():
+    user = db.users.find_one({'user_id' : request.form.get('user_id')})
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = 'maulana.syakhiya@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'dfck slpj sdww jwhx'
+
+    mail = Mail(app)
+
+    kode = random.randint(10000, 99999)
+
+    msg = Message('confirm email', recipients=[user['email']], html=f'{kode}', sender=app.config['MAIL_USERNAME'])
+    mail.send(msg)
+
+    kode_hash = hashlib.sha256(str(kode).encode("utf-8")).hexdigest()
+    
+    db.users.update_one({'user_id' : user['user_id']},{'$set' : {'verif' : 'sending_email', 'kode' : kode_hash}})
+    return jsonify({
+        'msg': 'succeess'
+    })
+
+@app.route('/api/verify_kode', methods=['POST'])
+def verify_kode():
+    user = request.form.get('user_id')
+    kode = request.form.get('kode')
+    kode_hash = hashlib.sha256(kode.encode("utf-8")).hexdigest()
+    result = db.users.find_one({'user_id' : user , 'kode' : kode_hash})
+
+    print(kode_hash)
+    if result:
+        db.users.update_one({'user_id' : user},{'$set' : {'verif' : 'verifed'}})
+        return jsonify({
+            'result' : 'success'
+        })
+    else:
+        
+        return jsonify({
+            'result' : 'failed',
+            'msg' : 'kode verifikasi salah'
+        })
 
 def createSecreteMassage(msg):
     payload = {

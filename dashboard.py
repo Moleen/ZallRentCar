@@ -33,7 +33,8 @@ def dashboard_page():
 
             if tahun not in tahun_transaksi:
                 tahun_transaksi.append(tahun)
-           
+                
+        tahun_transaksi.sort()       
         return render_template('dashboard/dashboard.html',
                                user_info=user_info,
                                  jumlah_mobil = jumlah_mobil,

@@ -21,9 +21,9 @@
                     url: "/api/transaction-success",
                     type: "POST",
                     data :{
-                        penyewa : '{{data.user}}',
-                        idcar :'{{data.id_mobil}}',
-                        orderid :'{{data.order_id}}',
+                        penyewa : '{{data.penyewa}}',
+                        idcar : '{{data.id_mobil}}',
+                        orderid : '{{data.order_id}}',
                         from : 'user'
                     },
                     success : function (){
@@ -32,7 +32,7 @@
                 })
             },
             onError: function(result){
-                window.location.replace('/');
+                console.log('tes')
             }
         });
     })

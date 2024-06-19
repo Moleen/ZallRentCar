@@ -84,7 +84,7 @@ def transaksiUser():
         user_info = db.users.find_one({"user_id": payload["user_id"]})
         if user_info['verif'] != 'verifed':
             return redirect(url_for('verify_email'))
-        data = db.transaction.find({})
+        data = db.transaction.find({"user_id": payload["user_id"]})
         return render_template('main/transaction.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
         msg = createSecreteMassage('Akses transaksi login terlebih dahulu')

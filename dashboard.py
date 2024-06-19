@@ -33,7 +33,7 @@ def dashboard_page():
 
             if tahun not in tahun_transaksi:
                 tahun_transaksi.append(tahun)
-                
+
         tahun_transaksi.sort()       
         return render_template('dashboard/dashboard.html',
                                user_info=user_info,
@@ -231,7 +231,7 @@ def updateData_post():
 
     try:
         file = request.files['gambar']
-        os.remove(f'static/gambar/{data['gambar']}')
+        os.remove(f"static/gambar/{data['gambar']}")
         extension = file.filename.split('.')[-1]
         upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
         gambar_name = f'mobil-{upload_date}.{extension}'

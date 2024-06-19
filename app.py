@@ -128,6 +128,8 @@ def detail():
     id = request.args.get('id')
 
     data = db.dataMobil.find_one({'id_mobil': id})
+    data_mobil = db.dataMobil.find({"id_mobil": {"$ne": id}})
+
     if data:
         data['harga'] = int(data.get('harga', 0))
 
@@ -138,7 +140,7 @@ def detail():
         user_info = db.users.find_one({"user_id": payload["user_id"]})
         if user_info['verif'] != 'verifed':
             return redirect(url_for('verify_email'))
-        return render_template('main/car-details.html', data=data, user_info=user_info)
+        return render_template('main/car-details.html', data=data, user_info=user_info,data_mobil =data_mobil)
     except jwt.ExpiredSignatureError:
         return render_template('main/car-details.html', data=data)
     except jwt.exceptions.DecodeError:

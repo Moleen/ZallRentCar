@@ -1,0 +1,44 @@
+{% extends 'dashboard/layout_dashboard.html' %}
+
+{% block javascript %}
+<script src="{{ url_for('static', filename='js/dashboard/settings.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="title-dashboard">
+    <div class="title d-flex align-items-center justify-content-between w-100">
+        <h2 class="text-primary m-0">Ganti Email</h2>
+    </div>
+</div>
+<div class="px-4">
+
+    {% if user_info.email %}
+    <p class="text-secondary px-2 w-50">Dengan mengganti email, Anda dapat memastikan bahwa Anda tetap dapat mengakses
+        akun Anda dengan aman dan menerima instruksi pemulihan password.</p>
+    <p class="text-secondary px-2">Email lama : {{user_info.email}}</p>
+    <div class="px-2 mb-3">
+        <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" />
+    </div>
+    <div class="px-2">
+        <button type="button" name="" id="btn_email" class="btn btn-primary">
+            Ganti
+        </button>
+    </div>
+
+
+    {% else %}
+    <p class="text-secondary px-2 w-50">Dengan menambahkan email, Anda dapat memastikan bahwa Anda tetap dapat mengakses
+        akun Anda dengan aman dan menerima instruksi pemulihan password.</p>
+    <div class="px-2 mb-3">
+        <input type="text" class="form-control" name="" id="tambah_email" aria-describedby="helpId"
+            placeholder="masukan email baru" />
+    </div>
+    <div class="px-2">
+        <button type="button" name="" id="btn_email" class="btn btn-primary" onclick="change_email('{{user_info.username}}')">
+            Tambahkan
+        </button>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

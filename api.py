@@ -7,8 +7,8 @@ import midtransclient
 import requests
 import uuid
 import os
-from validate_email_address import validate_email
 from func import createSecretMessage, canceltransaction
+
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -198,6 +198,7 @@ def reg():
             'email' : email,
             'phone' : phone,
             'password' : pw_hash,
+            'verif' : 'unverifed'
         })
         payload = {
             "user_id": user_id,

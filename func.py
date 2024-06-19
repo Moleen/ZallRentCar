@@ -21,5 +21,5 @@ def canceltransaction(order_id,msg):
 
     requests.post(url, headers=headers)
     
-    expire_at = datetime.utcnow() + relativedelta(months=1)
+    expire_at = datetime.utcnow()
     db.transaction.update_one({'order_id' : order_id},{'$set' : {'expired' : expire_at, 'status' : 'Dibatalkan','pesan': msg}})

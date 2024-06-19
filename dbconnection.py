@@ -15,4 +15,4 @@ DB =  os.environ.get("DB")
 client = MongoClient(MONGODB_URI)
 db = client[DB]
 if 'transaction' in db.list_collection_names():
-    db.transaction.create_index([("expired", pymongo.ASCENDING)], expireAfterSeconds=0)
+    db.transaction.create_index([("expired", pymongo.ASCENDING)], expireAfterSeconds=60 * 60 * 24 * 30)

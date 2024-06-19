@@ -65,7 +65,9 @@ def login():
     else:
 
         msg = request.args.get('msg')
-
+        token_receive = request.cookies.get("tokenMain")
+        if token_receive:
+            return redirect(url_for('home'))
         try:
             payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
             msg=payload['message']

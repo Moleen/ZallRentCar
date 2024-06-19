@@ -9,6 +9,7 @@ $(document).ready(function () {
 
   $("#search-data").keyup(function () {
     var search = $(this).val();
+    console.log(search);
     $.ajax({
       url: "/api/search-dashboard",
       type: "GET",
@@ -23,17 +24,17 @@ $(document).ready(function () {
         } else {
           for (let i = 0; i < data.length; i++) {
             if (data[i].status == "Diproses") {
-              button = `<ul class="dropdown-menu">
+             var button = `<ul class="dropdown-menu">
                <li><a class="dropdown-item" onclick="confirm('pesanan','{{dt.id_mobil}}')"
                          role="button">Konfirmasi Pesanan</a></li>
                          </ul>`;
             } else if (data[i].status == "Digunakan") {
-              button = `<ul class="dropdown-menu">
+             var button = `<ul class="dropdown-menu">
                <li><a class="dropdown-item" onclick="confirm('kembali','{{dt.id_mobil}}')"
                          role="button">Konfirmasi Kembali</a></li>
                          </ul>`;
             } else {
-              button = `<ul class="dropdown-menu">
+             var button = `<ul class="dropdown-menu">
                <li><a class="dropdown-item" href="/data_mobil/edit?id=${data[i].id_mobil}">Edit Mobil</a></li>
                <li><a class="dropdown-item" onclick="confirm('hapus','{{dt.id_mobil}}')"
                 role="button">Hapus</a></li>
@@ -111,7 +112,7 @@ export function confirm(fitur, id_mobil) {
           if(response['result'] == 'unsuccess'){
             toastr.warning(response['msg'])
           }else{
-            // location.reload();
+            location.reload();
           }
         },
       });

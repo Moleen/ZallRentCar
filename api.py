@@ -7,7 +7,6 @@ import midtransclient
 import requests
 import uuid
 import os
-from validate_email_address import validate_email
 from func import createSecretMessage, canceltransaction
 
 

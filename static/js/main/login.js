@@ -18,6 +18,7 @@ $("#form-login").on("submit", function (e) {
   redirect = $("#login_button").attr("data-redirect");
   username = $("#login_username").val();
   pw = $("#login_password").val();
+  
   // redirect default
   if (redirect == "") {
     redirect = "/";

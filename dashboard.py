@@ -97,6 +97,47 @@ def setting():
          return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("dashboard.dashboard_login"))
+    
+@dashboard.route('/settings/change_username', methods=['POST'])
+def change_username():
+    new_username = request.form.get('new_username')
+    username = request.form.get('username')
+    data = db.users_admin.find_one({'username' : username})
+    if datetime.now() < data['expired_username']:
+        return jsonify({
+            'result' : 'failed',
+            'msg' : 'username telah diubah coba lagi nanti'
+        })
+    else:
+        exp = datetime.now() + relativedelta(month=1)
+        db.users_admin.update_one({'username' : username}, {'$set' : {'username' : new_username, 'expired_username' : exp}})
+        payload = {
+            "user": new_username,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, SECRET_KEY_DASHBOARD, algorithm="HS256")
+        return jsonify({
+            "result": "success",
+            "token": token
+        })
+    
+
+@dashboard.route('/settings/ganti_email', methods=['GET', 'POST'])
+def ganti_email():
+
+    if request.method == 'POST':
+        pass
+
+    else:
+        token_receive = request.cookies.get("tokenDashboard")
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+            user_info = db.users_admin.find_one({"username": payload["user"]})
+            return render_template('dashboard/change_email.html',user_info=user_info)
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+        except jwt.exceptions.DecodeError:
+            return redirect(url_for("dashboard.dashboard_login"))
 
 @dashboard.route('/data_mobil/add-data')
 def addData():

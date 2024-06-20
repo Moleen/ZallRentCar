@@ -122,8 +122,8 @@
     <div class="car-list owl-carousel">
 
         {% for dt in data %}
-        <div class="card border-1 rounded-4">
-            <img src="{{ url_for('static', filename='gambar/') }}{{dt.gambar}}" alt="{{dt.gambar}}" alt="" class="card-img-top">
+        <div class="card border-1 rounded-4 overflow-hidden">
+            <img src="{{ url_for('static', filename='gambar/') }}{{dt.gambar}}" alt="{{dt.gambar}}" id="gambar_mobil" alt="" class="card-img-top">
             <div class="card-body">
                 <h3 class="mb-2 text-primary">{{dt.merek}}</h3>
                 <div class="row">

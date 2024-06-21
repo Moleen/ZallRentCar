@@ -271,18 +271,39 @@ def addData_post():
     payload = jwt.decode(request.cookies.get("tokenDashboard"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
     id_mobil = uuid.uuid1()
-    file = request.files['gambar']
     merek = request.form.get('merek')
     seat = request.form.get('seat')
     transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
 
-    if file:
+    if merek == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'merek tidak boleh kosong'
+            })
+    elif seat == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'seat tidak boleh kosong'
+            })
+    elif transmisi == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'transmisi tidak boleh kosong'
+            })
+    elif harga == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'harga tidak boleh kosong'
+        })
+
+    try:
+        file = request.files['gambar']
         extension = file.filename.split('.')[-1]
         upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
         gambar_name = f'mobil-{upload_date}.{extension}'
         file.save(f'static/gambar/{gambar_name}')
-    else:
+    except:
         return jsonify({
             'result' : 'unsucces',
             'msg' : 'Masukkan gambar'

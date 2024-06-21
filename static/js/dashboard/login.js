@@ -26,10 +26,3 @@ function loginDashboard() {
   }
 }
 
-function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // ID pengguna
-  console.log('Nama: ' + profile.getName()); // Nama lengkap pengguna
-  console.log('Email: ' + profile.getEmail()); // Email pengguna
-  // Di sini Anda dapat menambahkan logika untuk menangani respons dari Google Sign-In
-}

@@ -258,8 +258,27 @@ def ambilPendapatan():
             bulan = datetime.strptime(dt['date_rent'], "%d-%B-%Y")
             if bulan.month == month:
                 total[month] += int(dt['total'])
-
+    
     return jsonify(total)
+
+@api.route('/api/get_transaksi')
+def get_transaksi():
+    date = datetime.now().strftime('%Y')
+
+    data = db.transaction.find({'status' : "sudah bayar" ,'date_rent' : {'$regex': date, '$options': 'i'}})
+
+    total = {month: 0 for month in range(1, 13)}
+    for dt in data:
+        for month in range(1,13):
+            bulan = datetime.strptime(dt['date_rent'], "%d-%B-%Y")
+            if bulan.month == month:
+                total[month] += 1
+    
+    print(total)
+    return jsonify(total)
+
+
+    
 
 @api.route('/api/check_username', methods=['POST'])
 def check_username():

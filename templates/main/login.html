@@ -13,9 +13,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main/login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/toastr/toastr.css') }}">
-    
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="263013177466-7pm3hdmkbjlsp0nnp3h9in45o2ehqi5v.apps.googleusercontent.com">
 
 
 </head>
@@ -48,8 +45,6 @@
                             style="color: #1b1bb3; cursor: pointer;">Daftar</a>
                     </p>
                 </div>
-
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
             </form>
             {% if error %}

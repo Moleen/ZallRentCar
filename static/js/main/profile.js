@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Event listener untuk membuka modal edit
+    document.getElementById('editIcon').addEventListener('click', function() {
+        $('#editModal').modal('show');
+    });
+
     document.getElementById('saveChanges').addEventListener('click', function() {
         // Mengumpulkan data dari form
         var formData = new FormData();

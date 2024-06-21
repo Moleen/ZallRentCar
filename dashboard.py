@@ -182,7 +182,49 @@ def ganti_email():
             return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
         except jwt.exceptions.DecodeError:
             return redirect(url_for("dashboard.dashboard_login"))
+        
+@dashboard.route('/settings/change_password', methods=['POST'])
+def change_password():
+    old_pass = request.form.get('password_lama')
+    new_pass = request.form.get('password_baru')
+    username = request.form.get('username')
 
+    if old_pass == '':
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : 'password lama tidak boleh kosong'
+        })
+    elif new_pass == '':
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : 'password baru tidak boleh kosong'
+        })
+    elif len(new_pass) < 6:
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : 'password baru minimal 6 karakter'
+        })
+    
+    pw_hash = hashlib.sha256(old_pass.encode("utf-8")).hexdigest()
+
+    data = db.users_admin.find_one({'username' : username})
+    
+    if data['password'] == pw_hash:
+
+        pw_hash_new = hashlib.sha256(new_pass.encode("utf-8")).hexdigest()
+        db.users_admin.update_one({'username' : username},{'$set': {'password' : pw_hash_new}})
+        return jsonify({
+            'result' : 'success',
+            'msg' : 'password berhasil di ganti'
+        })
+    
+    else:
+            
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : f'gagal : password salah'
+        })
+    
 @dashboard.route('/data_mobil/add-data')
 def addData():
     token_receive = request.cookies.get("tokenDashboard")

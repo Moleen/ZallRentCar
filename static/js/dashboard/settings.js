@@ -108,4 +108,48 @@ function verif(username) {
   });
 }
 
+function ganti_password(username){
+  $("#btn_ganti_password").attr("disabled", true);
+  $.ajax({
+    type: "POST",
+    url: "/settings/change_password",
+    data: {
+      username: username,
+      password_lama : $('#ganti_password_lama').val(),
+      password_baru : $('#ganti_password_baru').val(),
+    },
+    success : function(response){
+      if(response['result'] == 'success'){
+        toastr.success('Pesan berhasil disimpan', 'Sukses!', {
+          onHidden: function() {
+              // Reload halaman setelah Toastr menghilang
+              window.location.reload();
+          }
+      });
+      }else if (response['result'] == 'gagal'){
+        toastr.error(response['msg']);
+        $("#btn_ganti_password").attr("disabled", false);
+      }
+    }
+  })
+}
+
+$(document).ready(function(){
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "1500",
+    "extendedTimeOut": "1500",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+})
 

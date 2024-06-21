@@ -13,6 +13,7 @@
     integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script type="module" src="{{ url_for('static', filename='js/dashboard/dashboard.js') }}"></script>
 
 {% endblock %}
@@ -57,29 +58,44 @@
         </div>
     </div>
 
-    <div class="chart p-4 shadow rounded-4 bg-white">
+    <div class="row row-cols-2 g-4">
+        <div class="col-8">
+            <div class="p-4 shadow rounded-4 bg-white h-100">
 
-        <div class="row g-3 align-items-center mb-4">
-            <div class="col">
-                <h5 class="text-primary">Grafik Pendapatan</h5>
-            </div>
-            <div class="col">
-                Total : <span data-target="currency" id="totalPendapatan">200000</span>
-            </div>
-            <div class="col-auto d-flex align-items-center">
-                <select class="form-select" id="filtercart">
-                    {% for tahun in tahun_transaksi|reverse %}
-                    <option value="{{tahun}}">{{tahun}}</option>
-                    {% endfor %}
-                </select>
+                <div class="row g-3 align-items-center mb-4">
+                    <div class="col">
+                        <h5 class="text-primary">Grafik Pendapatan</h5>
+                    </div>
+                    <div class="col">
+                        Total : <span data-target="currency" id="totalPendapatan">200000</span>
+                    </div>
+                    <div class="col-auto d-flex align-items-center">
+                        <select class="form-select" id="filtercart">
+                            {% for tahun in tahun_transaksi|reverse %}
+                            <option value="{{tahun}}">{{tahun}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="chart-cont" style="height: 50vh;">
+                    <canvas id="myChart"></canvas>
+                </div>
+
             </div>
         </div>
 
-        <div style="height: 60vh;">
-            <canvas id="myChart"></canvas>
+        <div class="col-4">
+            <div class=" shadow rounded-4 bg-white h-100 p-4">
+                <h5 class="text-primary mb-3">Grafik Transaksi</h5>
+                <canvas id="piechart"></canvas>
+            </div>
         </div>
 
     </div>
+
+
+
 </div>
 
 {% endblock %}

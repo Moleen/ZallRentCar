@@ -63,9 +63,7 @@
 
                         </div>
 
-                        {% if dt.status == 'sudah bayar' %}
-
-                        {% else %}
+                        {% if dt.status == 'unpaid'%}
                         <div class="modal-footer">
                             <a href="/transaksi/{{dt.order_id}}" type="button" class="btn btn-primary"
                                 style="height: 2.5rem;">Bayar</a>
@@ -76,6 +74,7 @@
                                 <span>Batalkan</span>
                             </button>
                         </div>
+                        {% else %}
 
                         {% endif %}
 

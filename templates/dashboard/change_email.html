@@ -12,15 +12,38 @@
 </div>
 <div class="px-4">
 
+    {% if user_info.verif == 'unverif' %}
+    <p class="text-secondary px-2 w-50">Email anda belum terverifikasi harap verifikasi email terlebih dahulu dengan
+        menekan tombol dibawah</p>
+    <div class="px-2">
+        <button type="button" name="" id="btn_email" class="btn btn-primary"
+            onclick="send_verif('{{user_info.username}}')">
+            Kirim verifikasi
+        </button>
+    </div>
+    {% elif user_info.verif == 'sending_email' %}
+    <p class="text-secondary px-2 w-50">Kami sudah mengirim kode verifikasi, masukan kode verifikasi dibawah ini</p>
+    <div class="px-2 mb-3">
+        <input type="text" class="form-control" name="" id="kode" aria-describedby="helpId" placeholder="" />
+    </div>
+    <div class="px-2">
+        <button type="button" name="" id="btn_email" class="btn btn-primary"
+            onclick="verif('{{user_info.username}}')">
+            verifikasi
+        </button>
+    </div>
+    {% else %}
+
     {% if user_info.email %}
     <p class="text-secondary px-2 w-50">Dengan mengganti email, Anda dapat memastikan bahwa Anda tetap dapat mengakses
         akun Anda dengan aman dan menerima instruksi pemulihan password.</p>
     <p class="text-secondary px-2">Email lama : {{user_info.email}}</p>
     <div class="px-2 mb-3">
-        <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" />
+        <input type="text" class="form-control" name="" id="new_email" aria-describedby="helpId" placeholder="" />
     </div>
     <div class="px-2">
-        <button type="button" name="" id="btn_email" class="btn btn-primary">
+        <button type="button" name="" id="btn_email" class="btn btn-primary"
+            onclick="change_email('{{user_info.username}}')">
             Ganti
         </button>
     </div>
@@ -30,14 +53,17 @@
     <p class="text-secondary px-2 w-50">Dengan menambahkan email, Anda dapat memastikan bahwa Anda tetap dapat mengakses
         akun Anda dengan aman dan menerima instruksi pemulihan password.</p>
     <div class="px-2 mb-3">
-        <input type="text" class="form-control" name="" id="tambah_email" aria-describedby="helpId"
+        <input type="text" class="form-control" name="" id="new_email" aria-describedby="helpId"
             placeholder="masukan email baru" />
     </div>
     <div class="px-2">
-        <button type="button" name="" id="btn_email" class="btn btn-primary" onclick="change_email('{{user_info.username}}')">
+        <button type="button" name="" id="btn_email" class="btn btn-primary"
+            onclick="add_email('{{user_info.username}}')">
             Tambahkan
         </button>
     </div>
+    {% endif %}
+
     {% endif %}
 
 </div>

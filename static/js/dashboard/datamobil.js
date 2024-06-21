@@ -9,7 +9,6 @@ $(document).ready(function () {
 
   $("#search-data").keyup(function () {
     var search = $(this).val();
-    console.log(search);
     $.ajax({
       url: "/api/search-dashboard",
       type: "GET",
@@ -111,6 +110,7 @@ export function confirm(fitur, id_mobil) {
         success: function (response) {
           if(response['result'] == 'unsuccess'){
             toastr.warning(response['msg'])
+            console.log('tres');
           }else{
             location.reload();
           }

@@ -17,6 +17,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 app = Flask(__name__)
 
+app.config.from_pyfile('config.py')
+
+mail = Mail(app)
+
 @app.route('/')
 def home():
     token_receive = request.cookies.get("tokenMain")
@@ -65,9 +69,6 @@ def login():
     else:
 
         msg = request.args.get('msg')
-        token_receive = request.cookies.get("tokenMain")
-        if token_receive:
-            return redirect(url_for('home'))
         try:
             payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
             msg=payload['message']
@@ -84,7 +85,7 @@ def transaksiUser():
         user_info = db.users.find_one({"user_id": payload["user_id"]})
         if user_info['verif'] != 'verifed':
             return redirect(url_for('verify_email'))
-        data = db.transaction.find({})
+        data = db.transaction.find({"user_id": payload["user_id"]})
         return render_template('main/transaction.html', data = data,user_info=user_info)
     except jwt.ExpiredSignatureError:
         msg = createSecreteMassage('Akses transaksi login terlebih dahulu')
@@ -111,7 +112,7 @@ def payment(id):
             return redirect(url_for('verify_email'))
         token = data['transaction_token']
         if data :
-            return render_template('main/payment.html', data = data, token = token,user_info=user_info)
+            return render_template('main/payment.html', data = data,user_info=user_info)
         else:
             return redirect(url_for('transaksiUser'))
     except jwt.ExpiredSignatureError:
@@ -128,6 +129,8 @@ def detail():
     id = request.args.get('id')
 
     data = db.dataMobil.find_one({'id_mobil': id})
+    data_mobil = db.dataMobil.find({"id_mobil": {"$ne": id}})
+
     if data:
         data['harga'] = int(data.get('harga', 0))
 
@@ -138,7 +141,7 @@ def detail():
         user_info = db.users.find_one({"user_id": payload["user_id"]})
         if user_info['verif'] != 'verifed':
             return redirect(url_for('verify_email'))
-        return render_template('main/car-details.html', data=data, user_info=user_info)
+        return render_template('main/car-details.html', data=data, user_info=user_info,data_mobil =data_mobil)
     except jwt.ExpiredSignatureError:
         return render_template('main/car-details.html', data=data)
     except jwt.exceptions.DecodeError:
@@ -227,13 +230,6 @@ def verify_email():
 @app.route('/api/verify', methods=['POST'])
 def verify():
     user = db.users.find_one({'user_id' : request.form.get('user_id')})
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = 'maulana.syakhiya@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'dfck slpj sdww jwhx'
-
-    mail = Mail(app)
 
     kode = random.randint(10000, 99999)
 
@@ -254,7 +250,6 @@ def verify_kode():
     kode_hash = hashlib.sha256(kode.encode("utf-8")).hexdigest()
     result = db.users.find_one({'user_id' : user , 'kode' : kode_hash})
 
-    print(kode_hash)
     if result:
         db.users.update_one({'user_id' : user},{'$set' : {'verif' : 'verifed'}})
         return jsonify({

@@ -278,6 +278,11 @@ def get_transaksi():
     return jsonify(total)
 
 
+@api.route('/api/filter_transaksi')
+def filter_transaksi():
+    pass
+
+
     
 
 @api.route('/api/check_username', methods=['POST'])

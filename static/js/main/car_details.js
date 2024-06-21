@@ -2,7 +2,6 @@ function createTransaction(id_mobil, user_id) {
   $('#btn_pesan').attr('disabled', true);
   var hari = $("#hari").val();
   $.ajax({
-
       url: "/api/create_transaction",
       type: "post",
       data: {
@@ -24,7 +23,6 @@ function createTransaction(id_mobil, user_id) {
       error: function() {
           toastr.error('Something went wrong, please try again later.', 'Error');
           $('#btn_pesan').attr('disabled', false);
-
       }
   });
 }
@@ -33,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const hariInput = document.getElementById('hari');
   const totalPriceElement = document.getElementById('total_price');
   const hargaPerHari = parseInt(document.getElementById('harga_per_hari').value, 10);
+  const agreeTermsCheckbox = document.getElementById('agree_terms');
+  const pesanButton = document.getElementById('btn_pesan');
 
   hariInput.addEventListener('input', function() {
     const hari = parseInt(hariInput.value);
@@ -42,6 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       totalPriceElement.textContent = 'Total Harga: Rp 0';
     }
+  });
+
+  agreeTermsCheckbox.addEventListener('change', function() {
+    pesanButton.disabled = !agreeTermsCheckbox.checked;
   });
 });
 

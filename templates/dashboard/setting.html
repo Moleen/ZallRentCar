@@ -73,7 +73,32 @@
             <h4 class="mb-2 ps-2">Password</h4>
             <div class="p-3 border rounded-4 fs-5 d-flex justify-content-between align-items-center">
                 <span class="text-secondary">*******</span>
-                <span> <button type="button" name="" id="" class="btn text-primary"> Ganti Password </button> </span>
+                <span> <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#ganti_password"> Ganti Password </button> </span>
+
+                <div class="modal fade" id="ganti_password" data-bs-backdrop="static" tabindex="-1" aria-labelledby="ganti_password" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="ganti_password">Ganti Password</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          
+                            <div class="mb-3">
+                                <input type="text"  class="form-control"  name="" id="ganti_password_lama"
+                                    aria-describedby="helpId" placeholder="Masukan password lama" />
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="text"  class="form-control"  name="" id="ganti_password_baru"
+                                    aria-describedby="helpId" placeholder="Masukan password Baru" />
+                            </div>
+                          <button type="button" class="btn btn-primary" id="btn_ganti_password" onclick="ganti_password('{{user_info.username}}')">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
             </div>
         </div>
     </div>

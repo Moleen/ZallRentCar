@@ -3,11 +3,7 @@
     
     font-family: "League Spartan", sans-serif;
 }
-#toast-container.toast-top-center {
-    top: 0;
-    left: 50% !important; 
-    transform: translate(-50%, 0rem) !important;
-}
+
 body {
     margin: 0;
     margin-top: 5rem;

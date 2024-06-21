@@ -182,7 +182,49 @@ def ganti_email():
             return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
         except jwt.exceptions.DecodeError:
             return redirect(url_for("dashboard.dashboard_login"))
+        
+@dashboard.route('/settings/change_password', methods=['POST'])
+def change_password():
+    old_pass = request.form.get('password_lama')
+    new_pass = request.form.get('password_baru')
+    username = request.form.get('username')
 
+    if old_pass == '':
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : 'password lama tidak boleh kosong'
+        })
+    elif new_pass == '':
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : 'password baru tidak boleh kosong'
+        })
+    elif len(new_pass) < 6:
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : 'password baru minimal 6 karakter'
+        })
+    
+    pw_hash = hashlib.sha256(old_pass.encode("utf-8")).hexdigest()
+
+    data = db.users_admin.find_one({'username' : username})
+    
+    if data['password'] == pw_hash:
+
+        pw_hash_new = hashlib.sha256(new_pass.encode("utf-8")).hexdigest()
+        db.users_admin.update_one({'username' : username},{'$set': {'password' : pw_hash_new}})
+        return jsonify({
+            'result' : 'success',
+            'msg' : 'password berhasil di ganti'
+        })
+    
+    else:
+            
+        return jsonify({
+            'result' : 'gagal',
+            'msg' : f'gagal : password salah'
+        })
+    
 @dashboard.route('/data_mobil/add-data')
 def addData():
     token_receive = request.cookies.get("tokenDashboard")
@@ -229,18 +271,39 @@ def addData_post():
     payload = jwt.decode(request.cookies.get("tokenDashboard"), SECRET_KEY_DASHBOARD, algorithms=['HS256'])
     user_info = db.users_admin.find_one({"username": payload["user"]})
     id_mobil = uuid.uuid1()
-    file = request.files['gambar']
     merek = request.form.get('merek')
     seat = request.form.get('seat')
     transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
 
-    if file:
+    if merek == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'merek tidak boleh kosong'
+            })
+    elif seat == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'seat tidak boleh kosong'
+            })
+    elif transmisi == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'transmisi tidak boleh kosong'
+            })
+    elif harga == '':
+        return jsonify({
+            'result' : 'unsucces',
+            'msg' : 'harga tidak boleh kosong'
+        })
+
+    try:
+        file = request.files['gambar']
         extension = file.filename.split('.')[-1]
         upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
         gambar_name = f'mobil-{upload_date}.{extension}'
         file.save(f'static/gambar/{gambar_name}')
-    else:
+    except:
         return jsonify({
             'result' : 'unsucces',
             'msg' : 'Masukkan gambar'

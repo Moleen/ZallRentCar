@@ -152,3 +152,10 @@ h6 {
 #cancelChanges:hover {
     color: #aaa; /* warna teks saat dihover */
 }
+
+
+
+#saveChanges {
+    margin-top: 10px; /* Jarak atas dari tombol ke elemen di atasnya */
+    margin-bottom: 20px; /* Jarak bawah dari tombol ke elemen di bawahnya */
+}

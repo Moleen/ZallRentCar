@@ -24,7 +24,7 @@ mail = Mail(app)
 @app.route('/')
 def home():
     token_receive = request.cookies.get("tokenMain")
-    data = db.dataMobil.find({})
+    data = db.dataMobil.find({'status' : 'Tersedia'})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"user_id": payload["user_id"]})
@@ -129,7 +129,7 @@ def detail():
     id = request.args.get('id')
 
     data = db.dataMobil.find_one({'id_mobil': id})
-    data_mobil = db.dataMobil.find({"id_mobil": {"$ne": id}})
+    data_mobil = db.dataMobil.find({"id_mobil": {"$ne": id} , 'status' : 'Tersedia'})
 
     if data:
         data['harga'] = int(data.get('harga', 0))

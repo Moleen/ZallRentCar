@@ -16,6 +16,8 @@ export function changeCurrency() {
     var currentText = $(this).text().trim();
     if (currentText.includes("Rp")) {
       return;
+    }else if(currentText == ''){
+
     } else {
       $(this).text(
         new Intl.NumberFormat("id", {

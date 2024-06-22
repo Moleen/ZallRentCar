@@ -23,9 +23,9 @@
         <div class="logo"><a href="/">ZallRentCar</a></div>
         {% if user_info %}
         <div class="dropdown-center">
-            <img src="{{ url_for('static', filename='gambar/a.png') }}"
+            <img src="{{user_info.profile_image_path}}"
                 class="rounded-circle bg-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" alt=""
-                style="height: 3.5rem; width:3.5rem; object-fit:contain; cursor:pointer;">
+                style="height: 3.5rem; width:3.5rem; object-fit:cover; cursor:pointer;">
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item fs-6" href="/transaksi">Transaksi</a></li>
                 <li><a class="dropdown-item fs-6" href="/profile">Settings</a></li>

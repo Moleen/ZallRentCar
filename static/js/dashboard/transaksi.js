@@ -5,6 +5,7 @@ $(document).ready(function () {
   changeCurrency();
 });
 
+
 $("#filter_transaksi").on("change", function () {
   $("#tanggal_input").remove();
   var filter = $(this).val();

@@ -296,6 +296,50 @@ def filter_transaksi():
     
 
 
+@api.route('/api/get_car/<id>')
+def get_car(id):
+    data = db.dataMobil.find_one({'id_mobil' : id})
+    return jsonify({
+        'merek' : data['merek'],
+        'harga' : data['harga'],
+    })
+
+@api.route('/api/add_transaction_from_admin' , methods=['POST'])
+def add_transaction_from_admin():
+    mtd = request.form.get('mtd')
+    id_mobil = request.form.get('id_mobil')
+    hari = request.form.get('hari')
+    data = db.dataMobil.find_one({'id_mobil' : id_mobil})
+
+    order_id = str(uuid.uuid1())
+    dateRent = datetime.now().strftime("%d-%B-%Y")
+    endRent = datetime.now() + timedelta(days=int(hari))
+    endRent = endRent.strftime("%d-%B-%Y")
+    item_name = f"{data['merek']}"
+
+
+    transakasi = {
+            'user_id' : '',
+            'order_id' : order_id,
+            'id_mobil' : id_mobil,
+            'penyewa' : 'tamu',
+            'transaction_token' : 'cash',
+            'item' : item_name,
+            'total' : int(data['harga']) * int(hari),
+            'lama_rental' : f'{hari} hari',
+            'date_rent' : dateRent,
+            'end_rent' : endRent,
+            'status' : 'sudah bayar',
+        }
+
+    db.transaction.insert_one(transakasi)
+    db.dataMobil.update_one({'id_mobil': id_mobil},{'$set':{'status' : 'Digunakan'}})
+
+    return jsonify({
+        'result':'success',
+        'message' : 'Transaksi Berhasil',
+    })
+
 
     
 

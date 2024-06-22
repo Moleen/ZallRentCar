@@ -368,7 +368,16 @@ def updateData_post():
 
 @dashboard.route('/transaction/add_transaction')
 def add_transaction():
-    pass
+    token_receive = request.cookies.get("tokenDashboard")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        user_info = db.users_admin.find_one({"username": payload["user"]})
+        data = db.dataMobil.find({'status' : 'Tersedia'})
+        return render_template('dashboard/add_transaction.html',user_info=user_info, data =data)
+    except jwt.ExpiredSignatureError:
+         return redirect(url_for("dashboard.dashboard_login", msg="Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("dashboard.dashboard_login"))
 
 
 # list mobil

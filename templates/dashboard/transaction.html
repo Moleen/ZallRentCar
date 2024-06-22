@@ -1,11 +1,13 @@
 {% extends 'dashboard/layout_dashboard.html' %}
 
 {% block css %}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/transaction.css') }}">
 {% endblock %}
 
 {% block javascript %}
 <script type="module" src="{{ url_for('static', filename='js/dashboard/transaksi.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -16,15 +18,20 @@
       <h2 class="text-primary m-0">Transaksi</h2>
     </div>
     <div class="col-auto">
-      <a class="btn btn-primary" role="button" href="/dashboard/product/add-data">Tambah Transaksi</a>
+      <a class="btn btn-primary" role="button" href="/transaction/add_transaction">Tambah Transaksi</a>
     </div>
+
     <div class="col-auto">
-      <select class="form-select" aria-valuenow="filter">
+      <select class="form-select" aria-valuenow="filter" id="filter_transaksi">
         <option value="" selected disabled hidden>filter</option>
         <option value="1">Tanggal Rental</option>
         <option value="2">Sudah Bayar</option>
-        <option value="3">Akhir Rental</option>
+        <option value="3">Dibatalkan</option>
       </select>
+    </div>
+
+    <div class="col-auto" id="tanggal" hidden>
+      
     </div>
   </div>
 </div>
@@ -61,7 +68,7 @@
         </tr>
         {% else %}
         <tr>
-          <td colspan="7" class="text-center">Tidak ada data yang tersedia.</td>
+          <td colspan="8" class="text-center">Tidak ada data yang tersedia.</td>
         </tr>
         {% endfor %}
       </tbody>

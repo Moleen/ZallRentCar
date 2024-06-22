@@ -239,7 +239,14 @@ def addData():
 
 @dashboard.route('/dashboard-login', methods = ['GET'])
 def dashboard_login():
-    return render_template('dashboard/login.html')
+    token_receive = request.cookies.get("tokenDashboard")
+    try:
+        jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        return redirect(url_for("dashboard.dashboard_page"))
+    except jwt.ExpiredSignatureError:
+        return render_template('dashboard/login.html')
+    except jwt.exceptions.DecodeError:
+        return render_template('dashboard/login.html')
 
 
 # POST METHODS
@@ -359,6 +366,11 @@ def updateData_post():
     return jsonify({'result':'success'})
 
 
+@dashboard.route('/transaction/add_transaction')
+def add_transaction():
+    pass
+
+
 # list mobil
 @dashboard.route('/api/daftar_mobil')
 def api_daftar_mobil():
@@ -370,7 +382,71 @@ def api_daftar_mobil():
 
 def send_verification(email,username):
     kode = random.randint(10000, 99999)
-    msg = Message('confirm email', recipients=[email], html=f'{kode}', sender=current_app.config['MAIL_USERNAME'])
+
+    html_content = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Email</title>
+    <style>
+        .container {{
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            font-family: Arial, sans-serif;
+        }}
+        .header {{
+            text-align: center;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: white;
+        }}
+        .content {{
+            padding: 20px;
+            text-align: center;
+        }}
+        .footer {{
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f6f6f6;
+            color: #999999;
+        }}
+        .button {{
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Verifikasi Email Anda</h1>
+        </div>
+        <div class="content">
+            <p>Halo,</p>
+            <p>Terima kasih telah mendaftar. Berikut adalah kode verifikasi Anda:</p>
+            <h2>{kode}</h2>
+            <p>Silakan masukkan kode ini di halaman verifikasi untuk mengaktifkan akun Anda.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Perusahaan Anda. Semua hak dilindungi.</p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+    
+    msg = Message('confirm email', recipients=[email], html=html_content, sender=current_app.config['MAIL_USERNAME'])
     mail =current_app.extensions['mail']
     mail.send(msg)
     kode_hash = hashlib.sha256(str(kode).encode("utf-8")).hexdigest()

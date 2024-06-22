@@ -92,7 +92,7 @@ $.ajax({
       data.push(value)
     })
     const ctx2 = document.getElementById("piechart");
-    myChart2 = new Chart(ctx2, {
+    var myChart2 = new Chart(ctx2, {
       type: "pie",
       data: {
         labels: [

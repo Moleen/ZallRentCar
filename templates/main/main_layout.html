@@ -61,11 +61,10 @@
                 <div class="footer-content">
                     <h3>Quick Links</h3>
                     <ul class="list">
-                        <li><a href="">Home</a></li>
-                        <li><a href="">About</a></li>
-                        <li><a href="">Services</a></li>
-                        <li><a href="">Products</a></li>
-                        <li><a href="">Contact</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a></li>
+                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#servicesModal">Services</a></li>
+                        <li><a href="/">Pilih Mobil</a></li>
                     </ul>
                 </div>
                 <div class="footer-content text-right">
@@ -85,6 +84,53 @@
                 <p>&copy; 2023 zallrentcar. All rights reserved</p>
             </div>
         </footer>
+
+
+        <div class="modal fade" id="homeModal" tabindex="-1" aria-labelledby="homeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="homeModalLabel">Home</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Welcome to ZallRentCar, your trusted car rental service provider in Jakarta. We offer a
+                            variety of cars at competitive prices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="aboutModalLabel">About</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>ZallRentCar is a trusted car rental service provider in Jakarta. We offer a variety of cars
+                            at competitive prices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="servicesModal" tabindex="-1" aria-labelledby="servicesModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="servicesModalLabel">Services</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>We offer a wide range of services including car rental for daily, weekly, and monthly use.
+                            Our cars are well-maintained</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

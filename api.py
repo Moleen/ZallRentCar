@@ -278,9 +278,23 @@ def get_transaksi():
     return jsonify(total)
 
 
-@api.route('/api/filter_transaksi')
+@api.route('/api/filter_transaksi', methods=['POST'])
 def filter_transaksi():
-    pass
+    mtd = request.form.get('mtd')
+
+    if mtd == 'fTanggal':
+        tanggal = request.form.get('date')
+        data = db.transaction.find({'date_rent' : tanggal}, {'_id': 0})
+        return list(data)
+    
+    elif mtd == 'fPaid' :
+        data = db.transaction.find({'status' : 'sudah bayar'}, {'_id': 0})
+        return list(data)
+    elif mtd == 'fUnpaid':
+        data = db.transaction.find({'status' : 'Dibatalkan'}, {'_id':0})
+        return list(data)
+    
+
 
 
     
@@ -313,8 +327,3 @@ def check_username():
         return jsonify({
             'result' : 'available'
         })
-    
-
-    
-
-

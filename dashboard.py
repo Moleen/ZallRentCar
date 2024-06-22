@@ -239,7 +239,14 @@ def addData():
 
 @dashboard.route('/dashboard-login', methods = ['GET'])
 def dashboard_login():
-    return render_template('dashboard/login.html')
+    token_receive = request.cookies.get("tokenDashboard")
+    try:
+        jwt.decode(token_receive, SECRET_KEY_DASHBOARD, algorithms=['HS256'])
+        return redirect(url_for("dashboard.dashboard_page"))
+    except jwt.ExpiredSignatureError:
+        return render_template('dashboard/login.html')
+    except jwt.exceptions.DecodeError:
+        return render_template('dashboard/login.html')
 
 
 # POST METHODS
@@ -357,6 +364,11 @@ def updateData_post():
     }})
 
     return jsonify({'result':'success'})
+
+
+@dashboard.route('/transaction/add_transaction')
+def add_transaction():
+    pass
 
 
 # list mobil

@@ -19,6 +19,7 @@ function addData() {
   formData.append("seat", $("#seat").val());
   formData.append("transmisi", $("#transmisi").val());
   formData.append("harga", $("#harga").val());
+  formData.append("desc", $("#desc").val());
 
   $.ajax({
     url: "add-data",

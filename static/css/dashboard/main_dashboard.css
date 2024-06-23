@@ -18,6 +18,11 @@
   grid-row: 1/-1;
 }
 
+.sidebarr h3 a{
+  color: white;
+  text-decoration: none;
+}
+
 .logo {
   display: flex;
   align-items: center;

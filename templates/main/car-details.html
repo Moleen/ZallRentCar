@@ -22,8 +22,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="card shadow-lg">
+<div class="containerr py-5">
+    <div class="card shadow-lg w-75">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -52,8 +52,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p class="mt-4">Audi adalah mobil mewah dengan performa tinggi dan fitur-fitur canggih yang
-                        menawarkan kenyamanan serta keamanan bagi pengemudi dan penumpangnya.</p>
+                    <h5>Deskripsi</h5>
+                    <p class="">{{data.desc}}</p>
                     <div class="text-center mt-4">
                         {% if data.status == 'Tersedia' %}
                         <a href="#" class="btn btn-success" data-bs-toggle="modal"

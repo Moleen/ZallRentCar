@@ -310,10 +310,10 @@ def addData_post():
         upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
         gambar_name = f'mobil-{upload_date}.{extension}'
         file.save(f'static/gambar/{gambar_name}')
-    except:
+    except Exception as e:
         return jsonify({
             'result' : 'unsucces',
-            'msg' : 'Masukkan gambar'
+            'msg' : f'Masukkan gambar : {e}'
         }) 
 
     db.dataMobil.insert_one({

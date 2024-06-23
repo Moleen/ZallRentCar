@@ -282,6 +282,7 @@ def addData_post():
     seat = request.form.get('seat')
     transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
+    desc = request.form.get('desc')
 
     if merek == '':
         return jsonify({
@@ -323,7 +324,8 @@ def addData_post():
         'gambar' : gambar_name,
         'seat' : seat.capitalize(),
         'transmisi' : transmisi.capitalize(),
-        'harga' : harga.capitalize(),
+        'harga' : harga,
+        'desc' : desc.capitalize(),
         'status' : 'tersedia'.capitalize(),
     })
 
@@ -339,18 +341,22 @@ def updateData_post():
     seat = request.form.get('seat')
     transmisi = request.form.get('transmisi')
     harga = request.form.get('harga')
+    desc = request.form.get('desc')
 
     data = db.dataMobil.find_one({"id_mobil": id_mobil})
 
     try:
         file = request.files['gambar']
-        os.remove(f"static/gambar/{data['gambar']}")
+        if os.path.exists(f"static/gambar/{data['gambar']}"):
+            os.remove(f"static/gambar/{data['gambar']}")
         extension = file.filename.split('.')[-1]
         upload_date = datetime.now().strftime('%Y-%M-%d-%H-%m-%S')
         gambar_name = f'mobil-{upload_date}.{extension}'
         file.save(f'static/gambar/{gambar_name}')
-    except:
+        print(gambar_name)
+    except Exception as e:
         gambar_name = data['gambar']
+        print(f'gambar lama {e}')
 
     db.dataMobil.update_one({'id_mobil' : id_mobil},
     {'$set':{
@@ -360,6 +366,7 @@ def updateData_post():
         'seat' : seat.capitalize(),
         'transmisi' : transmisi.capitalize(),
         'harga' : harga.capitalize(),
+        'desc' : desc,
         'status' : 'tersedia'.capitalize(),
     }})
 

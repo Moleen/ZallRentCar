@@ -50,6 +50,7 @@ body {
     border-radius: 5px;
     width: 200px; /* Kurangi ukuran lebar gambar */
     height: 200px; /* Kurangi ukuran tinggi gambar */
+    object-fit: cover;
 }
 
 h6 {

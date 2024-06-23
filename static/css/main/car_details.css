@@ -9,8 +9,11 @@
     object-fit: cover;
 }
 
-.container {
-    padding: 5rem;
+.containerr {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
 
 .card {

@@ -20,6 +20,7 @@ function updateData(id_mobil) {
   formData.append("seat", $("#seat").val());
   formData.append("transmisi", $("#transmisi").val());
   formData.append("harga", $("#harga").val());
+  formData.append("desc", $("#desc").val());
   $(this).attr('disabled', true)
   $.ajax({
     url: "/data_mobil/update-data",

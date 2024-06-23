@@ -9,7 +9,11 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="text-primary px-4 m-0">Tambah Data Mobil</h2>
+<div class="title-dashboard  pb-0">
+  <div class="title d-flex align-items-center justify-content-between w-100">
+      <h2 class="text-primary m-0">Tambah data mobil</h2>
+  </div>
+</div>
 
 <div class="form_tambah_data p-4">
   <div class="mb-3 form_item">
@@ -29,6 +33,11 @@
   <div class="mb-3 form_item">
     <label class="form-label">Seat</label>
     <input type="number" class="form-control" id="seat" placeholder="">
+  </div>
+
+  <div class="mb-3 form_item">
+    <label for="" class="form-label">Deskripsi</label>
+    <textarea class="form-control" name="" id="desc" rows="10" cols="30" style="resize: none;"></textarea>
   </div>
 
   <div class="mb-3 form_item">

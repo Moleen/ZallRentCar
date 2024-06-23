@@ -2,11 +2,16 @@
 
 
 {% block content %}
-<div class="w-100 p-4">
+<style>
+.cont{
+    height: calc(100vh - 5rem);
+}
+</style>
+
+
+<div class="w-100 p-4 d-flex align-items-center justify-content-center cont">
     <div id="snap-container" class="d-flex justify-content-center"></div>
 </div>
-
-
 
 {% endblock %}
 
@@ -14,6 +19,7 @@
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-pYGOQrTmRDZCDTJt"></script>
 <script type="text/javascript">
     $(document).ready(function(){   
+        $('footer').hide()
         window.snap.embed('{{data.transaction_token}}', {
             embedId: 'snap-container',
             onSuccess: function (result) {

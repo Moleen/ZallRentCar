@@ -23,9 +23,19 @@
         <div class="logo"><a href="/">ZallRentCar</a></div>
         {% if user_info %}
         <div class="dropdown-center">
+            {% if user_info.profile_image_path%}
+                
             <img src="{{user_info.profile_image_path}}"
                 class="rounded-circle bg-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" alt=""
                 style="height: 3.5rem; width:3.5rem; object-fit:cover; cursor:pointer;">
+            
+            {% else %}
+            
+            <img src="{{ url_for('static', filename='gambar/default_pic.png') }}"
+                class="rounded-circle bg-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" alt=""
+                style="height: 3.5rem; width:3.5rem; object-fit:cover; cursor:pointer;">
+
+            {% endif %}
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item fs-6" href="/transaksi">Transaksi</a></li>
                 <li><a class="dropdown-item fs-6" href="/profile">Settings</a></li>
@@ -53,12 +63,12 @@
 
         <footer class="footer">
             <div class="container d-flex justify-content-between">
-                <div class="footer-content">
+                <div class="footer-content text-center">
                     <h3>Zall RentCar</h3>
                     <p>Zall RentCar adalah penyedia layanan sewa mobil terpercaya di Jakarta. Kami menawarkan berbagai
                         jenis mobil dengan harga yang kompetitif.</p>
                 </div>
-                <div class="footer-content">
+                <div class="footer-content text-center">
                     <h3>Quick Links</h3>
                     <ul class="list">
                         <li><a href="/">Home</a></li>
@@ -67,7 +77,7 @@
                         <li><a href="/">Pilih Mobil</a></li>
                     </ul>
                 </div>
-                <div class="footer-content text-right">
+                <div class="footer-content text-center">
                     <h3>Contact Us</h3>
                     <p>Email: zallrentcar@gmail.com</p>
                     <p>Phone: 0858-1350-2474</p>

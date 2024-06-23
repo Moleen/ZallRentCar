@@ -23,7 +23,7 @@
                         <div class="col-sm-4 bg-c-lite-green user-profile">
                             <div class="card-block text-center text-white">
                                 <div class="m-b-25">
-                                    <img src="{{ user_info['profile_image_path'] | default(url_for('static', filename='Gambar/naruto.png')) }}" class="img-radius" id="profileImage">
+                                    <img src="{{ user_info['profile_image_path'] | default(url_for('static', filename='gambar/default_pic.png')) }}" class="img-radius" id="profileImage">
                                     <input type="file" id="fileInput" style="display:none;" accept="image/*">
                                 </div>
                                 <h6 class="f-w-600">Nama: {{ user_info['username'] }}</h6>

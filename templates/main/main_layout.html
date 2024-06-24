@@ -24,13 +24,13 @@
         {% if user_info %}
         <div class="dropdown-center">
             {% if user_info.profile_image_path%}
-                
-            <img src="/{{user_info.profile_image_path}}"
-                class="rounded-circle bg-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" alt=""
+
+            <img src="/{{user_info.profile_image_path}}" class="rounded-circle bg-primary dropdown-toggle"
+                data-bs-toggle="dropdown" aria-expanded="false" alt=""
                 style="height: 3.5rem; width:3.5rem; object-fit:cover; cursor:pointer;">
-            
+
             {% else %}
-            
+
             <img src="{{ url_for('static', filename='gambar/default_pic.png') }}"
                 class="rounded-circle bg-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" alt=""
                 style="height: 3.5rem; width:3.5rem; object-fit:cover; cursor:pointer;">
@@ -110,8 +110,17 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>ZallRentCar is a trusted car rental service provider in Jakarta. We offer a variety of cars
-                            at competitive prices.</p>
+                        <p>ZallRentCar adalah perusahaan rental mobil terkemuka yang berkomitmen untuk menawarkan
+                            layanan transportasi yang handal dan berkualitas tinggi. Dengan armada mobil yang beragam
+                            dan terawat dengan baik, kami bertujuan untuk membuat pengalaman penyewaan mobil yang nyaman
+                            dan bebas stres bagi pelanggan kami.
+
+
+                            Didirikan pada tahun 2016, ZallRentCar lahir dari keinginan untuk memberikan solusi
+                            transportasi yang efisien dan terjangkau bagi masyarakat. Kami memahami bahwa mobilitas yang
+                            baik adalah kunci untuk membuka potensi dan kesempatan, baik bagi individu maupun bisnis.
+                            Itulah mengapa kami menawarkan berbagai pilihan mobil, dari hatchback yang kompak hingga
+                            minivan yang luas, untuk memenuhi kebutuhan transportasi yang beragam.</p>
                     </div>
                 </div>
             </div>
@@ -126,8 +135,27 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>We offer a wide range of services including car rental for daily, weekly, and monthly use.
-                            Our cars are well-maintained</p>
+                        <p>Layanan ZallRentCar:
+
+                            - Sewa Mobil Harian, Mingguan, dan Bulanan: Pilihan sewa mobil fleksibel untuk berbagai
+                            kebutuhan perjalanan, baik jangka pendek maupun jangka panjang.
+                            - Layanan Antar-Jemput Bandara: Penjemputan dan pengantaran nyaman ke dan dari bandara.
+                            - Sewa Mobil untuk Acara Khusus: Pilihan mobil mewah dan premium untuk acara-acara istimewa
+                            Anda.
+                            - Layanan Pelanggan 24/7: Dukungan berkelanjutan, kapan pun Anda membutuhkannya, dengan tim
+                            layanan pelanggan yang berdedikasi.
+                            - Pemesanan Online Mudah: Platform pemesanan online yang sederhana dan aman untuk kenyamanan
+                            pemesanan Anda.
+                            - Penjemputan dan Pengantaran: Layanan tambahan untuk menjemput dan mengantarkan mobil ke
+                            lokasi pilihan Anda.
+                            - Armada Mobil Terawat Baik: Mobil-mobil kami terawat dengan baik, memastikan keselamatan,
+                            kinerja, dan kebersihan tertinggi.
+                            - Asuransi dan Bantuan Jalan: Opsi asuransi komprehensif dan bantuan jalan untuk ketenangan
+                            pikiran Anda selama perjalanan.
+                            - Pilihan Mobil yang Luas: Berbagai merek dan model mobil untuk memenuhi preferensi dan
+                            kebutuhan yang berbeda.
+                            - Harga Kompetitif: Harga yang kompetitif dan promosi reguler untuk memastikan penyewaan
+                            mobil yang terjangkau.</p>
                     </div>
                 </div>
             </div>

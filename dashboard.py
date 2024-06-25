@@ -8,6 +8,7 @@ import uuid
 from dateutil.relativedelta import relativedelta
 from flask_mail import Message
 import random
+from validate_email_address import validate_email
 
 SECRET_KEY_DASHBOARD = os.environ.get("SECRET_KEY_DASHBOARD")
 
@@ -23,10 +24,10 @@ def dashboard_page():
         jumlah_mobil = db.dataMobil.count_documents({})
         jumlah_transaksi = db.transaction.count_documents({})
         datenow = datetime.now().strftime("%Y")
-        total_transaksi = list(db.transaction.find({'status': 'sudah bayar','date_rent' : {'$regex': datenow, '$options': 'i'}},{'_id': 0, 'total': 1}))
+        total_transaksi = list(db.transaction.find({'status': 'Dibayar','date_rent' : {'$regex': datenow, '$options': 'i'}},{'_id': 0, 'total': 1}))
         total_values = sum([trans['total'] for trans in total_transaksi])
         
-        transaksi_pertahun = db.transaction.find({'status': 'sudah bayar'})
+        transaksi_pertahun = db.transaction.find({'status': 'Dibayar'})
 
         tahun_transaksi = []
         for data in transaksi_pertahun:
@@ -128,49 +129,50 @@ def change_username():
 
 @dashboard.route('/settings/change_email', methods=['GET', 'POST'])
 def ganti_email():
-    email = request.form.get('new_email')
 
     if request.method == 'POST':
 
-        if request.form.get('mtd') == 'add_email':
-            db.users_admin.update_one({'username' : request.form.get('username')},{'$set' :{'email' : email , 'verif' : 'unverif'}})
-            return({
+        if request.form.get('mtd') == 'change_and_add_email':
+            new_email = request.form.get('new_email')
+            username = request.form.get('username')
+            db.users_admin.update_one({'username' : username},{'$set':{'email' : new_email, 'verif' : 'unverifed'}})
+            return jsonify({
                 'result' : 'success',
             })
         
         elif request.form.get('mtd') == 'send_verif':
-            user_info = db.users_admin.find_one({'username' : request.form.get('username')})
-            try:
-                send_verification(email=user_info['email'],username=request.form.get('username'))
+            username = request.form.get('username')
+            data = db.users_admin.find_one({'username' : username})
+            if validate_email(data['email']):
+                print(data['email'])
+                send_verification(email=data['email'],username=username)
                 return jsonify({
                     'result' : 'success',
-                    'msg' : 'kirim verif success'
+                    'msg' : 'Kode verifikasi berhasil dikirim'
+                })
+            db.users_admin.update_one({'username' : username},{'$unset': {'email': '', 'verif': ''}})
+            return jsonify({
+                    'result' : 'failed',
+                    'msg' : 'email tidak valid'
                 })
             
-            except Exception as e:
-                return jsonify({
-                    'result' : 'gagal',
-                    'msg' : f'gagal : {str(e)}'
-                })
         elif request.form.get('mtd') == 'verif':
-            try:
-                verif(kode=request.form.get('kode'),user=request.form.get('username'))
+            username = request.form.get('username')
+            kode = request.form.get('kode')
+            kode_hash = hashlib.sha256(str(kode).encode("utf-8")).hexdigest()
+            
+            if db.users_admin.find_one({'username' : username,'kode' : kode_hash}):
+                db.users_admin.update_one({'username' : username},{'$set': {'verif' : 'verifed'}})
                 return jsonify({
                     'result' : 'success',
-                    'msg' : 'verif success'
+                    'msg' : 'Berhasil verifikasi email'
                 })
-            
-            except Exception as e:
+            else:
                 return jsonify({
-                    'result' : 'gagal',
-                    'msg' : f'gagal : {str(e)}'
+                    'result' : 'failed',
+                    'msg' : 'Kode verifikasi salah'
                 })
-    
-        else:
-            db.users_admin.update_one({'username' : request.form.get('username')},{'$set' :{'email' : email}})
-            return({
-                'result' : 'success',
-            })
+                
 
     else:
         token_receive = request.cookies.get("tokenDashboard")
@@ -470,10 +472,8 @@ def send_verification(email,username):
     print('mengirim kode sukses')
 
 def verif(user,kode):
-    kode_hash = hashlib.sha256(str(kode).encode("utf-8")).hexdigest()
-    result = db.users_admin.find_one({'username' : user,'kode' : kode_hash})
-    if result:
-        db.users_admin.update_one({'username' : user},{'$set': {'verif' : 'verifed'}})
+    print(kode)
+
 
 
     

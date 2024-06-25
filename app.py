@@ -9,7 +9,7 @@ import os
 import hashlib
 import midtransclient
 import random
-import datetime
+from datetime import datetime, timedelta
 from flask_mail import Mail, Message
 from func import canceltransaction
 
@@ -41,16 +41,16 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
 
         pw = hashlib.sha256(password.encode("utf-8")).hexdigest()
-        user = db.users.find_one({"username": username, "password": pw})
+        user = db.users.find_one({"email": email, "password": pw})
 
         if user:
             payload = {
                 "user_id": user['user_id'],
-                "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+                "exp": datetime.now() + timedelta(hours=1)
             }
             
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -63,18 +63,25 @@ def login():
         else:
             return jsonify({
 
-                'msg' : 'Invalid username or password'
+                'msg' : 'Invalid email or password'
 
             })
     else:
 
-        msg = request.args.get('msg')
         try:
-            payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
-            msg=payload['message']
-            return render_template('main/login.html', msg=msg)
+            token_receive = request.cookies.get("tokenMain")
+            jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+            return redirect(url_for('home'))
         except:
-            return render_template('main/login.html')
+            msg = request.args.get('msg')
+            try:
+                payload = jwt.decode(msg, SECRET_KEY, algorithms=['HS256'])
+                msg=payload['message']
+                return render_template('main/login.html', msg=msg)
+            except:
+                return render_template('main/login.html')
+
+        
 
 @app.route('/transaksi')
 def transaksiUser():
@@ -163,6 +170,173 @@ def get_profile():
     except jwt.exceptions.DecodeError:
         msg = createSecreteMassage('login terlebih dahulu')
         return redirect(url_for('login', msg = msg))
+    
+@app.route('/forgot_pass')
+def forgot_pass():
+    return render_template('main/form_forgot_pass.html')
+
+@app.route('/forgot_pass', methods =['POST'])
+def forgot_pass_send():
+
+    payload = {
+        'exp' : datetime.now() + timedelta(minutes=30)
+    }
+
+    if request.form.get('from') == 'users':
+        email = request.form.get('email')
+        cek_email = db.users.find_one({'email' : email})
+        if not cek_email:
+            print('tesssss')
+            return jsonify({
+                'result':'failed',
+                'message' : 'email tidak terdaftar'
+            })
+        
+        payload['email'] = email
+        payload['who'] = 'users'
+        token = jwt.encode(payload, 'change_pass', algorithm='HS256')
+
+    elif request.form.get('from') == 'admin':
+        data = db.users_admin.find_one({})
+        print(data)
+        if data['verif'] == 'unverif':
+            return jsonify({
+                'message' : 'anda belum verifikasi',
+            })
+        payload['who'] = 'admin'
+        email = data['email']
+        payload['email'] = email
+        token = jwt.encode(payload, 'change_pass', algorithm='HS256')
+
+    link = f'https://good-polite-ton.glitch.me/change-password/{token}'
+    html_content = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        .container {{
+                            width: 100%;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            padding: 20px;
+                            border: 1px solid #dddddd;
+                            font-family: "League Spartan", sans-serif;
+                        }}
+                        .header {{
+                            text-align: center;
+                            padding: 10px 0;
+                            background-color: #007bff;
+                            color: white;
+                        }}
+                        .content {{
+                            padding: 20px;
+                            text-align: center;
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 10px 0;
+                            background-color: #f6f6f6;
+                            color: #999999;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            margin: 20px 0;
+                            background-color: #007bff;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 5px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>Lupa Password</h1>
+                        </div>
+                        <div class="content">
+                            <p>Halo,</p>
+                            <p>Berikut adalah link untuk mengganti password akun mu:</p>
+                            <a class="button" href="{link}" style="color: white;">Reset Password</a>
+                            <p>Silakan akses link berikut untuk mengubah password, link ini berlaku 30 menit</p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; 2024 ZallRentCar. Semua hak dilindungi.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+
+    msg = Message('Lupa Password ZallRentCar', recipients=[email], html=html_content, sender=app.config['MAIL_USERNAME'])
+    mail.send(msg)
+    return jsonify({
+        'result' : 'success',
+        'message' : 'Email berhasil dikirim'
+    })
+
+@app.route('/change-password/<token>',methods=['GET','POST'])
+def method_name(token):
+
+    cek_token = db.blacklist_token.find_one({'token' : token})
+    if cek_token:
+        msg = createSecreteMassage('link ganti password kadaluarsa')
+        return redirect(url_for('login', msg = msg))
+
+    if request.method == 'GET':
+        try:
+            jwt.decode(token, 'change_pass', algorithms=['HS256'])
+            return render_template('main/from_change_password.html')
+        except jwt.ExpiredSignatureError:
+            msg = createSecreteMassage('link ganti password kadaluarsa')
+            return redirect(url_for('login', msg = msg))
+        except jwt.exceptions.DecodeError:
+            msg = createSecreteMassage('link ganti password kadaluarsa')
+            return redirect(url_for('login', msg = msg))
+        
+    elif request.method == 'POST':
+        password = request.form.get('password')
+        c_password = request.form.get('c_password')
+
+        if password != c_password:
+            return jsonify({
+                'result' : 'fail',
+                'message' : 'Password tidak sama'
+            })
+        elif password == '':
+            return jsonify({
+                'result' : 'fail',
+                'message' : 'Password tidak boleh kosong'
+                })
+        elif len(password) < 8:
+            return jsonify({
+                'result' : 'fail',
+                'message' : 'Password minimal 8 karakter'
+                })
+        else:
+            pw_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
+            try:
+                payload = jwt.decode(token, 'change_pass', algorithms=['HS256'])
+                if payload['who'] == 'users':
+                    db.users.update_one({'email' : payload['email']},{'$set' :{'password' : pw_hash}})
+                    redirect_after = '/login'
+                elif payload['who'] == 'admin':
+                    db.users_admin.update_one({'email' : payload['email']},{'$set' :{'password' : pw_hash}})
+                    redirect_after = '/dashboard'
+                
+                db.blacklist_token.insert_one({'token' : token})
+                return jsonify({
+                    'result' : 'success',
+                    'message' : 'Password berhasil diubah',
+                    'redirect' : redirect_after
+                })
+            
+            except Exception as e:
+                return jsonify({
+                    'result' : 'fail',
+                    'message' : str(e)
+                    })
 
 # Edit Profil
 @app.route('/profile', methods=['POST'])
@@ -288,7 +462,7 @@ def verify():
             <p>Silakan masukkan kode ini di halaman verifikasi untuk mengaktifkan akun Anda.</p>
         </div>
         <div class="footer">
-            <p>&copy; 2024 Perusahaan Anda. Semua hak dilindungi.</p>
+            <p>&copy; 2024 ZallRentCar. Semua hak dilindungi.</p>
         </div>
     </div>
 </body>
@@ -335,6 +509,10 @@ app.register_blueprint(dashboard.dashboard)
 app.register_blueprint(api.api)
 
  
+@app.template_filter('nl2br')
+def nl2br_filter(s):
+    return s.replace('\n', '<br>')
+
 if __name__ == '__main__':
     app.run(debug=True)
     # tessss

@@ -21,7 +21,7 @@
 <body>
 
     <div class="brand-logo">
-        <img src="{{ url_for('static', filename='Gambar/login.png') }}" alt="Login Image">
+        <img src="{{ url_for('static', filename='gambar/login.png') }}" alt="Login Image">
     </div>
 
     <div class="container">
@@ -29,9 +29,9 @@
             <h2 class="form-title mb-4">Login <span style="color: #1b1bb3;" class="brand m-0">Zall RentCar</span></h2>
             <form id="form-login">
                 <div class="form-group mb-3">
-                    <label for="loginEmail" class="fs-3 mb-1">Username</label>
-                    <input type="text" class="form-control rounded-5" id="login_username" name="username"
-                        placeholder="Masukan username" required>
+                    <label for="loginEmail" class="fs-3 mb-1">Email</label>
+                    <input type="email" class="form-control rounded-5" id="login_email" name="email"
+                        placeholder="Masukan email anda" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="loginPassword" class="fs-3 mb-1">Password</label>
@@ -43,6 +43,9 @@
                 <div class="">
                     <p class="ps-2 m-0">Belum Punya Akun? <a id="showRegister"
                             style="color: #1b1bb3; cursor: pointer;">Daftar</a>
+                    </p>
+                    <p class="ps-2 m-0">
+                        <a href="/forgot_pass" style="color: #1b1bb3; cursor: pointer;">Lupa Password</a>
                     </p>
                 </div>
 

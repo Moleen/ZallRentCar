@@ -26,3 +26,20 @@ function loginDashboard() {
   }
 }
 
+$("#lupa_password").on("click", function () {
+  $.ajax({
+    url: "/forgot_pass",
+    type: "post",
+    data: {
+      from: "admin",
+    },
+    success: function (response) {
+      if (response["result"] == "success") {
+        alert("Password reset link has been sent to your email");
+      } else {
+        alert("Failed to send password reset link");
+      }
+    },
+  });
+});
+

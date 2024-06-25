@@ -34,6 +34,13 @@ function addStatusLabel() {
   $("tr#unpaid").each(function () {
     $(this).addClass("table-warning");
   });
+  $("tr#Dibatalkan").each(function () {
+    $(this).addClass("table-danger");
+  });
+
+  $("tr#Dibayar").each(function () {
+    $(this).addClass("table-success");
+  });
 }
 
 function alertAfter(){

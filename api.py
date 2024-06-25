@@ -111,7 +111,7 @@ def transactionSuccess():
             }
         
     db.dataMobil.update_one({'id_mobil' : idcar},{'$set': dataUpdate })
-    db.transaction.update_one({'order_id' : orderid},{'$set': {'status' : 'sudah bayar'} })
+    db.transaction.update_one({'order_id' : orderid},{'$set': {'status' : 'Dibayar'} })
     
     return jsonify({
         'result':'success'
@@ -205,6 +205,7 @@ def reg():
             "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        print('daftar sukses')
         return jsonify({
             "result": "success",
             "token": token
@@ -241,7 +242,7 @@ def delete_mobil():
     id_mobil = request.form.get('id_mobil')
     data = db.dataMobil.find_one({'id_mobil' : id_mobil})
     db.dataMobil.delete_one({'id_mobil' : id_mobil})
-    os.remove(f'static/gambar/{data['gambar']}')
+    os.remove(f"static/gambar/{data['gambar']}")
     return jsonify({
         'result' : 'success'
     })
@@ -249,7 +250,7 @@ def delete_mobil():
 @api.route('/api/ambilpendapatan', methods=['POST'])
 def ambilPendapatan():
     date = request.form.get('tahun')
-    data = db.transaction.find({ 'status' : "sudah bayar" , 'date_rent' : {'$regex': date, '$options': 'i'}})
+    data = db.transaction.find({ 'status' : "Dibayar" , 'date_rent' : {'$regex': date, '$options': 'i'}})
 
     total = {month: 0 for month in range(1, 13)}
     
@@ -265,7 +266,7 @@ def ambilPendapatan():
 def get_transaksi():
     date = datetime.now().strftime('%Y')
 
-    data = db.transaction.find({'status' : "sudah bayar" ,'date_rent' : {'$regex': date, '$options': 'i'}})
+    data = db.transaction.find({'status' : "Dibayar" ,'date_rent' : {'$regex': date, '$options': 'i'}})
 
     total = {month: 0 for month in range(1, 13)}
     for dt in data:
@@ -288,7 +289,7 @@ def filter_transaksi():
         return list(data)
     
     elif mtd == 'fPaid' :
-        data = db.transaction.find({'status' : 'sudah bayar'}, {'_id': 0})
+        data = db.transaction.find({'status' : 'Dibayar'}, {'_id': 0})
         return list(data)
     elif mtd == 'fUnpaid':
         data = db.transaction.find({'status' : 'Dibatalkan'}, {'_id':0})
@@ -329,11 +330,11 @@ def add_transaction_from_admin():
             'lama_rental' : f'{hari} hari',
             'date_rent' : dateRent,
             'end_rent' : endRent,
-            'status' : 'sudah bayar',
+            'status' : 'Dibayar',
         }
 
     db.transaction.insert_one(transakasi)
-    db.dataMobil.update_one({'id_mobil': id_mobil},{'$set':{'status' : 'Digunakan'}})
+    db.dataMobil.update_one({'id_mobil': id_mobil},{'$set':{'status' : 'Digunakan', 'order_id' : order_id}})
 
     return jsonify({
         'result':'success',

@@ -15,27 +15,27 @@ $(document).ready(function () {
 // login
 $("#form-login").on("submit", function (e) {
   e.preventDefault();
-  redirect = $("#login_button").attr("data-redirect");
-  username = $("#login_username").val();
-  pw = $("#login_password").val();
-  
+  var redirect_url = $("#login_button").attr("data-redirect");
+  var email = $("#login_email").val();
+  var pw = $("#login_password").val();
+
   // redirect default
-  if (redirect == "") {
-    redirect = "/";
+  if (redirect_url == "") {
+    var redirect_url = "/";
   }
   $("#login_button").attr("disabled", true);
   $.ajax({
     url: "/login",
     type: "post",
     data: {
-      username: username,
+      email: email,
       password: pw,
     },
     success: function (response) {
       if (response["result"] == "success") {
         $.cookie("tokenMain", response["token"], { path: "/" });
         localStorage.setItem("login", "true");
-        window.location.replace(redirect);
+        window.location.replace(redirect_url);
       } else {
         toastr.warning(response["msg"]);
         $("#login_button").attr("disabled", false);
@@ -64,31 +64,27 @@ $("#form-register").on("submit", function (e) {
       phone: $("#reg_phone").val(),
     },
     success: function (response) {
-        $("#username_status").removeClass("text-danger text-success");
-        $("#pw_status").removeClass("text-danger text-success");
-        $("#email_status").removeClass("text-danger text-success");
-        $("#phone_status").removeClass("text-danger text-success");
+      $("#username_status").removeClass("text-danger text-success");
+      $("#pw_status").removeClass("text-danger text-success");
+      $("#email_status").removeClass("text-danger text-success");
+      $("#phone_status").removeClass("text-danger text-success");
 
       if (response["result"] == "success") {
         $.cookie("tokenMain", response["token"], { path: "/" });
         localStorage.setItem("login", "true");
-        window.location.replace(redirect);
-
+        window.location.reload();
       } else if (response["result"] == "ejected") {
         $("#username_status").text(response["msg"]);
         $("#username_status").addClass("text-danger");
         $("#reg_button").attr("disabled", false);
-
       } else if (response["result"] == "ejectedPW") {
         $("#pw_status").text(response["msg"]);
         $("#pw_status").addClass("text-danger");
         $("#reg_button").attr("disabled", false);
-
       } else if (response["result"] == "ejectedEmail") {
         $("#email_status").text(response["msg"]);
         $("#email_status").addClass("text-danger");
         $("#reg_button").attr("disabled", false);
-
       } else if (response["result"] == "ejectedPhone") {
         $("#phone_status").text(response["msg"]);
         $("#phone_status").addClass("text-danger");

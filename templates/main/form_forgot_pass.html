@@ -1,0 +1,34 @@
+{% extends 'main/main_layout.html' %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/main/forgot_pass.js') }}"></script>
+{% endblock %}
+{% block css %}
+<style>
+    .main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="main" style="height: 100vh;">
+
+    <div class="text-center rounded shadow p-4 w-auto bg-white">
+        <h2 class="text-primary">Reset Password</h2>
+        <p class="fs-4 text-secondary">Masukkan email anda untuk reset password</p>
+        <div class="mb-3">
+            <input type="text" class="form-control w-100 m-auto" id="email_forgot_password" aria-describedby="helpId" placeholder="" />
+        </div>
+        <button type="button" id="btn_email_forgot_password" class="btn btn-primary w-auto">
+            Reset Password
+        </button>
+
+
+    </div>
+
+</div>
+{% endblock %}

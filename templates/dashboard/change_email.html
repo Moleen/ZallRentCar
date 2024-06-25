@@ -12,7 +12,7 @@
 </div>
 <div class="px-4">
 
-    {% if user_info.verif == 'unverif' %}
+    {% if user_info.verif == 'unverifed' %}
     <p class="text-secondary px-2 w-50">Email anda belum terverifikasi harap verifikasi email terlebih dahulu dengan
         menekan tombol dibawah</p>
     <div class="px-2">
@@ -22,13 +22,40 @@
         </button>
     </div>
     {% elif user_info.verif == 'sending_email' %}
-    <p class="text-secondary px-2 w-50">Kami sudah mengirim kode verifikasi, masukan kode verifikasi dibawah ini</p>
+    <p class="text-secondary px-2 w-50">Kami sudah mengirim kode verifikasi ke <b>{{user_info.email}}</b>, masukan kode
+        verifikasi dibawah ini atau <a id="" class="text-primary" style="cursor: pointer;" data-bs-toggle="modal"
+            data-bs-target="#exampleModal"> Ganti email </a>
+    </p>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ganti Email</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="" id="new_email" aria-describedby="helpId"
+                            placeholder="Masukkan email yang ingin anda ganti" />
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="change_and_add_email('{{user_info.username}}')">Ganti</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
     <div class="px-2 mb-3">
         <input type="text" class="form-control" name="" id="kode" aria-describedby="helpId" placeholder="" />
     </div>
     <div class="px-2">
-        <button type="button" name="" id="btn_email" class="btn btn-primary"
-            onclick="verif('{{user_info.username}}')">
+        <button type="button" name="" id="btn_email" class="btn btn-primary" onclick="verif('{{user_info.username}}')">
             verifikasi
         </button>
     </div>
@@ -43,7 +70,7 @@
     </div>
     <div class="px-2">
         <button type="button" name="" id="btn_email" class="btn btn-primary"
-            onclick="change_email('{{user_info.username}}')">
+            onclick="change_and_add_email('{{user_info.username}}')">
             Ganti
         </button>
     </div>
@@ -58,7 +85,7 @@
     </div>
     <div class="px-2">
         <button type="button" name="" id="btn_email" class="btn btn-primary"
-            onclick="add_email('{{user_info.username}}')">
+            onclick="change_and_add_email('{{user_info.username}}')">
             Tambahkan
         </button>
     </div>
